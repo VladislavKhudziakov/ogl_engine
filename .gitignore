@@ -1,3 +1,4 @@
 internal/libs
 cmake-build-debug
 .idea/
+venv
