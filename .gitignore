@@ -1,4 +1,8 @@
-internal/libs
 cmake-build-debug
+!internal/
+internal/libs/*
+!internal/libs/libs.md
+
 .idea/
 venv
+.DS_Store
