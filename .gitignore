@@ -4,5 +4,7 @@ internal/libs/*
 !internal/libs/libs.md
 
 .idea/
-venv
+!venv/
+venv/*
+!venv/venv.md
 .DS_Store
