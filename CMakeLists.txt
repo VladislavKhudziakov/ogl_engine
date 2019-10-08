@@ -27,4 +27,4 @@ add_definitions(${ASSIMP_DEFINITIONS})
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(OGL_3d_engine main.cpp)
-target_link_libraries(OGL_3d_engine PRIVATE glfw glad assimp)
+target_link_libraries(OGL_3d_engine glfw glad assimp)

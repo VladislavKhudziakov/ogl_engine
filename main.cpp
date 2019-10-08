@@ -6,7 +6,7 @@
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
 #include <iostream>
-#define GL_SILENCE_DEPRECATION
+#include <fstream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -14,6 +14,12 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+
+constexpr float vertices[] = {
+    0.5f,  0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f,
+};
 
 int main()
 {
@@ -56,9 +62,82 @@ int main()
     std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
   }
 
-  GLuint buffer;
-  glGenBuffers(1, &buffer);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer);
+  std::string vShaderSource;
+  std::string fShaderSource;
+
+  std::ifstream fin;
+  fin.open("../internal/engine/shaders/test.vert");
+  std::getline(fin, vShaderSource, '\0');
+  fin.close();
+
+  fin.open("../internal/engine/shaders/test.frag");
+  std::getline(fin, fShaderSource, '\0');
+  fin.close();
+
+  auto vs = glCreateShader(GL_VERTEX_SHADER);
+  auto s = vShaderSource.c_str();
+  glShaderSource(vs, 1, &s, nullptr);
+  glCompileShader(vs);
+
+  int32_t compile_status;
+  glGetShaderiv(vs, GL_COMPILE_STATUS, &compile_status);
+
+  if (compile_status == GL_FALSE) {
+    int32_t log_length = 0;
+    glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &log_length);
+    auto log_buffer = new char[log_length];
+    glGetShaderInfoLog(vs, log_length, &log_length, log_buffer);
+    std::cout << log_buffer << std::endl;
+    delete[] log_buffer;
+  }
+
+  auto fs = glCreateShader(GL_FRAGMENT_SHADER);
+  s = fShaderSource.c_str();
+  glShaderSource(fs, 1, &s, nullptr);
+  glCompileShader(fs);
+
+  glGetShaderiv(fs, GL_COMPILE_STATUS, &compile_status);
+
+  if (compile_status == GL_FALSE) {
+    int32_t log_length = 0;
+    glGetShaderiv(fs, GL_INFO_LOG_LENGTH, &log_length);
+    auto log_buffer = new char[log_length];
+    glGetShaderInfoLog(fs, log_length, &log_length, log_buffer);
+    std::cout << log_buffer << std::endl;
+    delete[] log_buffer;
+  }
+
+  auto program = glCreateProgram();
+  glAttachShader(program, vs);
+  glAttachShader(program, fs);
+  glLinkProgram(program);
+  int32_t status;
+  glGetProgramiv(program, GL_LINK_STATUS, &status);
+  if (status == GL_FALSE) {
+    int32_t log_length = 0;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_length);
+    auto log_buffer = new char[log_length];
+    glGetProgramInfoLog(program, log_length, &log_length, log_buffer);
+    std::cout << log_buffer << std::endl;
+    delete[] log_buffer;
+  }
+
+  glUseProgram(program);
+
+  GLuint vao;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+
+  GLuint vbo;
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+
 
   while (!glfwWindowShouldClose(window))
   {
@@ -66,6 +145,10 @@ int main()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    glEnableVertexAttribArray(vao);
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
