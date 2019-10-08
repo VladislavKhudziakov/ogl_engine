@@ -47,8 +47,8 @@ engine::mesh::mesh(const std::vector<mesh::vertex> &vertices,
 
 engine::mesh::~mesh()
 {
-  glDeleteBuffers(1, &ebo);
-  glDeleteVertexArrays(1, &vao);
+//  glDeleteBuffers(1, &ebo);
+//  glDeleteVertexArrays(1, &vao);
 }
 
 

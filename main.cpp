@@ -5,9 +5,12 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <fstream>
 #include <mesh.hpp>
+#include <shader_program.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -56,6 +59,28 @@ int main()
   if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
   {
     std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+    return -1;
+  }
+
+  std::vector<engine::mesh::vertex> cube_vertices;
+  std::vector<int> cube_indices;
+
+  if (scene->mNumMeshes > 0) {
+    auto first_mesh = scene->mMeshes[0];
+    for (size_t i = 0 ; i < first_mesh->mNumVertices; ++i) {
+      engine::mesh::vertex vertex {
+        first_mesh->mVertices[i].x, first_mesh->mVertices[i].y,first_mesh->mVertices[i].z,
+        first_mesh->mTextureCoords[0][i].x, first_mesh->mTextureCoords[0][i].y,
+        first_mesh->mNormals[i].x, first_mesh->mNormals[i].y, first_mesh->mNormals[i].z};
+
+      cube_vertices.emplace_back(vertex);
+    }
+
+    for (int i = 0; i < first_mesh->mNumFaces; ++i) {
+      for (int j = 0; j < first_mesh->mFaces[i].mNumIndices; ++j) {
+        cube_indices.emplace_back(first_mesh->mFaces[i].mIndices[j]);
+      }
+    }
   }
 
   std::string vShaderSource;
@@ -70,74 +95,23 @@ int main()
   std::getline(fin, fShaderSource, '\0');
   fin.close();
 
-  auto vs = glCreateShader(GL_VERTEX_SHADER);
-  auto s = vShaderSource.c_str();
-  glShaderSource(vs, 1, &s, nullptr);
-  glCompileShader(vs);
+  engine::shader_program pog(vShaderSource, fShaderSource);
 
-  int32_t compile_status;
-  glGetShaderiv(vs, GL_COMPILE_STATUS, &compile_status);
+  engine::mesh mesh(cube_vertices, cube_indices);
 
-  if (compile_status == GL_FALSE) {
-    int32_t log_length = 0;
-    glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &log_length);
-    auto log_buffer = new char[log_length];
-    glGetShaderInfoLog(vs, log_length, &log_length, log_buffer);
-    std::cout << log_buffer << std::endl;
-    delete[] log_buffer;
-  }
-
-  auto fs = glCreateShader(GL_FRAGMENT_SHADER);
-  s = fShaderSource.c_str();
-  glShaderSource(fs, 1, &s, nullptr);
-  glCompileShader(fs);
-
-  glGetShaderiv(fs, GL_COMPILE_STATUS, &compile_status);
-
-  if (compile_status == GL_FALSE) {
-    int32_t log_length = 0;
-    glGetShaderiv(fs, GL_INFO_LOG_LENGTH, &log_length);
-    auto log_buffer = new char[log_length];
-    glGetShaderInfoLog(fs, log_length, &log_length, log_buffer);
-    std::cout << log_buffer << std::endl;
-    delete[] log_buffer;
-  }
-
-  auto program = glCreateProgram();
-  glAttachShader(program, vs);
-  glAttachShader(program, fs);
-  glLinkProgram(program);
-  int32_t status;
-  glGetProgramiv(program, GL_LINK_STATUS, &status);
-  if (status == GL_FALSE) {
-    int32_t log_length = 0;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_length);
-    auto log_buffer = new char[log_length];
-    glGetProgramInfoLog(program, log_length, &log_length, log_buffer);
-    std::cout << log_buffer << std::endl;
-    delete[] log_buffer;
-  }
-
-  glUseProgram(program);
-
-  std::vector<engine::mesh::vertex> vertices {
-      { 0.5f, 0.5f, 0.0f, 0.0, 0.0, 1.0f, 0.0f, 0.0f },
-      { 0.5f, -0.5f, 0.0f, 0.0, 0.0, 0.0f, 1.0f, 0.0f },
-      { -0.5f, 0.5f, 0.0f, 0.0, 0.0, 0.0f, 0.0f, 1.0f },
-      { -0.5f, -0.5f, 0.0f, 0.0, 0.0, 0.0f, 0.0f, 0.0f }
-  };
-
-  std::vector<int> indices {
-      0, 1, 2, 1, 2, 3
-  };
-
-  engine::mesh mesh(vertices, indices);
+  pog.bind();
+  auto perspective = glm::perspective(glm::radians(60.0f), float(SCR_WIDTH) / float(SCR_HEIGHT), 1.0f, 100.0f);
+  auto view = glm::lookAt(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+  auto mvp = perspective * view;
+  auto U_MVP = glGetUniformLocation(pog.get(), "u_mvp");
+  glUniformMatrix4fv(U_MVP, 1, GL_FALSE, glm::value_ptr(mvp));
 
   while (!glfwWindowShouldClose(window)) {
     processInput(window);
-
+    glEnable(GL_DEPTH_TEST);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
 
     mesh.draw();
     glfwSwapBuffers(window);
