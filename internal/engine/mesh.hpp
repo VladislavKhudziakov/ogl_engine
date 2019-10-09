@@ -7,7 +7,9 @@
 #include <vector>
 
 namespace engine {
-  class mesh {
+  class mesh
+  {
+    friend class mesh_builder;
   public:
     struct vertex {
       float position[3];
@@ -15,17 +17,46 @@ namespace engine {
       float normal[3];
     };
 
-    explicit mesh(const std::vector<mesh::vertex>&, const::std::vector<int>&);
     ~mesh();
 
     void draw() const;
 
   private:
+    mesh();
     uint32_t vao;
     uint32_t ebo;
     uint32_t indices_count;
+  };
 
-    //material will be here
+
+
+  class mesh_builder
+  {
+  public:
+    //TODO reconsider data conversion between build commands and mesh
+    // builder
+    struct build_command
+    {
+      ~build_command() = default;
+      virtual void execute() const = 0;
+    };
+
+    mesh_builder();
+    ~mesh_builder() = default;
+
+    mesh_builder& create_default(
+        const std::vector<mesh::vertex>&, const::std::vector<int>&);
+
+    std::unique_ptr<mesh> generate_mesh();
+
+    std::unique_ptr<mesh> generate_default_mesh(
+        const std::vector<mesh::vertex>&, const::std::vector<int>&);
+
+    mesh_builder& append_command(const build_command&);
+
+  private:
+    std::unique_ptr<mesh> mesh;
+    std::vector<uint32_t> vbo_list;
   };
 }
 

@@ -6,25 +6,47 @@
 #include <glad/glad.h>
 
 
-engine::mesh::mesh(const std::vector<mesh::vertex> &vertices,
-    const::std::vector<int>& indices) : vao(0), ebo(0), indices_count(indices.size())
+engine::mesh::mesh() : vao(0), ebo(0), indices_count(0) { }
+
+
+
+engine::mesh::~mesh()
 {
-  glGenVertexArrays(1, &vao);
+  glDeleteBuffers(1, &ebo);
+  glDeleteVertexArrays(1, &vao);
+}
+
+
+
+void engine::mesh::draw() const
+{
   glBindVertexArray(vao);
-
-  uint32_t vbo;
-
-  glGenBuffers(1, &vbo);
-  glGenBuffers(1, &ebo);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
+  glBindVertexArray(0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+
+
+engine::mesh_builder::mesh_builder() : mesh(new engine::mesh) {}
+
+
+engine::mesh_builder& engine::mesh_builder::create_default(const std::vector<mesh::vertex> &vertices,
+    const::std::vector<int>& indices)
+{
+  uint32_t vao, ebo, vbo;
+  glGenVertexArrays(1, &vao);
+  glGenBuffers(1, &ebo);
+  glGenBuffers(1, &vbo);
+
+  glBindVertexArray(vao);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
   glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(mesh::vertex),
       &vertices.begin()->position[0], GL_STATIC_DRAW);
-
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int),
-      &*indices.begin(), GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &*indices.begin(), GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(mesh::vertex),
@@ -38,25 +60,41 @@ engine::mesh::mesh(const std::vector<mesh::vertex> &vertices,
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(mesh::vertex),
       reinterpret_cast<void*>(sizeof(mesh::vertex::position) + sizeof(mesh::vertex::uv)));
 
+  mesh->vao = vao;
+  mesh->ebo = ebo;
+  mesh->indices_count = indices.size();
+
+  vbo_list.emplace_back(vbo);
+  return *this;
+}
+
+
+
+std::unique_ptr<engine::mesh> engine::mesh_builder::generate_mesh()
+{
   glBindVertexArray(0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-  glDeleteBuffers(1, &vbo);
+  glDeleteBuffers(vbo_list.size(), &*vbo_list.begin());
+
+  return std::move(mesh);
 }
 
 
-engine::mesh::~mesh()
+
+std::unique_ptr<engine::mesh> engine::mesh_builder::generate_default_mesh(
+    const std::vector<mesh::vertex> &vertices,
+    const::std::vector<int>& indices)
 {
-//  glDeleteBuffers(1, &ebo);
-//  glDeleteVertexArrays(1, &vao);
+  create_default(vertices, indices);
+  return generate_mesh();
 }
 
 
-void engine::mesh::draw() const
+
+engine::mesh_builder& engine::mesh_builder::append_command(
+    const engine::mesh_builder::build_command& command)
 {
-  glBindVertexArray(vao);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-  glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
-  glBindVertexArray(0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  command.execute();
+  return *this;
 }

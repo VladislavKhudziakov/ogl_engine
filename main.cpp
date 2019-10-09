@@ -97,7 +97,7 @@ int main()
 
   engine::shader_program pog(vShaderSource, fShaderSource);
 
-  engine::mesh mesh(cube_vertices, cube_indices);
+  auto mesh = engine::mesh_builder().generate_default_mesh(cube_vertices,cube_indices);
 
   pog.bind();
   auto perspective = glm::perspective(glm::radians(60.0f), float(SCR_WIDTH) / float(SCR_HEIGHT), 1.0f, 100.0f);
@@ -113,7 +113,7 @@ int main()
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    mesh.draw();
+    mesh->draw();
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
