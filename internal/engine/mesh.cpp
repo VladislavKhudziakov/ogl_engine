@@ -55,10 +55,8 @@ engine::mesh::~mesh()
 void engine::mesh::draw() const
 {
   glBindVertexArray(vao);
-  glEnableVertexAttribArray(vao);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
   glDrawElements(GL_TRIANGLES, indices_count, GL_UNSIGNED_INT, nullptr);
-  glDisableVertexAttribArray(vao);
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
