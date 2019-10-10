@@ -6,7 +6,8 @@
 #include <cstdint>
 #include <vector>
 
-namespace engine {
+namespace engine
+{
   class mesh
   {
     friend class mesh_builder;
@@ -32,13 +33,17 @@ namespace engine {
 
   class mesh_builder
   {
+    //TODO give rename methods/reconsider creating of vao
   public:
-    //TODO reconsider data conversion between build commands and mesh
-    // builder
-    struct build_command
+    struct add_buffer_command_base
     {
-      ~build_command() = default;
+      friend mesh_builder;
+
+      ~add_buffer_command_base() = default;
       virtual void execute() const = 0;
+
+    protected:
+      mutable uint32_t buffer;
     };
 
     mesh_builder();
@@ -52,7 +57,7 @@ namespace engine {
     std::unique_ptr<mesh> generate_default_mesh(
         const std::vector<mesh::vertex>&, const::std::vector<int>&);
 
-    mesh_builder& append_command(const build_command&);
+    mesh_builder& append_buffer(const add_buffer_command_base&);
 
   private:
     std::unique_ptr<mesh> mesh;

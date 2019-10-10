@@ -92,9 +92,10 @@ std::unique_ptr<engine::mesh> engine::mesh_builder::generate_default_mesh(
 
 
 
-engine::mesh_builder& engine::mesh_builder::append_command(
-    const engine::mesh_builder::build_command& command)
+engine::mesh_builder& engine::mesh_builder::append_buffer(
+    const engine::mesh_builder::add_buffer_command_base& command)
 {
   command.execute();
+  vbo_list.emplace_back(command.buffer);
   return *this;
 }

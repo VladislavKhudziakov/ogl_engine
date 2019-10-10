@@ -5,10 +5,18 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace engine {
   class shader_program {
   public:
+
+    struct uniform_command
+    {
+      virtual ~uniform_command() = default;
+      virtual void execute() const = 0;
+    };
+
     shader_program(const std::string&, const std::string&);
     ~shader_program() = default;
 
