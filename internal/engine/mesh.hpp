@@ -8,7 +8,7 @@
 #include <memory>
 
 
-
+//TODO: exception in destructor
 namespace engine
 {
   class mesh

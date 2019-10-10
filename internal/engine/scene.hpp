@@ -9,7 +9,10 @@
 #include <mesh.hpp>
 
 
-
+//TODO: hierarchy
+//TODO: camera
+//TODO: perspective
+//TODO: think over about parser/assets manager
 namespace engine
 {
   class scene

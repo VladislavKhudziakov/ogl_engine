@@ -13,6 +13,12 @@
 #include <scene.hpp>
 
 
+
+//TODO: codestyle
+//TODO: easy deploy
+//TODO: forward declaration
+//TODO: settings?
+
 int main()
 {
   auto& app = engine::application::get();
