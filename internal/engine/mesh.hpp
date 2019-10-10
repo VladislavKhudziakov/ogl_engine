@@ -5,6 +5,9 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include <memory>
+
+
 
 namespace engine
 {
@@ -60,7 +63,7 @@ namespace engine
     mesh_builder& append_buffer(const add_buffer_command_base&);
 
   private:
-    std::unique_ptr<mesh> mesh;
+    std::unique_ptr<mesh> m_mesh;
     std::vector<uint32_t> vbo_list;
   };
 }

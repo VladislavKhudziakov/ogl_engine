@@ -29,7 +29,7 @@ void engine::mesh::draw() const
 
 
 
-engine::mesh_builder::mesh_builder() : mesh(new engine::mesh) {}
+engine::mesh_builder::mesh_builder() : m_mesh(new engine::mesh) {}
 
 
 engine::mesh_builder& engine::mesh_builder::create_default(const std::vector<mesh::vertex> &vertices,
@@ -60,9 +60,9 @@ engine::mesh_builder& engine::mesh_builder::create_default(const std::vector<mes
   glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(mesh::vertex),
       reinterpret_cast<void*>(sizeof(mesh::vertex::position) + sizeof(mesh::vertex::uv)));
 
-  mesh->vao = vao;
-  mesh->ebo = ebo;
-  mesh->indices_count = indices.size();
+  m_mesh->vao = vao;
+  m_mesh->ebo = ebo;
+  m_mesh->indices_count = indices.size();
 
   vbo_list.emplace_back(vbo);
   return *this;
@@ -77,7 +77,7 @@ std::unique_ptr<engine::mesh> engine::mesh_builder::generate_mesh()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glDeleteBuffers(vbo_list.size(), &*vbo_list.begin());
 
-  return std::move(mesh);
+  return std::move(m_mesh);
 }
 
 

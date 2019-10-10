@@ -1,5 +1,3 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -11,50 +9,19 @@
 #include <fstream>
 #include <mesh.hpp>
 #include <shader_program.hpp>
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
-
-// settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+#include <application.hpp>
+#include <scene.hpp>
 
 
 int main()
 {
-  // glfw: initialize and configure
-  // ------------------------------
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
-#endif
-
-  // glfw window creation
-  // --------------------
-  GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-  if (window == NULL)
-  {
-    std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
-    std::cout << "Failed to initialize GLAD" << std::endl;
-    return -1;
-  }
+  auto& app = engine::application::get();
+  app.init_window(800, 600, "test");
 
   Assimp::Importer importer;
 
-  auto scene = importer.ReadFile("../internal/resources/cube.obj",
-                                 aiProcess_Triangulate | aiProcess_FlipUVs);
+  auto scene = importer.ReadFile(
+      "../internal/resources/cube.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
 
   if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
   {
@@ -100,39 +67,16 @@ int main()
   auto mesh = engine::mesh_builder().generate_default_mesh(cube_vertices, cube_indices);
 
   pog.bind();
-  auto perspective = glm::perspective(glm::radians(60.0f), float(SCR_WIDTH) / float(SCR_HEIGHT), 1.0f, 100.0f);
+  auto perspective = glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 1.0f, 100.0f);
   auto view = glm::lookAt(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
   auto mvp = perspective * view;
 
   pog.apply_uniform_command(engine::set_mat4_uniform{"u_mvp", mvp});
 
-  while (!glfwWindowShouldClose(window)) {
-    processInput(window);
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
+  auto mesh_scene = std::make_unique<engine::scene>();
+  mesh_scene->set_mesh(std::move(mesh));
+  app.set_scene(std::move(mesh_scene));
+  app.exec();
 
-    mesh->draw();
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-  }
-
-  glfwTerminate();
   return 0;
-}
-
-void processInput(GLFWwindow *window)
-{
-  if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, true);
-}
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-  // make sure the viewport matches the new window dimensions; note that width and
-  // height will be significantly larger than specified on retina displays.
-  glViewport(0, 0, width, height);
 }
