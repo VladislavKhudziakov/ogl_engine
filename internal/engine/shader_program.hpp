@@ -9,6 +9,7 @@
 
 namespace engine
 {
+//TODO: brige?
   class shader_program
   {
   public:
