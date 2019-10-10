@@ -76,8 +76,8 @@ int main()
       cube_vertices.emplace_back(vertex);
     }
 
-    for (int i = 0; i < first_mesh->mNumFaces; ++i) {
-      for (int j = 0; j < first_mesh->mFaces[i].mNumIndices; ++j) {
+    for (size_t i = 0; i < first_mesh->mNumFaces; ++i) {
+      for (size_t j = 0; j < first_mesh->mFaces[i].mNumIndices; ++j) {
         cube_indices.emplace_back(first_mesh->mFaces[i].mIndices[j]);
       }
     }
@@ -103,8 +103,8 @@ int main()
   auto perspective = glm::perspective(glm::radians(60.0f), float(SCR_WIDTH) / float(SCR_HEIGHT), 1.0f, 100.0f);
   auto view = glm::lookAt(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
   auto mvp = perspective * view;
-  auto U_MVP = glGetUniformLocation(pog.get(), "u_mvp");
-  glUniformMatrix4fv(U_MVP, 1, GL_FALSE, glm::value_ptr(mvp));
+
+  pog.apply_uniform_command(engine::set_mat4_uniform{"u_mvp", mvp});
 
   while (!glfwWindowShouldClose(window)) {
     processInput(window);

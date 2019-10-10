@@ -3,6 +3,7 @@
 //
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
 
 #include "shader_program.hpp"
@@ -68,7 +69,23 @@ void engine::shader_program::unbind()
 
 
 
-uint64_t engine::shader_program::get() const
+void engine::shader_program::apply_uniform_command(const uniform_command& command)
 {
-  return m_index;
+  command.execute(m_index);
+}
+
+
+
+engine::set_mat4_uniform::set_mat4_uniform(const std::string& name, const glm::mat4&
+matrix)
+   : name(name), matrix(matrix)
+{
+
+}
+
+
+void engine::set_mat4_uniform::execute(uint64_t program) const
+{
+  auto matrix_uniform = glGetUniformLocation(program, name.c_str());
+  glUniformMatrix4fv(matrix_uniform, 1, GL_FALSE, glm::value_ptr(matrix));
 }

@@ -7,14 +7,19 @@
 #include <string>
 #include <glm/glm.hpp>
 
-namespace engine {
-  class shader_program {
+namespace engine
+{
+  class shader_program
+  {
   public:
 
     struct uniform_command
     {
+      friend shader_program;
       virtual ~uniform_command() = default;
-      virtual void execute() const = 0;
+
+    protected:
+      virtual void execute(uint64_t) const = 0;
     };
 
     shader_program(const std::string&, const std::string&);
@@ -23,14 +28,14 @@ namespace engine {
     void bind();
     void unbind();
 
-    //TODO: remove
-    uint64_t get() const;
+    void apply_uniform_command(const uniform_command&);
 
     enum class shader_type {
       vertex, fragment
     };
 
-    struct shader {
+    struct shader
+    {
       friend class shader_program;
       shader(const std::string&, shader_type);
       ~shader() = default;
@@ -43,5 +48,16 @@ namespace engine {
     uint64_t m_index;
     shader m_vertex_shader;
     shader m_fragment_shader;
+  };
+
+  struct set_mat4_uniform : shader_program::uniform_command
+  {
+    set_mat4_uniform(const std::string&, const glm::mat4&);
+    void execute(uint64_t) const override;
+    ~set_mat4_uniform() override = default;
+
+  private:
+    std::string name;
+    glm::mat4 matrix;
   };
 }
