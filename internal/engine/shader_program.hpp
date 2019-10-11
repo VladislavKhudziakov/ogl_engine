@@ -4,61 +4,62 @@
 
 #pragma once
 
-#include <string>
 #include <glm/glm.hpp>
+#include <string>
 
 namespace engine
 {
-//TODO: brige?
-  class shader_program
-  {
-  public:
-
-    struct uniform_command
+    // TODO: brige?
+    class shader_program
     {
-      friend shader_program;
-      virtual ~uniform_command() = default;
+    public:
+        struct uniform_command
+        {
+            friend shader_program;
+            virtual ~uniform_command() = default;
 
-    protected:
-      virtual void execute(uint64_t) const = 0;
-    };
+        protected:
+            virtual void execute(uint64_t) const = 0;
+        };
 
-    shader_program(const std::string&, const std::string&);
-    ~shader_program() = default;
+        shader_program(const std::string&, const std::string&);
+        ~shader_program() = default;
 
-    void bind();
-    void unbind();
+        void bind();
+        void unbind();
 
-    void apply_uniform_command(const uniform_command&);
+        void apply_uniform_command(const uniform_command&);
 
-    enum class shader_type {
-      vertex, fragment
-    };
+        enum class shader_type
+        {
+            vertex,
+            fragment
+        };
 
-    struct shader
-    {
-      friend class shader_program;
-      shader(const std::string&, shader_type);
-      ~shader() = default;
+        struct shader
+        {
+            friend class shader_program;
+            shader(const std::string&, shader_type);
+            ~shader() = default;
+
+        private:
+            uint64_t m_index;
+        };
 
     private:
-      uint64_t m_index;
+        uint64_t m_index;
+        shader m_vertex_shader;
+        shader m_fragment_shader;
     };
 
-  private:
-    uint64_t m_index;
-    shader m_vertex_shader;
-    shader m_fragment_shader;
-  };
+    struct set_mat4_uniform : shader_program::uniform_command
+    {
+        set_mat4_uniform(const std::string&, const glm::mat4&);
+        void execute(uint64_t) const override;
+        ~set_mat4_uniform() override = default;
 
-  struct set_mat4_uniform : shader_program::uniform_command
-  {
-    set_mat4_uniform(const std::string&, const glm::mat4&);
-    void execute(uint64_t) const override;
-    ~set_mat4_uniform() override = default;
-
-  private:
-    std::string name;
-    glm::mat4 matrix;
-  };
-}
+    private:
+        std::string name;
+        glm::mat4 matrix;
+    };
+} // namespace engine
