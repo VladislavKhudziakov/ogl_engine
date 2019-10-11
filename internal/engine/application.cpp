@@ -8,6 +8,7 @@
 
 //std libs
 #include <cassert>
+#include <string>
 
 #include <scene.hpp>
 #include <application.hpp>

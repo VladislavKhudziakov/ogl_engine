@@ -16,7 +16,9 @@ namespace engine
   {
 
   public:
-    void init_window(int32_t width, int32_t height, const std::string& name);
+    ~application() = default;
+
+    void init_window(int32_t, int32_t, const std::string&);
     static application& get();
     void exec();
     void process_input();
@@ -25,7 +27,6 @@ namespace engine
   private:
     application();
     GLFWwindow* p_window;
-    std::unique_ptr<GLFWwindow*> m_window;
     std::unique_ptr<scene> m_scene;
   };
 }
