@@ -31,5 +31,5 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/internal/engine/*.cpp)
 
 message(STATUS ${SOURCES})
 
-add_executable(OGL_3d_engine main.cpp ${SOURCES} internal/engine/perspective.cpp internal/engine/perspective.hpp internal/engine/perspective.cpp internal/engine/perspective.hpp internal/engine/scene_object.cpp internal/engine/scene_object.hpp)
+add_executable(OGL_3d_engine main.cpp ${SOURCES})
 target_link_libraries(OGL_3d_engine glfw glad assimp)
