@@ -31,5 +31,5 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/internal/engine/*.cpp)
 
 message(STATUS ${SOURCES})
 
-add_executable(OGL_3d_engine main.cpp ${SOURCES})
+add_executable(OGL_3d_engine main.cpp ${SOURCES} internal/engine/assets/text_file_loader.cpp internal/engine/assets/text_file_loader.hpp internal/engine/assets/interfaces/file_loader.hpp internal/engine/assets/file_loader.hpp)
 target_link_libraries(OGL_3d_engine glfw glad assimp)
