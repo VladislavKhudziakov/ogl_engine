@@ -7,11 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include <mesh.hpp>
 #include <scene.hpp>
-#include <shader_program.hpp>
 
-// TODO: codestyle
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
@@ -25,8 +22,7 @@ int main()
 
     auto scene = importer.ReadFile("../internal/resources/cube.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
-    !scene->mRootNode) {
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
         return -1;
     }
@@ -72,16 +68,8 @@ int main()
 
     auto mesh = engine::mesh_builder().generate_default_mesh(cube_vertices, cube_indices);
 
-    pog.bind();
-    auto perspective =
-        glm::perspective(glm::radians(60.0f), 800.0f / 600.0f, 1.0f, 100.0f);
-    auto view = glm::lookAt(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    auto mvp = perspective * view;
-
-    pog.apply_uniform_command(engine::set_mat4_uniform{"u_mvp", mvp});
-
     auto mesh_scene = std::make_unique<engine::scene>();
-    mesh_scene->set_mesh(std::move(mesh));
+    mesh_scene->set_object(std::make_unique<engine::scene_object>(std::move(mesh), pog));
     app.set_scene(std::move(mesh_scene));
     app.exec();
 

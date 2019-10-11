@@ -6,7 +6,13 @@
 
 #include <memory>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <mesh.hpp>
+#include <scene_object.hpp>
+#include <camera.hpp>
+#include <perspective.hpp>
 
 
 //TODO: hierarchy
@@ -18,13 +24,26 @@ namespace engine
     class scene
     {
     public:
-        scene() = default;
+        scene();
         ~scene() = default;
 
         void draw();
         void set_mesh(std::unique_ptr<engine::mesh>);
+        void set_object(std::unique_ptr<scene_object>);
+
+        void set_camera(const camera&);
+        void set_perspective(const perspective&);
+        const camera& get_camera() const;
+        const perspective& get_perspective() const;
 
     private:
+        void calculate_matrices();
         std::unique_ptr<engine::mesh> m_mesh;
+        std::unique_ptr<engine::scene_object> m_object;
+        camera m_camera;
+        perspective m_perspective;
+        glm::mat4 m_projection_matrix;
+        glm::mat4 m_view_matrix;
+        glm::mat4 m_projection_view;
     };
 } // namespace engine
