@@ -30,9 +30,10 @@ include_directories(${PROJECT_SOURCE_DIR}/internal/engine)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets/interfaces)
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/internal/engine/*.cpp)
+file(GLOB ROOT ${PROJECT_SOURCE_DIR}/internal/engine/*.cpp)
+file(GLOB ASSETS ${PROJECT_SOURCE_DIR}/internal/engine/assets/*.cpp)
 
-message(STATUS ${SOURCES})
+message(STATUS ${ROOT} ${ASSETS})
 
-add_executable(OGL_3d_engine main.cpp ${SOURCES})
+add_executable(OGL_3d_engine main.cpp ${ROOT} ${ASSETS})
 target_link_libraries(OGL_3d_engine glfw glad assimp)
