@@ -37,7 +37,9 @@ void engine::scene::set_object(std::unique_ptr<scene_object> obj)
 
 void engine::scene::draw()
 {
-    m_object->draw(m_projection_view);
+    //TODO: remove
+    auto matrix = glm::identity<glm::mat4>();
+    m_object->draw(m_projection_view * glm::scale(matrix, vec3(0.1, 0.1, 0.1)));
 }
 
 

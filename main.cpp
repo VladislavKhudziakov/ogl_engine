@@ -14,7 +14,7 @@ int main()
     auto& app = engine::application::get();
     app.init_window(800, 600, "test");
 
-    auto instance = engine::mesh_importer::import(engine::text_file_loader(), "../internal/resources/teapot/Teapot_final.fbx");
+    auto instance = engine::mesh_importer::import(engine::text_file_loader(), "../internal/resources/teapot/utah-teapot.obj");
 
     std::string vShaderSource;
     std::string fShaderSource;
