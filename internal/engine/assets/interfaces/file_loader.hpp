@@ -11,6 +11,6 @@ namespace engine::interfaces
     {
     public:
         virtual ~file_loader() = default;
-        virtual void load(const std::string& file_name) = 0;
+        virtual void load(const std::string& file_name) const = 0;
     };
 } // namespace engine::interfaces

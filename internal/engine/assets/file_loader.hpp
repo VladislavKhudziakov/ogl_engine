@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "interfaces/file_loader.hpp"
+#include <interfaces/file_loader.hpp>
 
 namespace engine
 {
@@ -14,13 +14,13 @@ namespace engine
     public:
         ~file_loader() override = default;
 
-        const T& get_file()
+        T get_file() const
         {
             return m_file;
         }
 
     protected:
-        T m_file;
+        mutable T m_file;
     };
 
 } // namespace engine

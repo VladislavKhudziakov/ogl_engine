@@ -23,7 +23,7 @@ engine::scene::scene()
 }
 
 
-void engine::scene::set_mesh(std::unique_ptr<mesh> mesh)
+void engine::scene::set_mesh(std::unique_ptr<geometry> mesh)
 {
     m_mesh = std::move(mesh);
 }
@@ -38,11 +38,6 @@ void engine::scene::set_object(std::unique_ptr<scene_object> obj)
 void engine::scene::draw()
 {
     m_object->draw(m_projection_view);
-    //    glEnable(GL_DEPTH_TEST);
-    //    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    //    glClear(GL_COLOR_BUFFER_BIT);
-    //    glClear(GL_DEPTH_BUFFER_BIT);
-    //    m_mesh->draw();
 }
 
 

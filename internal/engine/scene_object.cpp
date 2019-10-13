@@ -4,10 +4,11 @@
 #include <glad/glad.h>
 
 #include "scene_object.hpp"
+#include "bind_context.hpp"
 
 
-engine::scene_object::scene_object(std::unique_ptr<engine::mesh> mesh, const engine::shader_program& program)
-    : mesh(std::move(mesh))
+engine::scene_object::scene_object(std::shared_ptr<mesh_instance> mesh, const engine::shader_program& program)
+    : m_mesh(std::move(mesh))
     , program(program)
 {
 }
@@ -20,9 +21,8 @@ void engine::scene_object::draw(glm::mat4 mvp)
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    program.bind();
+    engine::bind_context bind(program);
     program.apply_uniform_command(engine::set_mat4_uniform("u_mvp", mvp));
-    mesh->draw();
-    program.unbind();
+    m_mesh->draw();
 }
 

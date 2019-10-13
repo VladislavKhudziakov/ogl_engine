@@ -5,7 +5,7 @@
 #pragma once
 
 
-#include "file_loader.hpp"
+#include <file_loader.hpp>
 #include <assets/interfaces/file_loader.hpp>
 #include <string>
 
@@ -17,6 +17,6 @@ namespace engine
     {
     public:
         ~text_file_loader() override = default;
-        void load(const std::string& file_name) override;
+        void load(const std::string& file_name) const override;
     };
 }

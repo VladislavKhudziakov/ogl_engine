@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <mesh.hpp>
+#include <geometry.hpp>
 #include <scene_object.hpp>
 #include <camera.hpp>
 #include <perspective.hpp>
@@ -28,7 +28,7 @@ namespace engine
         ~scene() = default;
 
         void draw();
-        void set_mesh(std::unique_ptr<engine::mesh>);
+        void set_mesh(std::unique_ptr<engine::geometry>);
         void set_object(std::unique_ptr<scene_object>);
 
         void set_camera(const camera&);
@@ -38,7 +38,7 @@ namespace engine
 
     private:
         void calculate_matrices();
-        std::unique_ptr<engine::mesh> m_mesh;
+        std::unique_ptr<engine::geometry> m_mesh;
         std::unique_ptr<engine::scene_object> m_object;
         camera m_camera;
         perspective m_perspective;

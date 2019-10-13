@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <mesh.hpp>
+#include <mesh_instance.hpp>
 #include <shader_program.hpp>
 #include <glm/glm.hpp>
 
@@ -12,8 +12,8 @@ namespace engine
 {
     struct scene_object
     {
-        scene_object(std::unique_ptr<engine::mesh> mesh, const shader_program& program);
-        std::unique_ptr<mesh> mesh;
+        scene_object(std::shared_ptr<mesh_instance> mesh, const shader_program& program);
+        std::shared_ptr<mesh_instance> m_mesh;
         shader_program program;
         void draw(glm::mat4);
     };

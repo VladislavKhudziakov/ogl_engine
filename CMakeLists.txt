@@ -27,9 +27,12 @@ add_definitions(${ASSIMP_DEFINITIONS})
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine)
+include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets)
+include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets/interfaces)
+
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/internal/engine/*.cpp)
 
 message(STATUS ${SOURCES})
 
-add_executable(OGL_3d_engine main.cpp ${SOURCES} internal/engine/assets/text_file_loader.cpp internal/engine/assets/text_file_loader.hpp internal/engine/assets/interfaces/file_loader.hpp internal/engine/assets/file_loader.hpp)
+add_executable(OGL_3d_engine main.cpp ${SOURCES} internal/engine/assets/text_file_loader.cpp internal/engine/assets/text_file_loader.hpp internal/engine/assets/interfaces/file_loader.hpp internal/engine/assets/file_loader.hpp internal/engine/assets/mesh_importer.cpp internal/engine/assets/mesh_importer.hpp internal/engine/assets/mesh.cpp internal/engine/assets/mesh.hpp internal/engine/assets/mesh_instance.cpp internal/engine/assets/mesh_instance.hpp internal/engine/bind_context.hpp)
 target_link_libraries(OGL_3d_engine glfw glad assimp)
