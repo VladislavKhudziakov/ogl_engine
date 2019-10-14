@@ -24,6 +24,11 @@ include_directories(${ASSIMP_INCLUDE_DIRS})
 link_directories(${ASSIMP_LIBRARY_DIRS})
 add_definitions(${ASSIMP_DEFINITIONS})
 
+#stb
+include_directories(${PROJECT_SOURCE_DIR}/internal/libs/stb)
+link_directories(${STB_LIBRARY_DIRS})
+add_definitions(${STB_DEFINITIONS})
+
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine)

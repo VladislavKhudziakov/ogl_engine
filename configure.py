@@ -5,6 +5,7 @@ GLM_URL = "https://github.com/g-truc/glm.git"
 GLFW_URL = "https://github.com/glfw/glfw.git"
 GLAD_URL = "https://github.com/Dav1dde/glad.git"
 ASSIMP_URL = "https://github.com/assimp/assimp.git"
+STB_URL = "https://github.com/nothings/stb"
 
 
 def main():
@@ -27,6 +28,9 @@ def install_dependencies():
 
     if 'assimp' not in dirs:
         os.system("git clone " + ASSIMP_URL + " " + LIBS_PATH + '/assimp')
+
+    if 'stb' not in dirs:
+        os.system("git clone " + STB_URL + " " + LIBS_PATH + '/stb')
 
 
 main()
