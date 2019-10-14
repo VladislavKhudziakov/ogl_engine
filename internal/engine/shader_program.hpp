@@ -62,4 +62,16 @@ namespace engine
         std::string name;
         glm::mat4 matrix;
     };
+
+
+    struct set_int_uniform : shader_program::uniform_command
+    {
+        set_int_uniform(const std::string&, uint32_t);
+        void execute(uint64_t) const override;
+        ~set_int_uniform() override = default;
+
+    private:
+        std::string m_name;
+        int32_t m_uniform;
+    };
 } // namespace engine

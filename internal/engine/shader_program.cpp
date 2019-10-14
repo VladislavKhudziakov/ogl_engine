@@ -83,3 +83,17 @@ void engine::set_mat4_uniform::execute(uint64_t program) const
     auto matrix_uniform = glGetUniformLocation(program, name.c_str());
     glUniformMatrix4fv(matrix_uniform, 1, GL_FALSE, glm::value_ptr(matrix));
 }
+
+
+engine::set_int_uniform::set_int_uniform(const std::string& name, uint32_t uniform)
+    : m_name(name)
+    , m_uniform(uniform)
+{
+}
+
+
+void engine::set_int_uniform::execute(uint64_t program) const
+{
+    auto int_uniform = glGetUniformLocation(program, m_name.c_str());
+    glUniform1i(int_uniform, m_uniform);
+}
