@@ -15,6 +15,9 @@ namespace engine
     class mesh_instance
     {
     public:
+        mesh_instance() = default;
+        ~mesh_instance() = default;
+
         void draw();
         void append_mesh(std::shared_ptr<mesh>);
         std::shared_ptr<mesh> get_mesh(const std::string&) const;

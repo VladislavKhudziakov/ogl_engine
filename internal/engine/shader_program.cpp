@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
 
-#include "shader_program.hpp"
+#include <shader_program.hpp>
 
 engine::shader_program::shader::shader(const std::string& sources, engine::shader_program::shader_type type)
     : m_index(glCreateShader(type == shader_type::vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER))

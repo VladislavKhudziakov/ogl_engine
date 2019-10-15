@@ -8,7 +8,7 @@
 #include <string>
 
 #include <geometry.hpp>
-
+#include <material.hpp>
 
 namespace engine
 {
@@ -18,16 +18,17 @@ namespace engine
         mesh() = default;
         ~mesh() = default;
 
-        explicit mesh(std::shared_ptr<geometry> geometry, std::string name);
+        explicit mesh(std::string, std::shared_ptr<geometry>, std::shared_ptr<material> material = nullptr);
         std::shared_ptr<geometry> get_geometry();
-        std::string get_name() const;
         void set_geometry(std::shared_ptr<geometry>);
+        void attach_material(std::shared_ptr<material>);
+        std::string get_name() const;
+
         void draw();
-        //TODO get_material set_material
+
     private:
         std::shared_ptr<geometry> m_geometry;
+        std::shared_ptr<material> m_material;
         std::string m_name;
-        //TODO: materal m_material
     };
-}
-
+} // namespace engine

@@ -4,9 +4,8 @@
 #include <scene.hpp>
 #include <mesh_importer.hpp>
 #include <text_file_loader.hpp>
-#include <texture.hpp>
+#include <material.hpp>
 #include <assets/texture_2d.hpp>
-#include <bind_context.hpp>
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
@@ -30,13 +29,13 @@ int main()
     std::getline(fin, fShaderSource, '\0');
     fin.close();
 
-    engine::shader_program pog(vShaderSource, fShaderSource);
+    auto program = std::make_shared<engine::shader_program>(vShaderSource, fShaderSource);
     auto texture = engine::texture_2d_builder().generate_default_from_file("../internal/resources/teapot/default.png");
-    engine::bind_context bind(*texture, 0);
-    pog.apply_uniform_command(engine::set_int_uniform("u_texture", 0));
+    auto material = std::make_shared<engine::material>(program);
+    material->set_texture("u_texture", texture);
 
     auto mesh_scene = std::make_unique<engine::scene>();
-    mesh_scene->set_object(std::make_unique<engine::scene_object>(instance, pog));
+    mesh_scene->set_object(std::make_unique<engine::scene_object>(instance, material));
     app.set_scene(std::move(mesh_scene));
     app.exec();
 

@@ -7,9 +7,9 @@
 #include "bind_context.hpp"
 
 
-engine::scene_object::scene_object(std::shared_ptr<mesh_instance> mesh, const engine::shader_program& program)
+engine::scene_object::scene_object(std::shared_ptr<mesh_instance> mesh, std::shared_ptr<material> material)
     : m_mesh(std::move(mesh))
-    , program(program)
+    , m_material(std::move(material))
 {
 }
 
@@ -21,8 +21,7 @@ void engine::scene_object::draw(glm::mat4 mvp)
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    engine::bind_context bind(program);
-    program.apply_uniform_command(engine::set_mat4_uniform("u_mvp", mvp));
+    engine::bind_context bind(*m_material);
+    m_material->get_shader()->apply_uniform_command(engine::set_mat4_uniform("u_mvp", mvp));
     m_mesh->draw();
 }
-

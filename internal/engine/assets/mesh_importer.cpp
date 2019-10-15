@@ -33,8 +33,8 @@ std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import(const file_
         copy_vertices(vertices, curr_mesh);
         copy_indices(indices, curr_mesh);
         instance->append_mesh(std::make_shared<mesh>(
-            builder.generate_default_mesh(vertices, indices),
-            curr_mesh->mName.C_Str()));
+            curr_mesh->mName.C_Str(),
+            builder.generate_default_mesh(vertices, indices)));
     }
 
     return instance;
