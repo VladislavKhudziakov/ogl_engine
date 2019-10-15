@@ -13,10 +13,15 @@
 #include <mesh_importer.hpp>
 
 
-std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import(const file_loader<std::string>& loader, const std::string& file_name)
+engine::mesh_importer::mesh_importer(engine::interfaces::file_loader<std::string>& loader)
+    : m_loader(loader)
 {
-    loader.load(file_name);
-    auto file = loader.get_file();
+}
+
+
+std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import(const std::string& file_name) const
+{
+    auto file = m_loader.load(file_name);
 
     Assimp::Importer importer;
     auto file_data = importer.ReadFile(file_name, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -63,11 +68,7 @@ void engine::mesh_importer::copy_vertices(std::vector<geometry::vertex>& vertice
     vertices_list.reserve(vertices_count);
 
     for (size_t i = 0; i < vertices_count; ++i) {
-        vertices_list.push_back({
-            mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z,
-            mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y,
-            mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z
-        });
+        vertices_list.push_back({mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z, mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y, mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z});
     }
 }
 

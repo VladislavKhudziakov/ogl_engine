@@ -7,10 +7,11 @@
 
 namespace engine::interfaces
 {
+    template <typename T>
     class file_loader
     {
     public:
         virtual ~file_loader() = default;
-        virtual void load(const std::string& file_name) const = 0;
+        virtual T load(const std::string& file_name) const = 0;
     };
 } // namespace engine::interfaces

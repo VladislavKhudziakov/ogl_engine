@@ -16,7 +16,7 @@ namespace engine
     public:
         explicit material(std::shared_ptr<engine::shader_program>);
         material() = default;
-        ~material() = default;
+        virtual ~material() = default;
 
         std::shared_ptr<interfaces::texture> get_texture(const std::string&) const;
         void set_texture(const std::string&, std::shared_ptr<interfaces::texture>);
