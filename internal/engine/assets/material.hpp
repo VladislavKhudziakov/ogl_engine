@@ -5,6 +5,8 @@
 #pragma once
 
 #include <map>
+#include <memory>
+
 #include <interfaces/texture.hpp>
 #include <shader_program.hpp>
 

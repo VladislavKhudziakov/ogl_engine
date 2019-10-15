@@ -20,7 +20,7 @@ namespace engine
     {
     public:
         explicit mesh_importer(engine::interfaces::file_loader<std::string>&);
-        ~mesh_importer() = default;
+        ~mesh_importer() override = default;
         std::shared_ptr<mesh_instance> import(const std::string& file_name) const override;
 
     private:
