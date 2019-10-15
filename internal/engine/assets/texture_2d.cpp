@@ -10,6 +10,7 @@
 
 #include <stb_image.h>
 
+#include <string>
 #include <stdexcept>
 
 #include <texture_2d.hpp>

@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include <interfaces/texture.hpp>
 #include <memory>
 #include <cstdint>
+
+#include <interfaces/texture.hpp>
 
 namespace engine
 {
