@@ -7,7 +7,7 @@
 
 namespace engine::interfaces
 {
-    template <typename T>
+    template<typename T>
     class file_loader
     {
     public:
