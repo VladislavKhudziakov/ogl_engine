@@ -13,18 +13,17 @@
 #include <mesh_importer.hpp>
 
 
-engine::mesh_importer::mesh_importer(engine::interfaces::file_loader<std::string>& loader)
-    : m_loader(loader)
+engine::mesh_importer::mesh_importer(const std::string& file_path, const std::string& name)
+    : m_path(file_path)
+    , m_mesh_name(name)
 {
 }
 
 
-std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import(const std::string& file_name) const
+std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import() const
 {
-    auto file = m_loader.load(file_name);
-
     Assimp::Importer importer;
-    auto file_data = importer.ReadFile(file_name, aiProcess_Triangulate | aiProcess_FlipUVs);
+    auto file_data = importer.ReadFile(m_path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
     validate_file(file_data);
 
@@ -43,6 +42,12 @@ std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import(const std::
     }
 
     return instance;
+}
+
+
+std::string engine::mesh_importer::get_name() const
+{
+    return m_mesh_name;
 }
 
 

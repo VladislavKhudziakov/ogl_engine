@@ -6,25 +6,25 @@
 
 void engine::assets_manager::import_mesh(const interfaces::importer<mesh_instance>& importer, const std::string& name)
 {
-    m_meshes.emplace(name, importer.import(name));
+    m_meshes.emplace(importer.get_name(), importer.import());
 }
 
 
 void engine::assets_manager::import_shader(const interfaces::importer<shader_program>& importer, const std::string& name)
 {
-    m_shaders.emplace(name, importer.import(name));
+    m_shaders.emplace(importer.get_name(), importer.import());
 }
 
 
 void engine::assets_manager::import_texture(const interfaces::importer<interfaces::texture>& importer, const std::string& name)
 {
-    m_textures.emplace(name, importer.import(name));
+    m_textures.emplace(importer.get_name(), importer.import());
 }
 
 
 void engine::assets_manager::import_material(const interfaces::importer<material>& importer, const std::string& name)
 {
-    m_materials.emplace(name, importer.import(name));
+    m_materials.emplace(importer.get_name(), importer.import());
 }
 
 

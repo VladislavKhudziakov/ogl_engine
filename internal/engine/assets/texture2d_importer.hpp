@@ -22,11 +22,16 @@ class texture2d_importer : public interfaces::importer<interfaces::texture>
             std::unique_ptr<import_handler> m_next;
         };
 
+        texture2d_importer(const std::string&, const std::string&);
         ~texture2d_importer() override = default;
-        std::shared_ptr<interfaces::texture> import(const std::string&) const override;
+
+        std::shared_ptr<interfaces::texture> import() const override;
+        std::string get_name() const override;
         texture2d_importer& add_import_handler(std::unique_ptr<import_handler>);
     private:
         std::unique_ptr<import_handler> m_handler;
+        std::string m_path;
+        std::string m_name;
     };
 
     struct default_import : texture2d_importer::import_handler

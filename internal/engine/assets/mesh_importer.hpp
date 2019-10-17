@@ -19,15 +19,16 @@ namespace engine
     class mesh_importer : public interfaces::importer<mesh_instance>
     {
     public:
-        explicit mesh_importer(engine::interfaces::file_loader<std::string>&);
+        mesh_importer(const std::string&, const std::string&);
         ~mesh_importer() override = default;
-        std::shared_ptr<mesh_instance> import(const std::string& file_name) const override;
+        std::shared_ptr<mesh_instance> import() const override;
+        std::string get_name() const override;
 
     private:
         static void copy_vertices(std::vector<geometry::vertex>&, const aiMesh*);
         static void copy_indices(std::vector<int32_t>&, const aiMesh*);
         static void validate_file(const aiScene*);
-
-        interfaces::file_loader<std::string>& m_loader;
+        std::string m_path;
+        std::string m_mesh_name;
     };
 } // namespace engine

@@ -10,13 +10,14 @@
 // TODO: forward declaration
 // TODO: settings?
 
+// TODO: replace geometry builders on decorator!!!!!!!!!!!!!!!!
+
 int main()
 {
     auto& app = engine::application::get();
     app.init_window(800, 600, "test");
 
-    auto loader = engine::text_file_loader();
-    auto instance = engine::mesh_importer(loader).import("../internal/resources/teapot/utah-teapot.obj");
+    auto instance = engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot").import();
 
     std::string vShaderSource;
     std::string fShaderSource;

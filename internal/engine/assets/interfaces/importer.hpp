@@ -4,6 +4,7 @@
 
 #pragma once
 #include <memory>
+#include <string>
 
 namespace engine::interfaces
 {
@@ -12,6 +13,7 @@ namespace engine::interfaces
     {
     public:
         virtual ~importer() = default;
-        virtual std::shared_ptr<T> import(const std::string&) const = 0;
+        virtual std::shared_ptr<T> import() const = 0;
+        virtual std::string get_name() const = 0;
     };
 } // namespace engine::interfaces
