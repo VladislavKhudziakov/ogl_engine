@@ -1,44 +1,33 @@
 #include <application.hpp>
-#include <fstream>
 #include <iostream>
 #include <scene.hpp>
 #include <mesh_importer.hpp>
 #include <material.hpp>
 #include <assets/texture2d.hpp>
+#include <assets/shader_importer.hpp>
+#include <assets/texture2d_importer.hpp>
 
 
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
 
-// TODO: replace geometry builders on decorator!!!!!!!!!!!!!!!!
-
 int main()
 {
     auto& app = engine::application::get();
     app.init_window(800, 600, "test");
 
-    auto instance = engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot").import();
+    app.get_assets_manager()->import_shader(engine::shader_importer(
+        "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default"))
+        .import_texture(engine::texture2d_importer(engine::texture2d_importer::import_parameters{
+            true, "../internal/resources/teapot/default.png", "default"}))
+        .import_mesh(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
 
-    std::string vShaderSource;
-    std::string fShaderSource;
-
-    std::ifstream fin;
-    fin.open("../internal/engine/shaders/test.vert");
-    std::getline(fin, vShaderSource, '\0');
-    fin.close();
-
-    fin.open("../internal/engine/shaders/test.frag");
-    std::getline(fin, fShaderSource, '\0');
-    fin.close();
-
-    auto program = std::make_shared<engine::shader_program>(vShaderSource, fShaderSource);
-    auto texture = std::make_shared<engine::mipmapped>(std::make_shared<engine::texture2d>("../internal/resources/teapot/default.png"));
-    auto material = std::make_shared<engine::material>(program);
-    material->set_texture("u_texture", texture);
+    auto material = std::make_shared<engine::material>(app.get_assets_manager()->get_shader("default"));
+    material->set_texture("u_texture", app.get_assets_manager()->get_texture("default"));
 
     auto mesh_scene = std::make_unique<engine::scene>();
-    mesh_scene->set_object(std::make_unique<engine::scene_object>(instance, material));
+    mesh_scene->set_object(std::make_unique<engine::scene_object>(app.get_assets_manager()->get_mesh("teapot"), material));
     app.set_scene(std::move(mesh_scene));
     app.exec();
 

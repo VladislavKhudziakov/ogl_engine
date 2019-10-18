@@ -16,6 +16,7 @@
 
 engine::application::application()
     : p_window(nullptr)
+    , m_assets_manager(std::make_shared<assets_manager>())
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -81,4 +82,10 @@ void engine::application::process_input()
 void engine::application::set_scene(std::unique_ptr<scene> scene)
 {
     m_scene = std::move(scene);
+}
+
+
+std::shared_ptr<engine::assets_manager> engine::application::get_assets_manager()
+{
+    return m_assets_manager;
 }

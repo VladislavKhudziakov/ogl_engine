@@ -19,10 +19,10 @@ namespace engine
     class assets_manager
     {
     public:
-        void import_texture(const interfaces::importer<interfaces::texture>&, const std::string&);
-        void import_mesh(const interfaces::importer<mesh_instance>&, const std::string&);
-        void import_shader(const interfaces::importer<shader_program>&, const std::string&);
-        void import_material(const interfaces::importer<material>&, const std::string&);
+        engine::assets_manager& import_texture(const interfaces::importer<interfaces::texture>&);
+        engine::assets_manager& import_mesh(const interfaces::importer<mesh_instance>&);
+        engine::assets_manager& import_shader(const interfaces::importer<shader_program>&);
+        engine::assets_manager& import_material(const interfaces::importer<material>&);
 
         std::shared_ptr<mesh_instance> get_mesh(const std::string&);
         std::shared_ptr<interfaces::texture> get_texture(const std::string&);

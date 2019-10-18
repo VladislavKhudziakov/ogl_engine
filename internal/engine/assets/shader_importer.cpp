@@ -34,10 +34,9 @@ std::string engine::shader_importer::load_file(const std::string& file_path) con
 {
     std::string output_file;
 
-    std::string file;
     std::ifstream fin;
     fin.open(file_path);
-    std::getline(fin, file, '\0');
+    std::getline(fin, output_file, '\0');
     fin.close();
 
     return output_file;
