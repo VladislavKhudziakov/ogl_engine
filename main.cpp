@@ -1,13 +1,11 @@
 #include <application.hpp>
-#include <iostream>
 #include <scene.hpp>
-#include <mesh_importer.hpp>
 #include <material.hpp>
-#include <assets/texture2d.hpp>
+#include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>
 #include <assets/texture2d_importer.hpp>
 
-
+// TODO: material builder
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
