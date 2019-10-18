@@ -3,9 +3,10 @@
 #include <iostream>
 #include <scene.hpp>
 #include <mesh_importer.hpp>
-#include <text_file_loader.hpp>
 #include <material.hpp>
-#include <assets/texture_2d.hpp>
+#include <assets/texture2d.hpp>
+
+
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
@@ -32,7 +33,7 @@ int main()
     fin.close();
 
     auto program = std::make_shared<engine::shader_program>(vShaderSource, fShaderSource);
-    auto texture = engine::texture_2d_builder().generate_default_from_file("../internal/resources/teapot/default.png");
+    auto texture = std::make_shared<engine::mipmapped>(std::make_shared<engine::texture2d>("../internal/resources/teapot/default.png"));
     auto material = std::make_shared<engine::material>(program);
     material->set_texture("u_texture", texture);
 

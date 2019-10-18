@@ -18,8 +18,8 @@ namespace engine
         mesh() = default;
         ~mesh() = default;
 
-        explicit mesh(std::string, std::shared_ptr<geometry>, std::shared_ptr<material> material = nullptr);
-        std::shared_ptr<geometry> get_geometry();
+        explicit mesh(std::string, std::shared_ptr<interfaces::geometry_buffer>, std::shared_ptr<material> material = nullptr);
+        std::shared_ptr<interfaces::geometry_buffer> get_geometry();
         void set_geometry(std::shared_ptr<geometry>);
         void attach_material(std::shared_ptr<material>);
         std::string get_name() const;
@@ -27,7 +27,7 @@ namespace engine
         void draw();
 
     private:
-        std::shared_ptr<geometry> m_geometry;
+        std::shared_ptr<interfaces::geometry_buffer> m_geometry;
         std::shared_ptr<material> m_material;
         std::string m_name;
     };

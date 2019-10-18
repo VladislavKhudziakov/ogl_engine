@@ -32,6 +32,7 @@ add_definitions(${STB_DEFINITIONS})
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine)
+include_directories(${PROJECT_SOURCE_DIR}/internal/engine/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets/interfaces)
 
@@ -40,5 +41,5 @@ file(GLOB ASSETS ${PROJECT_SOURCE_DIR}/internal/engine/assets/*.cpp)
 
 message(STATUS ${ROOT} ${ASSETS})
 
-add_executable(OGL_3d_engine main.cpp ${ROOT} ${ASSETS} internal/engine/assets/material.cpp internal/engine/assets/material.hpp internal/engine/assets/assets_manager.cpp internal/engine/assets/assets_manager.hpp internal/engine/assets/interfaces/importer.hpp)
+add_executable(OGL_3d_engine main.cpp ${ROOT} ${ASSETS})
 target_link_libraries(OGL_3d_engine glfw glad assimp)

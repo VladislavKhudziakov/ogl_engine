@@ -6,6 +6,8 @@
 
 #include <glad/glad.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <stb_image.h>
 
 engine::texture2d::texture2d(const std::string& file_path)
@@ -73,7 +75,7 @@ void engine::texture2d::unbind()
 }
 
 
-engine::mipmapped::mipmapped(std::unique_ptr<interfaces::texture> next)
+engine::mipmapped::mipmapped(std::shared_ptr<interfaces::texture> next)
     : m_wrappee(std::move(next))
 {
     glGenerateMipmap(GL_TEXTURE_2D);

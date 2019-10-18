@@ -6,7 +6,6 @@
 #pragma once
 
 #include <interfaces/importer.hpp>
-#include <interfaces/file_loader.hpp>
 #include <mesh_instance.hpp>
 
 class aiScene;

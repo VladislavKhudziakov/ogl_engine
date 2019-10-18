@@ -31,14 +31,14 @@ std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import() const
 
     for (size_t i = 0; i < file_data->mNumMeshes; ++i) {
         auto curr_mesh = file_data->mMeshes[i];
-        geometry_builder builder;
         std::vector<geometry::vertex> vertices;
         std::vector<int32_t> indices;
+
         copy_vertices(vertices, curr_mesh);
         copy_indices(indices, curr_mesh);
-        instance->append_mesh(std::make_shared<mesh>(
-            curr_mesh->mName.C_Str(),
-            builder.generate_default_mesh(vertices, indices)));
+
+        auto mesh_geometry = std::make_shared<geometry>(vertices, indices);
+        instance->append_mesh(std::make_shared<mesh>(curr_mesh->mName.C_Str(), mesh_geometry));
     }
 
     return instance;

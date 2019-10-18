@@ -5,7 +5,7 @@
 #include <mesh.hpp>
 #include <bind_context.hpp>
 
-engine::mesh::mesh(std::string name, std::shared_ptr<geometry> geometry, std::shared_ptr<material> material)
+engine::mesh::mesh(std::string name, std::shared_ptr<interfaces::geometry_buffer> geometry, std::shared_ptr<material> material)
     : m_geometry(std::move(geometry))
     , m_name(std::move(name))
     , m_material(std::move(material))
@@ -13,7 +13,7 @@ engine::mesh::mesh(std::string name, std::shared_ptr<geometry> geometry, std::sh
 }
 
 
-std::shared_ptr<engine::geometry> engine::mesh::get_geometry()
+std::shared_ptr<engine::interfaces::geometry_buffer> engine::mesh::get_geometry()
 {
     return m_geometry;
 }
@@ -21,7 +21,7 @@ std::shared_ptr<engine::geometry> engine::mesh::get_geometry()
 
 void engine::mesh::draw()
 {
-    bind_context<engine::geometry> bind(*m_geometry);
+    bind_context<engine::interfaces::geometry_buffer> bind(*m_geometry);
     //TODO: bind material
     m_geometry->draw();
 }
