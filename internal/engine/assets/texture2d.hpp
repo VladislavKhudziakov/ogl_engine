@@ -20,6 +20,7 @@ namespace engine
         void bind(int) override;
         void unbind() override;
         ~texture2d() override;
+
     private:
         uint32_t m_name;
         int32_t m_curr_slot = -1;
@@ -37,5 +38,4 @@ namespace engine
     private:
         std::shared_ptr<interfaces::texture> m_wrappee;
     };
-}
-
+} // namespace engine

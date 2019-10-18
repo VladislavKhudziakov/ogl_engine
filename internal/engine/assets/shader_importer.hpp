@@ -19,11 +19,11 @@ namespace engine
         std::shared_ptr<shader_program> import() const override;
         std::string get_name() const override;
         ~shader_importer() override = default;
+
     private:
         std::string load_file(const std::string&) const;
         std::string m_vshader_path;
         std::string m_fshader_path;
         std::string m_program_name;
     };
-}
-
+} // namespace engine

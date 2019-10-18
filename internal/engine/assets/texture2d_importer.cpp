@@ -5,7 +5,6 @@
 #include "texture2d_importer.hpp"
 
 
-
 std::shared_ptr<engine::interfaces::texture> engine::texture2d_importer::import() const
 {
     std::shared_ptr<interfaces::texture> texture = std::make_shared<engine::texture2d>(m_parameters.path);
@@ -28,4 +27,3 @@ engine::texture2d_importer::texture2d_importer(const import_parameters& paramete
     : m_parameters(parameters)
 {
 }
-

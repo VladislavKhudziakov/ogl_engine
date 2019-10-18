@@ -10,10 +10,11 @@
 
 namespace engine
 {
-class texture2d_importer : public interfaces::importer<interfaces::texture>
+    class texture2d_importer : public interfaces::importer<interfaces::texture>
     {
     public:
-        struct import_parameters {
+        struct import_parameters
+        {
             bool mipmapped = false;
             std::string path;
             std::string name;
@@ -24,6 +25,7 @@ class texture2d_importer : public interfaces::importer<interfaces::texture>
 
         std::shared_ptr<interfaces::texture> import() const override;
         std::string get_name() const override;
+
     private:
         import_parameters m_parameters;
     };

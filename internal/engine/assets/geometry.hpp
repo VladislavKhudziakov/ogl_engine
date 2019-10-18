@@ -12,7 +12,7 @@
 //TODO: exception in destructor
 namespace engine
 {
-class geometry : public interfaces::geometry_buffer
+    class geometry : public interfaces::geometry_buffer
     {
     public:
         struct vertex
