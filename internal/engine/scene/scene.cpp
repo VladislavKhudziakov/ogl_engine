@@ -23,13 +23,7 @@ engine::scene::scene()
 }
 
 
-void engine::scene::set_mesh(std::unique_ptr<geometry> mesh)
-{
-    m_mesh = std::move(mesh);
-}
-
-
-void engine::scene::set_object(std::unique_ptr<scene_object> obj)
+void engine::scene::set_object(std::shared_ptr<scene_object> obj)
 {
     m_object = std::move(obj);
 }
@@ -38,6 +32,10 @@ void engine::scene::set_object(std::unique_ptr<scene_object> obj)
 void engine::scene::draw()
 {
     //TODO: remove
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     auto matrix = glm::identity<glm::mat4>();
     m_object->draw(m_projection_view * glm::scale(matrix, vec3(0.1, 0.1, 0.1)));
 }

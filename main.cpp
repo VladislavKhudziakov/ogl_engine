@@ -1,5 +1,6 @@
 #include <application/application.hpp>
 #include <scene/scene.hpp>
+#include <object3d.hpp>
 #include <material.hpp>
 #include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>
@@ -27,8 +28,16 @@ int main()
     app.get_assets_manager()->add(material, "test_mat");
 
     auto mesh_scene = std::make_unique<engine::scene>();
-    mesh_scene->set_object(std::make_unique<engine::scene_object>(app.get_assets_manager()->get<engine::mesh_instance>("teapot"),
-        app.get_assets_manager()->get<engine::material>("test_mat")));
+    auto object_1 = std::make_shared<engine::scene_object>("test_1");
+
+    auto object_2 = std::make_shared<engine::object3d>("test_2",
+        app.get_assets_manager()->get<engine::mesh_instance>("teapot"),
+        app.get_assets_manager()->get<engine::material>("test_mat"));
+
+    object_1->add_child(object_2);
+
+    mesh_scene->set_object(object_1);
+
     app.set_scene(std::move(mesh_scene));
     app.exec();
 
