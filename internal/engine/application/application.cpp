@@ -10,8 +10,8 @@
 #include <cassert>
 #include <string>
 
-#include <scene.hpp>
-#include <application.hpp>
+#include <scene/scene.hpp>
+#include <application/application.hpp>
 
 
 engine::application::application()

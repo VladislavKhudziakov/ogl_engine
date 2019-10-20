@@ -10,9 +10,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <geometry.hpp>
-#include <scene_object.hpp>
-#include <camera.hpp>
-#include <perspective.hpp>
+#include <scene/scene_object.hpp>
+#include <scene/camera.hpp>
+#include <scene/perspective.hpp>
 
 
 //TODO: hierarchy

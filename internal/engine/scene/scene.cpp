@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 
-#include <scene.hpp>
+#include <scene/scene.hpp>
 
 
 //TODO: think over how to set aspect dynamicly

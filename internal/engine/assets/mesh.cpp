@@ -3,7 +3,7 @@
 //
 
 #include <mesh.hpp>
-#include <bind_context.hpp>
+#include <common/bind_context.hpp>
 
 engine::mesh::mesh(std::string name, std::shared_ptr<interfaces::geometry_buffer> geometry, std::shared_ptr<material> material)
     : m_geometry(std::move(geometry))

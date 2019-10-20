@@ -1,5 +1,5 @@
-#include <application.hpp>
-#include <scene.hpp>
+#include <application/application.hpp>
+#include <scene/scene.hpp>
 #include <material.hpp>
 #include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>

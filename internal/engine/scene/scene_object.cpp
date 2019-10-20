@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 
 #include "scene_object.hpp"
-#include "bind_context.hpp"
+#include "common/bind_context.hpp"
 
 
 engine::scene_object::scene_object(std::shared_ptr<mesh_instance> mesh, std::shared_ptr<material> material)
