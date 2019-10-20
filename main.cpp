@@ -15,17 +15,20 @@ int main()
     auto& app = engine::application::get();
     app.init_window(800, 600, "test");
 
-    app.get_assets_manager()->import_shader(engine::shader_importer(
-        "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default"))
-        .import_texture(engine::texture2d_importer(engine::texture2d_importer::import_parameters{
-            true, "../internal/resources/teapot/default.png", "default"}))
-        .import_mesh(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
+    app.get_assets_manager()->import<engine::shader_program>(engine::shader_importer(
+        "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default_shader"))
+        .import<engine::interfaces::texture>(engine::texture2d_importer(engine::texture2d_importer::import_parameters{
+            true, "../internal/resources/teapot/default.png", "default_texture"}))
+        .import<engine::mesh_instance>(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
 
-    auto material = std::make_shared<engine::material>(app.get_assets_manager()->get_shader("default"));
-    material->set_texture("u_texture", app.get_assets_manager()->get_texture("default"));
+    auto material = std::make_shared<engine::material>(app.get_assets_manager()->get<engine::shader_program>("default_shader"));
+    material->set_texture("u_texture", app.get_assets_manager()->get<engine::interfaces::texture>("default_texture"));
+
+    app.get_assets_manager()->add(material, "test_mat");
 
     auto mesh_scene = std::make_unique<engine::scene>();
-    mesh_scene->set_object(std::make_unique<engine::scene_object>(app.get_assets_manager()->get_mesh("teapot"), material));
+    mesh_scene->set_object(std::make_unique<engine::scene_object>(app.get_assets_manager()->get<engine::mesh_instance>("teapot"),
+        app.get_assets_manager()->get<engine::material>("test_mat")));
     app.set_scene(std::move(mesh_scene));
     app.exec();
 

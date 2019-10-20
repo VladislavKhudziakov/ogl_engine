@@ -4,6 +4,7 @@
 
 #pragma once
 #include <string>
+#include <variant>
 #include <vector>
 #include <map>
 
@@ -19,20 +20,45 @@ namespace engine
     class assets_manager
     {
     public:
-        engine::assets_manager& import_texture(const interfaces::importer<interfaces::texture>&);
-        engine::assets_manager& import_mesh(const interfaces::importer<mesh_instance>&);
-        engine::assets_manager& import_shader(const interfaces::importer<shader_program>&);
-        engine::assets_manager& import_material(const interfaces::importer<material>&);
+        template<typename T>
+        engine::assets_manager& import(const interfaces::importer<T>& importer)
+        {
+            if (m_storage.find(importer.get_name()) == m_storage.end()) {
+                m_storage.emplace(importer.get_name(), importer.import());
+            } else {
+                throw std::logic_error("ERROR: INSTANCE WITH GIVEN NAME ALREADY EXIST");
+            }
 
-        std::shared_ptr<mesh_instance> get_mesh(const std::string&);
-        std::shared_ptr<interfaces::texture> get_texture(const std::string&);
-        std::shared_ptr<shader_program> get_shader(const std::string&);
-        std::shared_ptr<material> get_material(const std::string&);
+            return *this;
+        }
+
+        template<typename T>
+        engine::assets_manager& add(std::shared_ptr<T> instance, const std::string& name)
+        {
+            if (m_storage.find(name) == m_storage.end()) {
+                m_storage.emplace(name, instance);
+            } else {
+                throw std::logic_error("ERROR: INSTANCE WITH GIVEN NAME ALREADY EXIST");
+            }
+            return *this;
+        }
+
+
+        template<typename T>
+        std::shared_ptr<T> get(const std::string& name)
+        {
+            try {
+                return std::get<std::shared_ptr<T>>(m_storage.at(name));
+            } catch (...) {
+                return nullptr;
+            }
+        }
 
     private:
-        std::map<std::string, std::shared_ptr<mesh_instance>> m_meshes;
-        std::map<std::string, std::shared_ptr<interfaces::texture>> m_textures;
-        std::map<std::string, std::shared_ptr<shader_program>> m_shaders;
-        std::map<std::string, std::shared_ptr<material>> m_materials;
+        std::map<std::string, std::variant<
+              std::shared_ptr<mesh_instance>
+            , std::shared_ptr<material>
+            , std::shared_ptr<interfaces::texture>
+            , std::shared_ptr<shader_program>>> m_storage;
     };
 } // namespace engine
