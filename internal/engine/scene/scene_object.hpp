@@ -10,6 +10,7 @@
 #include <material.hpp>
 #include <shader_program.hpp>
 #include <glm/glm.hpp>
+#include <components/transformation.hpp>
 
 namespace engine
 {
@@ -31,9 +32,23 @@ namespace engine
 
         virtual void draw(glm::mat4) const;
 
+        template <typename T>
+        T get_component() const
+        {
+            return std::get<T>(m_components);
+        }
+
+
+        template <typename T>
+        void set_component(const T& component)
+        {
+            std::get<T>(m_components) = component;
+        }
+
     protected:
         std::string m_name;
         std::weak_ptr<scene_object> m_parent;
         std::vector<std::shared_ptr<scene_object>> m_children;
+        std::tuple<transformation> m_components {engine::transformation()};
     };
 } // namespace engine

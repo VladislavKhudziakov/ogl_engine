@@ -65,7 +65,9 @@ const std::vector<std::shared_ptr<engine::scene_object>>& engine::scene_object::
 
 void engine::scene_object::draw(glm::mat4 mvp) const
 {
+    auto curr_transform = mvp * get_component<transformation>().calculate();
+
     for (auto& child : m_children) {
-        child->draw(mvp);
+        child->draw(curr_transform);
     }
 }

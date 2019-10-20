@@ -5,6 +5,7 @@
 #include <string>
 
 #include <material.hpp>
+#include <common/bind_context.hpp>
 
 
 engine::material::material(std::shared_ptr<engine::shader_program> shader)

@@ -36,8 +36,7 @@ void engine::scene::draw()
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    auto matrix = glm::identity<glm::mat4>();
-    m_object->draw(m_projection_view * glm::scale(matrix, vec3(0.1, 0.1, 0.1)));
+    m_object->draw(m_projection_view);
 }
 
 

@@ -16,9 +16,12 @@ engine::object3d::object3d(const std::string& name, std::shared_ptr<mesh_instanc
 
 void engine::object3d::draw(glm::mat4 mvp) const
 {
-    engine::bind_context bind(*m_material);
-    m_material->get_shader()->apply_uniform_command(engine::set_mat4_uniform("u_mvp", mvp));
+    auto curr_transformation = mvp * get_component<transformation>().calculate();
+    //TODO: FIX CONTEXT BINDING
+    m_material->bind();
+    m_material->get_shader()->apply_uniform_command(engine::set_mat4_uniform("u_mvp", curr_transformation));
     //TODO: m_material->apply_settings();
     m_mesh_instance->draw();
+    m_material->unbind();
     scene_object::draw(mvp);
 }
