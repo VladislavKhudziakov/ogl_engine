@@ -5,6 +5,7 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 
 #include <mesh_instance.hpp>
 #include <material.hpp>
@@ -35,20 +36,20 @@ namespace engine
         template <typename T>
         T get_component() const
         {
-            return std::get<T>(m_components);
+            return *std::get<std::optional<T>>(m_components);
         }
 
 
         template <typename T>
         void set_component(const T& component)
         {
-            std::get<T>(m_components) = component;
+            std::get<std::optional<T>>(m_components) = component;
         }
 
     protected:
         std::string m_name;
         std::weak_ptr<scene_object> m_parent;
         std::vector<std::shared_ptr<scene_object>> m_children;
-        std::tuple<transformation> m_components {engine::transformation()};
+        std::tuple<std::optional<transformation>> m_components;
     };
 } // namespace engine

@@ -32,10 +32,8 @@ int main()
     object_1->set_component<engine::transformation>({{0, 0, 0}, {0.1, 0.1, 0.1}, {0.0, 0.0, 0.0}});
 
     auto object_2 = std::make_shared<engine::object3d>("test_2",
-        app.get_assets_manager()
-        ->get<engine::mesh_instance>("teapot"),
-        app.get_assets_manager()
-        ->get<engine::material>("test_mat"));
+        app.get_assets_manager()->get<engine::mesh_instance>("teapot"),
+        app.get_assets_manager()->get<engine::material>("test_mat"));
 
     object_2->set_component<engine::transformation>({{0, 0, 0}, {1, 1, 1}, {45.0, 45.0, 0.0}});
 
@@ -44,7 +42,7 @@ int main()
         ->get<engine::mesh_instance>("teapot"),
         app.get_assets_manager()
         ->get<engine::material>("test_mat"));
-
+    
     object_3->set_component<engine::transformation>({{0, 60, 0}, {0.5, 0.5, 0.5}, {0.0, 0.0, 0.0}});
 
 

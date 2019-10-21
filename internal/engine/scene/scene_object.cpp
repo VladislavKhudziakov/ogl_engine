@@ -8,6 +8,7 @@
 engine::scene_object::scene_object(const std::string& name)
     : m_name(name)
 {
+    std::get<std::optional<transformation>>(m_components).emplace();
 }
 
 
