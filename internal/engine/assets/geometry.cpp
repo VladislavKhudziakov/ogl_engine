@@ -74,6 +74,8 @@ void engine::geometry::unbind()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     is_bounded = false;
 }
+
+
 engine::float_buffer::float_buffer(int32_t slot, std::vector<float>& values, std::shared_ptr<interfaces::geometry_buffer> geometry)
     : m_wrappee(std::move(geometry))
 {

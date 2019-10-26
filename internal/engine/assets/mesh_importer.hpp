@@ -10,6 +10,7 @@
 
 class aiScene;
 class aiMesh;
+class aiNode;
 
 namespace engine
 {
@@ -24,10 +25,12 @@ namespace engine
         std::string get_name() const override;
 
     private:
+        void process_node(const aiScene*, const aiNode*) const;
         static void copy_vertices(std::vector<geometry::vertex>&, const aiMesh*);
         static void copy_indices(std::vector<int32_t>&, const aiMesh*);
         static void validate_file(const aiScene*);
         std::string m_path;
         std::string m_mesh_name;
+        mutable std::shared_ptr<mesh_instance> m_mesh_instance;
     };
 } // namespace engine

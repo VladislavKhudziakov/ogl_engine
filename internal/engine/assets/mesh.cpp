@@ -43,3 +43,15 @@ std::string engine::mesh::get_name() const
 {
     return m_name;
 }
+
+
+void engine::mesh::set_transformation(glm::mat4 transformation)
+{
+    m_transformation_matrix = transformation;
+}
+
+
+glm::mat4 engine::mesh::get_transformation() const
+{
+    return m_transformation_matrix;
+}

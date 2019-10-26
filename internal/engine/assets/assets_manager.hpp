@@ -32,6 +32,7 @@ namespace engine
             return *this;
         }
 
+        
         template<typename T>
         engine::assets_manager& add(std::shared_ptr<T> instance, const std::string& name)
         {

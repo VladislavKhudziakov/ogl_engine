@@ -18,6 +18,7 @@ namespace engine
         mesh_instance() = default;
         ~mesh_instance() = default;
 
+        const std::vector<std::shared_ptr<mesh>>& get_meshes();
         void draw();
         void append_mesh(std::shared_ptr<mesh>);
         std::shared_ptr<mesh> get_mesh(const std::string&) const;

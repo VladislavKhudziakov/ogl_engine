@@ -17,6 +17,13 @@ namespace engine
     public:
         struct vertex
         {
+            vertex(float x, float y, float z, float u, float v, float n_x, float n_y, float n_z)
+                : position{x, y, z}
+                , uv{u, v}
+                , normal{n_x, n_y, n_z}
+            {
+            }
+
             float position[3];
             float uv[2];
             float normal[3];

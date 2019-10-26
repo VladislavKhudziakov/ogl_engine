@@ -33,3 +33,9 @@ void engine::mesh_instance::append_mesh(std::shared_ptr<mesh> mesh)
 {
     m_meshes.emplace_back(std::move(mesh));
 }
+
+
+const std::vector<std::shared_ptr<engine::mesh>>& engine::mesh_instance::get_meshes()
+{
+    return m_meshes;
+}
