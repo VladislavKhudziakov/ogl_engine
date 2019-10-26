@@ -40,7 +40,6 @@ namespace engine
         uint32_t m_vao;
         uint32_t m_ebo;
         uint32_t m_indices_count;
-        bool is_bounded = false;
     };
 
     class float_buffer : public interfaces::geometry_buffer

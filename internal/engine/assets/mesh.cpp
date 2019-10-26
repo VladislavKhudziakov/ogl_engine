@@ -19,14 +19,6 @@ std::shared_ptr<engine::interfaces::geometry_buffer> engine::mesh::get_geometry(
 }
 
 
-void engine::mesh::draw()
-{
-    bind_context<engine::interfaces::geometry_buffer> bind(*m_geometry);
-    //TODO: bind material
-    m_geometry->draw();
-}
-
-
 void engine::mesh::set_geometry(std::shared_ptr<geometry> geometry)
 {
     m_geometry = std::move(geometry);

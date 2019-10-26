@@ -50,10 +50,6 @@ engine::geometry::~geometry()
 
 void engine::geometry::draw() const
 {
-    if (!is_bounded) {
-        throw std::logic_error("GEOMETRY IS NOT BOUNDED");
-    }
-
     glDrawElements(GL_TRIANGLES, m_indices_count, GL_UNSIGNED_INT, nullptr);
 }
 
@@ -62,9 +58,6 @@ void engine::geometry::bind()
 {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    is_bounded = true;
-    //TODO: ADD LOCK CONTEXT !!!!
-    //// template class with static is_bounded?
 }
 
 
@@ -72,7 +65,6 @@ void engine::geometry::unbind()
 {
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    is_bounded = false;
 }
 
 

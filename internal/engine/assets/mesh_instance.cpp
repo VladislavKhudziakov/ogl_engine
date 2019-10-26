@@ -21,14 +21,6 @@ std::shared_ptr<engine::mesh> engine::mesh_instance::get_mesh(const std::string&
 }
 
 
-void engine::mesh_instance::draw()
-{
-    for (auto& mesh : m_meshes) {
-        mesh->draw();
-    }
-}
-
-
 void engine::mesh_instance::append_mesh(std::shared_ptr<mesh> mesh)
 {
     m_meshes.emplace_back(std::move(mesh));

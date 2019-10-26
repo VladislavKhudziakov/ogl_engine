@@ -30,8 +30,6 @@ namespace engine
 
         std::string get_name() const;
 
-        void draw();
-
     private:
         std::shared_ptr<interfaces::geometry_buffer> m_geometry;
         std::shared_ptr<material> m_material;
