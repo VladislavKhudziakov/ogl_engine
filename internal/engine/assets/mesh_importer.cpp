@@ -20,14 +20,14 @@ engine::mesh_importer::mesh_importer(const std::string& file_path, const std::st
 }
 
 
-std::shared_ptr<engine::mesh_instance> engine::mesh_importer::import() const
+std::shared_ptr<engine::mesh_data> engine::mesh_importer::import() const
 {
     Assimp::Importer importer;
     auto file_data = importer.ReadFile(m_path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
     validate_file(file_data);
 
-    m_mesh_instance = std::make_shared<mesh_instance>();
+    m_mesh_instance = std::make_shared<mesh_data>();
 
     process_node(file_data, file_data->mRootNode);
 

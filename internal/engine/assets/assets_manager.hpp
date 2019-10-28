@@ -57,7 +57,7 @@ namespace engine
 
     private:
         std::map<std::string, std::variant<
-              std::shared_ptr<mesh_instance>
+              std::shared_ptr<mesh_data>
             , std::shared_ptr<material>
             , std::shared_ptr<interfaces::texture>
             , std::shared_ptr<shader_program>>> m_storage;

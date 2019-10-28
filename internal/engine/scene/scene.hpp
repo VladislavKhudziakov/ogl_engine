@@ -36,6 +36,7 @@ namespace engine
         const perspective& get_perspective() const;
 
     private:
+        void process_node(std::shared_ptr<scene_object>& object);
         void calculate_matrices();
         std::unique_ptr<engine::geometry> m_mesh;
         std::shared_ptr<engine::scene_object> m_object;

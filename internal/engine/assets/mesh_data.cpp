@@ -3,12 +3,12 @@
 //
 
 #include <algorithm>
-#include <mesh_instance.hpp>
+#include <mesh_data.hpp>
 
-std::shared_ptr<engine::mesh> engine::mesh_instance::get_mesh(const std::string& name) const
+std::shared_ptr<engine::mesh> engine::mesh_data::get_mesh(const std::string& name) const
 {
     auto pred = [&](auto& mesh) {
-      return mesh->get_name() == name;
+        return mesh->get_name() == name;
     };
 
     auto founded_mesh = std::find_if(m_meshes.begin(), m_meshes.end(), pred);
@@ -21,13 +21,13 @@ std::shared_ptr<engine::mesh> engine::mesh_instance::get_mesh(const std::string&
 }
 
 
-void engine::mesh_instance::append_mesh(std::shared_ptr<mesh> mesh)
+void engine::mesh_data::append_mesh(std::shared_ptr<mesh> mesh)
 {
     m_meshes.emplace_back(std::move(mesh));
 }
 
 
-const std::vector<std::shared_ptr<engine::mesh>>& engine::mesh_instance::get_meshes()
+const std::vector<std::shared_ptr<engine::mesh>>& engine::mesh_data::get_meshes()
 {
     return m_meshes;
 }

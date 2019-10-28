@@ -3,7 +3,7 @@
 //
 
 #include <mesh.hpp>
-#include <common/bind_context.hpp>
+
 
 engine::mesh::mesh(std::string name, std::shared_ptr<interfaces::geometry_buffer> geometry, std::shared_ptr<material> material)
     : m_geometry(std::move(geometry))
@@ -46,4 +46,10 @@ void engine::mesh::set_transformation(glm::mat4 transformation)
 glm::mat4 engine::mesh::get_transformation() const
 {
     return m_transformation_matrix;
+}
+
+
+std::shared_ptr<engine::material> engine::mesh::get_material() const
+{
+    return m_material;
 }

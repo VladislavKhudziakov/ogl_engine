@@ -24,7 +24,7 @@ namespace engine
         std::shared_ptr<interfaces::geometry_buffer> get_geometry();
         void set_geometry(std::shared_ptr<geometry>);
         void attach_material(std::shared_ptr<material>);
-
+        std::shared_ptr<material> get_material() const;
         void set_transformation(glm::mat4);
         glm::mat4 get_transformation() const;
 

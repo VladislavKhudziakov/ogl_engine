@@ -6,7 +6,7 @@
 #pragma once
 
 #include <interfaces/importer.hpp>
-#include <mesh_instance.hpp>
+#include <mesh_data.hpp>
 
 class aiScene;
 class aiMesh;
@@ -16,12 +16,12 @@ namespace engine
 {
     class geometry_builder;
 
-    class mesh_importer : public interfaces::importer<mesh_instance>
+    class mesh_importer : public interfaces::importer<mesh_data>
     {
     public:
         mesh_importer(const std::string&, const std::string&);
         ~mesh_importer() override = default;
-        std::shared_ptr<mesh_instance> import() const override;
+        std::shared_ptr<mesh_data> import() const override;
         std::string get_name() const override;
 
     private:
@@ -31,6 +31,6 @@ namespace engine
         static void validate_file(const aiScene*);
         std::string m_path;
         std::string m_mesh_name;
-        mutable std::shared_ptr<mesh_instance> m_mesh_instance;
+        mutable std::shared_ptr<mesh_data> m_mesh_instance;
     };
 } // namespace engine

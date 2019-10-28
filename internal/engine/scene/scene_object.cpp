@@ -8,7 +8,7 @@
 engine::scene_object::scene_object(const std::string& name)
     : m_name(name)
 {
-    std::get<std::optional<transformation>>(m_components).emplace();
+    set_component<transformation>(std::make_shared<transformation>());
 }
 
 
@@ -64,11 +64,19 @@ const std::vector<std::shared_ptr<engine::scene_object>>& engine::scene_object::
 }
 
 
-void engine::scene_object::draw(glm::mat4 mvp) const
+const engine::scene_object::components& engine::scene_object::get_components() const
 {
-    auto curr_transform = mvp * get_component<transformation>().calculate();
+    return m_components;
+}
 
-    for (auto& child : m_children) {
-        child->draw(curr_transform);
-    }
+
+void engine::scene_object::set_transformation_matrix(glm::mat4 matrix)
+{
+    m_transformation_matrix = matrix;
+}
+
+
+glm::mat4 engine::scene_object::get_transformation_matrix() const
+{
+    return m_transformation_matrix;
 }
