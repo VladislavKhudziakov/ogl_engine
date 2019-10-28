@@ -84,6 +84,7 @@ void engine::scene::calculate_matrices()
 
 void engine::scene::process_node(std::shared_ptr<scene_object>& object)
 {
+    //todo)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
     auto c_transformation = object->get_component<transformation>();
 
     assert(c_transformation != nullptr);

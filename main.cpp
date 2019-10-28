@@ -9,6 +9,7 @@
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
+// TODO: renderer brige, cache!!!!!!!!!!!!
 
 int main()
 {
