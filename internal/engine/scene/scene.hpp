@@ -28,7 +28,8 @@ namespace engine
         ~scene() = default;
 
         void draw();
-        void set_object(std::shared_ptr<scene_object>);
+        void set_root(std::shared_ptr<scene_object>);
+        std::shared_ptr<scene_object> get_root();
 
         void set_camera(const camera&);
         void set_perspective(const perspective&);
@@ -38,8 +39,7 @@ namespace engine
     private:
         void process_node(std::shared_ptr<scene_object>& object);
         void calculate_matrices();
-        std::unique_ptr<engine::geometry> m_mesh;
-        std::shared_ptr<engine::scene_object> m_object;
+        std::shared_ptr<engine::scene_object> m_root;
         camera m_camera;
         perspective m_perspective;
         glm::mat4 m_projection_matrix;

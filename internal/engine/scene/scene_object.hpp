@@ -20,7 +20,7 @@ namespace engine
 {
     class scene_object : public std::enable_shared_from_this<scene_object>
     {
-        using components = std::tuple<std::shared_ptr<transformation>, std::shared_ptr<mesh_instance>, std::shared_ptr<material_component>>;
+        using components = std::tuple<std::shared_ptr<transformation>, std::shared_ptr<material_component>, std::shared_ptr<mesh_instance>>;
 
     public:
         explicit scene_object(const std::string&);
@@ -45,6 +45,13 @@ namespace engine
         std::shared_ptr<T> get_component() const
         {
             return std::get<std::shared_ptr<T>>(m_components);
+        }
+
+
+        template<typename T>
+        bool has_component() const
+        {
+            return std::get<std::shared_ptr<T>>(m_components) != nullptr;
         }
 
 

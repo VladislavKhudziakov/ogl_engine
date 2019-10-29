@@ -3,6 +3,7 @@
 //
 
 #include <mesh_instance.hpp>
+#include <interfaces/component_visitor.hpp>
 
 
 engine::mesh_instance::mesh_instance(std::shared_ptr<mesh_data> mesh)
@@ -20,4 +21,10 @@ std::shared_ptr<engine::mesh_data> engine::mesh_instance::get_mesh() const
 void engine::mesh_instance::set_mesh(std::shared_ptr<mesh_data> mesh)
 {
     m_mesh = std::move(mesh);
+}
+
+
+void engine::mesh_instance::visit(engine::interfaces::component_visitor& visitor, std::shared_ptr<scene_object>& ptr)
+{
+    visitor.accept(*this, ptr);
 }

@@ -56,7 +56,7 @@ int main()
     object_2->add_child(object_3);
 
 
-    mesh_scene->set_object(object_1);
+    mesh_scene->set_root(object_1);
 
     app.set_scene(std::move(mesh_scene));
     app.exec();

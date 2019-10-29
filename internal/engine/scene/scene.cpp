@@ -6,7 +6,8 @@
 
 #include <scene/scene.hpp>
 #include <common/bind_context.hpp>
-
+#include <iostream>
+#include <for_each.hpp>
 
 //TODO: think over how to set aspect dynamicly
 
@@ -24,12 +25,6 @@ engine::scene::scene()
 }
 
 
-void engine::scene::set_object(std::shared_ptr<scene_object> obj)
-{
-    m_object = std::move(obj);
-}
-
-
 void engine::scene::draw()
 {
     //TODO: remove
@@ -38,7 +33,7 @@ void engine::scene::draw()
     glClear(GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-    process_node(m_object);
+    process_node(m_root);
 //    m_object->draw(m_projection_view);
 }
 
@@ -85,6 +80,7 @@ void engine::scene::calculate_matrices()
 void engine::scene::process_node(std::shared_ptr<scene_object>& object)
 {
     //todo)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+
     auto c_transformation = object->get_component<transformation>();
 
     assert(c_transformation != nullptr);
@@ -134,4 +130,16 @@ void engine::scene::process_node(std::shared_ptr<scene_object>& object)
     for (auto child : children) {
         process_node(child);
     }
+}
+
+
+void engine::scene::set_root(std::shared_ptr<scene_object> root)
+{
+    m_root = std::move(root);
+}
+
+
+std::shared_ptr<engine::scene_object> engine::scene::get_root()
+{
+    return m_root;
 }
