@@ -40,9 +40,9 @@ void engine::scene_renderer::process_nodes(std::shared_ptr<scene_object> object)
 {
     auto components = object->get_components();
 
-    for_each(components, [&](auto&& arg) {
-        if (arg != nullptr) {
-            arg->visit(*this, object);
+    for_each(components, [&](auto&& component) {
+        if (component != nullptr) {
+            component->visit(*this, object);
         }
     });
 

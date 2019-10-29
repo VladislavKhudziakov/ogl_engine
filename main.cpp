@@ -10,8 +10,8 @@
 // TODO: easy deploy
 // TODO: forward declaration
 // TODO: settings?
-// TODO: renderer brige, cache!!!!!!!!!!!!
 
+// TODO: GPU primitives, cache !!!
 int main()
 {
     auto& app = engine::application::get();
