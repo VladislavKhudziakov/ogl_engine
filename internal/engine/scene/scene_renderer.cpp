@@ -2,33 +2,41 @@
 // Created by movleaxedx on 29.10.19.
 //
 
-#include <scene_rendered.hpp>
+#include <scene_renderer.hpp>
 #include <common/bind_context.hpp>
 #include <common/for_each.hpp>
 
-engine::scene_rendered::scene_rendered(std::shared_ptr<scene> scene)
+#include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
+
+engine::scene_renderer::scene_renderer(scene* scene)
     : m_scene(scene)
 {
 }
 
 
-void engine::scene_rendered::draw_scene()
+void engine::scene_renderer::draw_scene()
 {
-    auto scene_sptr = m_scene.lock();
-    auto camera = scene_sptr->get_camera();
-    auto projection = scene_sptr->get_perspective();
+    assert(m_scene != nullptr);
 
+    auto camera = m_scene->get_camera();
+    auto projection = m_scene->get_perspective();
 
     auto fov = glm::radians(camera.get_fov());
     m_projection_matrix = glm::perspective(fov, 800.0f / 600.0f, projection.get_znear(), projection.get_zfar());
     m_view_matrix = glm::lookAt(camera.get_position(), camera.get_direction(), glm::vec3(0, 1, 0));
     m_world_matrix = m_projection_matrix * m_view_matrix;
 
-    process_nodes(scene_sptr->get_root());
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+    process_nodes(m_scene->get_root());
 }
 
 
-void engine::scene_rendered::process_nodes(std::shared_ptr<scene_object> object)
+void engine::scene_renderer::process_nodes(std::shared_ptr<scene_object> object)
 {
     auto components = object->get_components();
 
@@ -37,18 +45,22 @@ void engine::scene_rendered::process_nodes(std::shared_ptr<scene_object> object)
             arg->visit(*this, object);
         }
     });
+
+    auto children = object->get_children();
+
+    for (auto& child : children) {
+        process_nodes(child);
+    }
 }
 
 
-void engine::scene_rendered::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
+void engine::scene_renderer::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
 {
-//    component.get_material()->bind();
-//    component.get_material()->get_shader()->apply_uniform_command(
-//        engine::set_mat4_uniform("u_mvp", m_world_matrix * object->get_transformation_matrix()));
+    //todo material semantic
 }
 
 
-void engine::scene_rendered::accept(engine::mesh_instance& instance, std::shared_ptr<scene_object>& object)
+void engine::scene_renderer::accept(engine::mesh_instance& instance, std::shared_ptr<scene_object>& object)
 {
     auto mesh_data = instance.get_mesh();
 
@@ -85,7 +97,7 @@ void engine::scene_rendered::accept(engine::mesh_instance& instance, std::shared
 }
 
 
-void engine::scene_rendered::accept(engine::transformation& transformation, std::shared_ptr<scene_object>& object)
+void engine::scene_renderer::accept(engine::transformation& transformation, std::shared_ptr<scene_object>& object)
 {
     if (auto parent = object->get_parent()) {
         auto parent_transform = parent->get_transformation_matrix();
@@ -93,4 +105,10 @@ void engine::scene_rendered::accept(engine::transformation& transformation, std:
     } else {
         object->set_transformation_matrix(transformation.calculate());
     }
+}
+
+
+void engine::scene_renderer::set_scene(scene* scene)
+{
+    m_scene = scene;
 }
