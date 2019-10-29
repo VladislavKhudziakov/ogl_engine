@@ -28,6 +28,7 @@ namespace engine
         void process_nodes(std::shared_ptr<scene_object>);
 
     private:
+        //TODO: replace on weak_ptr
         engine::scene* m_scene = nullptr;
         glm::mat4 m_view_matrix {1};
         glm::mat4 m_projection_matrix {1};
