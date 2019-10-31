@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <string>
 
-namespace engine
+namespace engine::ogl
 {
     class shader_program
     {
@@ -22,7 +22,7 @@ namespace engine
         };
 
         shader_program(const std::string&, const std::string&);
-        ~shader_program() = default;
+        ~shader_program();
 
         void bind();
         void unbind();
@@ -39,14 +39,14 @@ namespace engine
         {
             friend class shader_program;
             shader(const std::string&, shader_type);
-            ~shader() = default;
+            ~shader();
 
         private:
-            uint64_t m_index;
+            uint64_t m_name;
         };
 
     private:
-        uint64_t m_index;
+        uint64_t m_name;
         shader m_vertex_shader;
         shader m_fragment_shader;
     };

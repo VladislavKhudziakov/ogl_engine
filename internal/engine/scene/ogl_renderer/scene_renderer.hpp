@@ -9,7 +9,7 @@
 #include <components/interfaces/component_visitor.hpp>
 #include <interfaces/scene_renderer.hpp>
 
-namespace engine
+namespace engine::ogl
 {
     class scene_renderer : public interfaces::scene_renderer, public interfaces::component_visitor
     {
@@ -17,7 +17,6 @@ namespace engine
         explicit scene_renderer(scene*);
         scene_renderer() = default;
         ~scene_renderer() override = default;
-
         void set_scene(scene*) override;
         void draw_scene() override;
 
@@ -30,9 +29,8 @@ namespace engine
     private:
         //TODO: replace on weak_ptr
         engine::scene* m_scene = nullptr;
-        glm::mat4 m_view_matrix {1};
-        glm::mat4 m_projection_matrix {1};
-        glm::mat4 m_world_matrix {1};
+        glm::mat4 m_view_matrix{1};
+        glm::mat4 m_projection_matrix{1};
+        glm::mat4 m_world_matrix{1};
     };
-}
-
+} // namespace engine::ogl

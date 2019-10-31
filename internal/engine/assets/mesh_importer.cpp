@@ -31,18 +31,6 @@ std::shared_ptr<engine::mesh_data> engine::mesh_importer::import() const
 
     process_node(file_data, file_data->mRootNode);
 
-//    for (size_t i = 0; i < file_data->mNumMeshes; ++i) {
-//        auto curr_mesh = file_data->mMeshes[i];
-//        std::vector<geometry::vertex> vertices;
-//        std::vector<int32_t> indices;
-//
-//        copy_vertices(vertices, curr_mesh);
-//        copy_indices(indices, curr_mesh);
-//
-//        auto mesh_geometry = std::make_shared<geometry>(vertices, indices);
-//        instance->append_mesh(std::make_shared<mesh>(curr_mesh->mName.C_Str(), mesh_geometry));
-//    }
-
     return m_mesh_instance;
 }
 

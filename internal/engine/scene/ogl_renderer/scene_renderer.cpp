@@ -2,20 +2,20 @@
 // Created by movleaxedx on 29.10.19.
 //
 
-#include <scene_renderer.hpp>
+#include <scene/ogl_renderer/scene_renderer.hpp>
 #include <common/bind_context.hpp>
 #include <common/for_each.hpp>
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-engine::scene_renderer::scene_renderer(scene* scene)
+engine::ogl::scene_renderer::scene_renderer(scene* scene)
     : m_scene(scene)
 {
 }
 
 
-void engine::scene_renderer::draw_scene()
+void engine::ogl::scene_renderer::draw_scene()
 {
     assert(m_scene != nullptr);
 
@@ -36,7 +36,7 @@ void engine::scene_renderer::draw_scene()
 }
 
 
-void engine::scene_renderer::process_nodes(std::shared_ptr<scene_object> object)
+void engine::ogl::scene_renderer::process_nodes(std::shared_ptr<scene_object> object)
 {
     auto components = object->get_components();
 
@@ -54,13 +54,13 @@ void engine::scene_renderer::process_nodes(std::shared_ptr<scene_object> object)
 }
 
 
-void engine::scene_renderer::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
+void engine::ogl::scene_renderer::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
 {
     //todo material semantic
 }
 
 
-void engine::scene_renderer::accept(engine::mesh_instance& instance, std::shared_ptr<scene_object>& object)
+void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::shared_ptr<scene_object>& object)
 {
     auto mesh_data = instance.get_mesh();
 
@@ -97,7 +97,7 @@ void engine::scene_renderer::accept(engine::mesh_instance& instance, std::shared
 }
 
 
-void engine::scene_renderer::accept(engine::transformation& transformation, std::shared_ptr<scene_object>& object)
+void engine::ogl::scene_renderer::accept(engine::transformation& transformation, std::shared_ptr<scene_object>& object)
 {
     if (auto parent = object->get_parent()) {
         auto parent_transform = parent->get_transformation_matrix();
@@ -108,7 +108,7 @@ void engine::scene_renderer::accept(engine::transformation& transformation, std:
 }
 
 
-void engine::scene_renderer::set_scene(scene* scene)
+void engine::ogl::scene_renderer::set_scene(scene* scene)
 {
     m_scene = scene;
 }

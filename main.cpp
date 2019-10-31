@@ -1,6 +1,6 @@
 #include <application/application.hpp>
 #include <scene/scene.hpp>
-#include <scene/scene_renderer.hpp>
+#include <scene/ogl_renderer/scene_renderer.hpp>
 #include <material.hpp>
 #include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>
@@ -29,7 +29,7 @@ int main()
 
     app.get_assets_manager()->add(material, "test_mat");
 
-    auto mesh_scene = std::make_unique<engine::scene>(std::make_shared<engine::scene_renderer>());
+    auto mesh_scene = std::make_unique<engine::scene>(std::make_shared<engine::ogl::scene_renderer>());
     auto object_1 = std::make_shared<engine::scene_object>("test_1");
 
     auto transformation_component = std::make_shared<engine::transformation>();
