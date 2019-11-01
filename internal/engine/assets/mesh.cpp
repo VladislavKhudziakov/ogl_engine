@@ -5,7 +5,7 @@
 #include <mesh.hpp>
 
 
-engine::mesh::mesh(std::string name, std::shared_ptr<interfaces::geometry_buffer> geometry, std::shared_ptr<material> material)
+engine::mesh::mesh(std::string name, std::shared_ptr<geometry> geometry, std::shared_ptr<material> material)
     : m_geometry(std::move(geometry))
     , m_name(std::move(name))
     , m_material(std::move(material))
@@ -13,7 +13,7 @@ engine::mesh::mesh(std::string name, std::shared_ptr<interfaces::geometry_buffer
 }
 
 
-std::shared_ptr<engine::interfaces::geometry_buffer> engine::mesh::get_geometry()
+std::shared_ptr<engine::geometry> engine::mesh::get_geometry()
 {
     return m_geometry;
 }
@@ -31,21 +31,9 @@ void engine::mesh::attach_material(std::shared_ptr<material> material)
 }
 
 
-std::string engine::mesh::get_name() const
+const std::string& engine::mesh::get_name() const
 {
     return m_name;
-}
-
-
-void engine::mesh::set_transformation(glm::mat4 transformation)
-{
-    m_transformation_matrix = transformation;
-}
-
-
-glm::mat4 engine::mesh::get_transformation() const
-{
-    return m_transformation_matrix;
 }
 
 

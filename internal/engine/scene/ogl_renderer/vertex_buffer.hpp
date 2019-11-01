@@ -5,29 +5,32 @@
 
 #pragma once
 
-#include <common/vectors.hpp>
+#include <common/vertex.hpp>
 #include <scene/ogl_renderer/interfaces/vertex_buffer.hpp>
 
 #include <vector>
 #include <cstdint>
 #include <memory>
 
+
+namespace engine
+{
+    class geometry;
+}
+
+
 namespace engine::ogl
 {
     class vertex_buffer : public ogl::interfaces::vertex_buffer
     {
+        friend class scene_renderer;
     public:
-        struct vertex
-        {
-            vec3 position;
-            vec2 uv;
-            vec3 normal;
-        };
-
-        vertex_buffer(const std::vector<vertex>&, const std::vector<uint32_t>&);
+        static std::shared_ptr<vertex_buffer> from_geometry(const engine::geometry&);
+        vertex_buffer(const std::vector<engine::vertex>&, const std::vector<uint32_t>&);
         ~vertex_buffer() override;
         void bind() override;
         void unbind() override;
+        void draw() override;
 
     private:
         uint32_t m_vao;
@@ -43,6 +46,7 @@ namespace engine::ogl
         ~float_buffer() override = default;
         void bind() override;
         void unbind() override;
+        void draw() override;
 
     private:
         std::shared_ptr<interfaces::vertex_buffer> m_wrappee;

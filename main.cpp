@@ -4,7 +4,7 @@
 #include <material.hpp>
 #include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>
-#include <assets/texture2d_importer.hpp>
+#include <assets/image_importer.hpp>
 
 // TODO: material builder
 // TODO: easy deploy
@@ -20,8 +20,8 @@ int main()
 
     app.get_assets_manager()->import<engine::shader_program>(engine::shader_importer(
         "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default_shader"))
-        .import<engine::interfaces::texture>(engine::texture2d_importer(engine::texture2d_importer::import_parameters{
-            true, "../internal/resources/teapot/default.png", "default_texture"}))
+        .import<engine::interfaces::texture>(engine::image_importer(engine::image_importer::import_parameters{
+            "../internal/resources/teapot/default.png", "default_texture"}))
         .import<engine::mesh_data>(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
 
     auto material = std::make_shared<engine::material>(app.get_assets_manager()->get<engine::shader_program>("default_shader"));

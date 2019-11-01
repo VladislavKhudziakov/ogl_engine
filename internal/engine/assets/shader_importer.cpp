@@ -20,7 +20,7 @@ std::shared_ptr<engine::shader_program> engine::shader_importer::import() const
 {
     auto vshader_source = load_file(m_vshader_path);
     auto fshader_source = load_file((m_fshader_path));
-    return std::make_shared<shader_program>(vshader_source, fshader_source);
+    return std::make_shared<shader_program>(m_program_name, vshader_source, fshader_source);
 }
 
 

@@ -5,7 +5,15 @@
 #pragma once
 
 #include <glm/glm.hpp>
+
 #include <string>
+#include <memory>
+
+
+namespace engine
+{
+    class shader_program;
+}
 
 namespace engine::ogl
 {
@@ -21,6 +29,7 @@ namespace engine::ogl
             virtual void execute(uint64_t) const = 0;
         };
 
+        static std::shared_ptr<shader_program> from_program(const engine::shader_program&);
         shader_program(const std::string&, const std::string&);
         ~shader_program();
 

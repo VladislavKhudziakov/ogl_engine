@@ -10,7 +10,15 @@
 #include <string>
 #include <cinttypes>
 
+
+#include <common/image_format.hpp>
 #include <scene/ogl_renderer/interfaces/texture.hpp>
+
+
+namespace engine
+{
+    class image;
+}
 
 namespace engine::ogl
 {
@@ -20,10 +28,11 @@ namespace engine::ogl
         struct image_data {
             int32_t width;
             int32_t height;
-            int32_t channels_count;
-            unsigned char* data;
+            image_format format;
+            const unsigned char* data;
         };
 
+        static std::shared_ptr<texture2d> from_image(const engine::image&);
         explicit texture2d(const image_data&);
         void bind(int) override;
         void unbind() override;

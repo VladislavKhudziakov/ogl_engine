@@ -6,24 +6,23 @@
 #pragma once
 
 #include <interfaces/importer.hpp>
-#include <texture2d.hpp>
+#include <image.hpp>
 
 namespace engine
 {
-    class texture2d_importer : public interfaces::importer<interfaces::texture>
+    class image_importer : public interfaces::importer<engine::interfaces::texture>
     {
     public:
         struct import_parameters
         {
-            bool mipmapped = false;
             std::string path;
             std::string name;
         };
 
-        explicit texture2d_importer(const import_parameters&);
-        ~texture2d_importer() override = default;
+        explicit image_importer(const import_parameters&);
+        ~image_importer() override = default;
 
-        std::shared_ptr<interfaces::texture> import() const override;
+        std::shared_ptr<engine::interfaces::texture> import() const override;
         std::string get_name() const override;
 
     private:

@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
 
+#include <assets/shader_program.hpp>
 #include <scene/ogl_renderer/shader_program.hpp>
 
 engine::ogl::shader_program::shader::shader(const std::string& sources, shader_type type)
@@ -56,6 +57,12 @@ engine::ogl::shader_program::shader_program(
         glGetProgramInfoLog(m_name, log_buffer_size, &log_buffer_size, log_msg);
         throw std::logic_error(std::string("SHADER PROGRAM LINKING ERROR::") + log_msg);
     }
+}
+
+
+std::shared_ptr<engine::ogl::shader_program> engine::ogl::shader_program::from_program(const engine::shader_program& program)
+{
+    return std::make_shared<shader_program>(program.get_vertex_shader(), program.get_fragment_shader());
 }
 
 

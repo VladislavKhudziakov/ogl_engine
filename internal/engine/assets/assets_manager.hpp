@@ -20,6 +20,13 @@ namespace engine
     class assets_manager
     {
     public:
+        using assets = std::map<std::string, std::variant<
+            std::shared_ptr<mesh_data>
+            , std::shared_ptr<material>
+            , std::shared_ptr<interfaces::texture>
+            , std::shared_ptr<shader_program>>>;
+
+
         template<typename T>
         engine::assets_manager& import(const interfaces::importer<T>& importer)
         {
@@ -56,10 +63,6 @@ namespace engine
         }
 
     private:
-        std::map<std::string, std::variant<
-              std::shared_ptr<mesh_data>
-            , std::shared_ptr<material>
-            , std::shared_ptr<interfaces::texture>
-            , std::shared_ptr<shader_program>>> m_storage;
+        assets m_storage;
     };
 } // namespace engine

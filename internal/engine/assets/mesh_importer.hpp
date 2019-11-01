@@ -26,8 +26,8 @@ namespace engine
 
     private:
         void process_node(const aiScene*, const aiNode*) const;
-        static void copy_vertices(std::vector<geometry::vertex>&, const aiMesh*);
-        static void copy_indices(std::vector<int32_t>&, const aiMesh*);
+        static void copy_vertices(std::vector<engine::vertex>&, const aiMesh*);
+        static void copy_faces(std::vector<engine::face>&, const aiMesh*);
         static void validate_file(const aiScene*);
         std::string m_path;
         std::string m_mesh_name;

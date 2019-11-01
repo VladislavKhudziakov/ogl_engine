@@ -5,13 +5,21 @@
 
 #pragma once
 
+namespace engine
+{
+    struct texture_parameters;
+}
+
 namespace engine::interfaces
 {
     class texture
     {
     public:
         virtual ~texture() = default;
-        virtual void bind(int) = 0;
-        virtual void unbind() = 0;
+        virtual const std::string& get_name() const = 0;
+        virtual std::pair<int32_t, int32_t> get_size() const = 0;
+        virtual int32_t get_levels() const = 0;
+        virtual const texture_parameters& get_parameters() const = 0;
+        virtual void set_parameters(const texture_parameters&) = 0;
     };
 } // namespace engine::interfaces

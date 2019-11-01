@@ -20,20 +20,17 @@ namespace engine
         mesh() = default;
         ~mesh() = default;
 
-        explicit mesh(std::string, std::shared_ptr<interfaces::geometry_buffer>, std::shared_ptr<material> material = nullptr);
-        std::shared_ptr<interfaces::geometry_buffer> get_geometry();
+        explicit mesh(std::string, std::shared_ptr<geometry>, std::shared_ptr<material> material = nullptr);
+        std::shared_ptr<geometry> get_geometry();
         void set_geometry(std::shared_ptr<geometry>);
         void attach_material(std::shared_ptr<material>);
         std::shared_ptr<material> get_material() const;
-        void set_transformation(glm::mat4);
-        glm::mat4 get_transformation() const;
 
-        std::string get_name() const;
+        const std::string& get_name() const;
 
     private:
-        std::shared_ptr<interfaces::geometry_buffer> m_geometry;
+        std::shared_ptr<geometry> m_geometry;
         std::shared_ptr<material> m_material;
         std::string m_name;
-        glm::mat4 m_transformation_matrix { 1 };
     };
 } // namespace engine

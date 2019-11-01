@@ -38,23 +38,7 @@ void engine::material::set_shader(std::shared_ptr<engine::shader_program> shader
 }
 
 
-void engine::material::bind()
+const engine::material::material_textures& engine::material::get_textures() const
 {
-    uint32_t curr_slot = 0;
-
-    m_shader->bind();
-    for (auto [name, texture] : m_textures) {
-        texture->bind(curr_slot);
-        m_shader->apply_uniform_command(engine::set_int_uniform(name, curr_slot));
-        ++curr_slot;
-    }
-}
-
-
-void engine::material::unbind()
-{
-    m_shader->unbind();
-    for (auto [name, texture] : m_textures) {
-        texture->unbind();
-    }
+    return m_textures;
 }

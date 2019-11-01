@@ -16,6 +16,8 @@ namespace engine
     class material
     {
     public:
+        using material_textures = std::map<std::string, std::shared_ptr<interfaces::texture>>;
+
         explicit material(std::shared_ptr<engine::shader_program>);
         material() = default;
         virtual ~material() = default;
@@ -24,10 +26,9 @@ namespace engine
         void set_texture(const std::string&, std::shared_ptr<interfaces::texture>);
         std::shared_ptr<engine::shader_program> get_shader() const;
         void set_shader(std::shared_ptr<engine::shader_program>);
-        void bind();
-        void unbind();
-
+        const material_textures& get_textures() const;
     private:
+        std::string m_name;
         std::map<std::string, std::shared_ptr<interfaces::texture>> m_textures;
         std::shared_ptr<engine::shader_program> m_shader;
     };

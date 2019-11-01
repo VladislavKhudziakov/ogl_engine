@@ -57,7 +57,7 @@ void engine::mesh_importer::validate_file(const aiScene* file_data)
 }
 
 
-void engine::mesh_importer::copy_vertices(std::vector<geometry::vertex>& vertices_list, const aiMesh* mesh)
+void engine::mesh_importer::copy_vertices(std::vector<engine::vertex>& vertices_list, const aiMesh* mesh)
 {
     auto vertices_count = mesh->mNumVertices;
     vertices_list.reserve(vertices_count);
@@ -68,37 +68,33 @@ void engine::mesh_importer::copy_vertices(std::vector<geometry::vertex>& vertice
 }
 
 
-void engine::mesh_importer::copy_indices(std::vector<int32_t>& indices_list, const aiMesh* mesh)
+void engine::mesh_importer::copy_faces(std::vector<engine::face>& faces_list, const aiMesh* mesh)
 {
     for (size_t i = 0; i < mesh->mNumFaces; ++i) {
+        engine::face curr_face;
+        curr_face.indices.reserve(mesh->mFaces[i].mNumIndices);
+
         for (size_t j = 0; j < mesh->mFaces[i].mNumIndices; ++j) {
-            indices_list.emplace_back(mesh->mFaces[i].mIndices[j]);
+            curr_face.indices.emplace_back(mesh->mFaces[i].mIndices[j]);
         }
+
+        faces_list.push_back(curr_face);
     }
 }
 
 
 void engine::mesh_importer::process_node(const aiScene* scene, const aiNode* node) const
 {
-    const auto& node_transformation = node->mTransformation;
-
-    glm::mat4 transformation{{node_transformation.a1, node_transformation.a2, node_transformation.a3, node_transformation.a4},
-                             {node_transformation.b1, node_transformation.b2, node_transformation.b3, node_transformation.b4},
-                             {node_transformation.c1, node_transformation.c2, node_transformation.c3, node_transformation.c4},
-                             {node_transformation.d1, node_transformation.d2, node_transformation.d3, node_transformation.d4}};
-
-
     for (int i = 0; i < node->mNumMeshes; ++i) {
         auto curr_mesh = scene->mMeshes[node->mMeshes[i]];
-        std::vector<geometry::vertex> vertices;
-        std::vector<int32_t> indices;
+        std::vector<engine::vertex> vertices;
+        std::vector<engine::face> faces;
 
         copy_vertices(vertices, curr_mesh);
-        copy_indices(indices, curr_mesh);
+        copy_faces(faces, curr_mesh);
 
-        auto mesh_geometry = std::make_shared<geometry>(vertices, indices);
+        auto mesh_geometry = std::make_shared<geometry>(curr_mesh->mName.C_Str(), vertices, faces);
         auto mesh = std::make_shared<engine::mesh>(curr_mesh->mName.C_Str(), mesh_geometry);
-        mesh->set_transformation(transformation);
         m_mesh_instance->append_mesh(mesh);
     }
 
