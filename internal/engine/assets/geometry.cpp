@@ -23,7 +23,7 @@ engine::geometry::geometry(const std::vector<engine::geometry::vertex>& vertices
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(geometry::vertex), &vertices.begin()->position[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(geometry::vertex), &vertices.begin()->position.x, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &*indices.begin(), GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);

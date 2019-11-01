@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+
+#include <common/vectors.hpp>
 #include <interfaces/geometry_buffer.hpp>
 
 
@@ -24,9 +26,9 @@ namespace engine
             {
             }
 
-            float position[3];
-            float uv[2];
-            float normal[3];
+            vec3 position;
+            vec2 uv;
+            vec3 normal;
         };
 
         geometry(const std::vector<engine::geometry::vertex>&, const ::std::vector<int>&);

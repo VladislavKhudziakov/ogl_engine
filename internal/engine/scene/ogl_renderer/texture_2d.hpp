@@ -17,7 +17,14 @@ namespace engine::ogl
     class texture2d : public ogl::interfaces::texture
     {
     public:
-        explicit texture2d(const std::string&);
+        struct image_data {
+            int32_t width;
+            int32_t height;
+            int32_t channels_count;
+            unsigned char* data;
+        };
+
+        explicit texture2d(const image_data&);
         void bind(int) override;
         void unbind() override;
         ~texture2d() override;

@@ -2,33 +2,27 @@
 #include <glad/glad.h>
 #include <scene/ogl_renderer/texture_2d.hpp>
 
-engine::ogl::texture2d::texture2d(const std::string& file_path)
+engine::ogl::texture2d::texture2d(const image_data& img_data)
     : m_name(0)
 {
     glGenTextures(1, &m_name);
     glBindTexture(GL_TEXTURE_2D, m_name);
 
-    int32_t width, height, channels_count;
-    unsigned char* data;
-//    unsigned char* data = stbi_load(file_path.c_str(), &width, &height, &channels_count, 0);
-
-    if (data == nullptr) {
+    if (img_data.data == nullptr) {
         throw std::logic_error("ERROR: CANNOT LOAD IMAGE");
     }
 
-    if (channels_count < 3) {
+    if (img_data.channels_count < 3 || img_data.channels_count > 4) {
         throw std::logic_error("ERROR: INVALID IMAGE FORMAT (SHOULD BE RGB/RGBA)");
     }
 
     auto image_type = GL_RGBA;
 
-    if (channels_count == 3) {
+    if (img_data.channels_count == 3) {
         image_type = GL_RGB;
     }
 
-    glTexImage2D(GL_TEXTURE_2D, 0, image_type, width, height, 0, image_type, GL_UNSIGNED_BYTE, data);
-
-//    stbi_image_free(data);
+    glTexImage2D(GL_TEXTURE_2D, 0, image_type, img_data.width, img_data.height, 0, image_type, GL_UNSIGNED_BYTE, img_data.data);
 }
 
 

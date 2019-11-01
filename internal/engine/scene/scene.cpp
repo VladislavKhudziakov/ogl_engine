@@ -12,7 +12,7 @@ using glm::vec3;
 using engine::camera;
 
 engine::scene::scene(std::shared_ptr<interfaces::scene_renderer> renderer)
-    : m_camera{camera(vec3(5.0f, 5.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), 60.0f)}
+    : m_camera{camera(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), 60.0f)}
     , m_perspective{1, 100}
     , m_renderer(std::move(renderer))
 {
