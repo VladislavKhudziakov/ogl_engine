@@ -2,14 +2,16 @@
 // Created by movleaxedx on 29.10.19.
 //
 
-#include <scene/ogl_renderer/scene_renderer.hpp>
-#include <common/for_each.hpp>
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <scene/ogl_renderer/scene_renderer.hpp>
+#include <scene/ogl_renderer/vertex_buffer.hpp>
+#include <scene/ogl_renderer/texture_2d.hpp>
+#include <common/for_each.hpp>
 #include <assets/image.hpp>
-#include "texture_2d.hpp"
-#include "vertex_buffer.hpp"
+
 
 engine::ogl::scene_renderer::scene_renderer(scene* scene)
     : m_scene(scene)
@@ -166,7 +168,7 @@ void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>&
 
     int curr_slot = 0;
     auto textures = material->get_textures();
-    for (auto&& [shader_uniform, texture] : textures) {
+    for (auto [shader_uniform, texture] : textures) {
         auto gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->bind(curr_slot);
         gpu_program->apply_uniform_command(set_int_uniform(shader_uniform, curr_slot));

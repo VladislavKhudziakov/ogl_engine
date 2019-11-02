@@ -1,6 +1,5 @@
 
 #include <glad/glad.h>
-
 #include <assets/image.hpp>
 #include <scene/ogl_renderer/texture_2d.hpp>
 
@@ -21,6 +20,7 @@ engine::ogl::texture2d::texture2d(const image_data& img_data)
     }
 
     glTexImage2D(GL_TEXTURE_2D, 0, image_type, img_data.width, img_data.height, 0, image_type, GL_UNSIGNED_BYTE, img_data.data);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 
@@ -28,7 +28,7 @@ std::shared_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const
 {
     auto [width, height] = img.get_size();
 
-    image_data data { width, height, img.get_format(), img.get_data() };
+    image_data data { width, height, img.get_format(), img.get_data()};
 
     return std::make_shared<texture2d>(data);
 }
