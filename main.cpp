@@ -6,12 +6,8 @@
 #include <assets/shader_importer.hpp>
 #include <assets/image_importer.hpp>
 
-// TODO: material builder
-// TODO: easy deploy
-// TODO: forward declaration
-// TODO: settings?
-
-// TODO: GPU primitives, cache !!!
+// TODO: git submodule
+// TODO: asset texture interface (visior or get_type?)
 
 int main()
 {
@@ -50,7 +46,7 @@ int main()
     object_3->set_component(mesh_instance_component);
     object_3->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
-    transformation_component->translation = {0, 30, 0};
+    transformation_component->translation = {0, 60, 0};
     transformation_component->scale = {0.5, 0.5, 0.5};
     object_3->set_component(transformation_component);
 
