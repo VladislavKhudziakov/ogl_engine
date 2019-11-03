@@ -29,7 +29,6 @@ void engine::scene::draw()
 void engine::scene::set_camera(const camera& camera)
 {
     m_camera = camera;
-    //TODO: add signal
 }
 
 
@@ -42,7 +41,6 @@ const engine::camera& engine::scene::get_camera() const
 void engine::scene::set_perspective(const engine::perspective& perspective)
 {
     m_perspective = perspective;
-    //TODO: add signal
 }
 
 

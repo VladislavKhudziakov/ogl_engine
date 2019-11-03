@@ -13,14 +13,12 @@ engine::perspective::perspective(float znear, float zfar)
 void engine::perspective::set_znear(float znear)
 {
     m_znear = znear;
-    //TODO: signal
 }
 
 
 void engine::perspective::set_zfar(float zfar)
 {
     m_zfar = zfar;
-    //TODO: signal
 }
 
 

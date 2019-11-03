@@ -17,21 +17,18 @@ engine::camera::camera(const glm::vec3& position, const glm::vec3& look_directio
 void engine::camera::set_direction(glm::vec3 direction)
 {
     m_look_direction = direction;
-    //TODO: add signal
 }
 
 
 void engine::camera::set_position(glm::vec3 position)
 {
     m_position = position;
-    //TODO: add signal
 }
 
 
 void engine::camera::set_fov(float fov)
 {
     m_fov = fov;
-    //TODO: add signal
 }
 
 

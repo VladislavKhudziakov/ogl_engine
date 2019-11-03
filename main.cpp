@@ -7,7 +7,6 @@
 #include <assets/image_importer.hpp>
 
 // TODO: git submodule
-// TODO: asset texture interface (visitor or get_type?)
 
 int main()
 {
