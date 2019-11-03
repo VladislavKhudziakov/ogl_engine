@@ -45,14 +45,6 @@ namespace engine::ogl
 
         bool cached(const std::string& name) const;
 
-        template<typename T>
-        void emplace(const std::string& name, std::shared_ptr<T> resource)
-        {
-            if (!cached(name)) {
-                m_resources.emplace(name, resource);
-            }
-        }
-
         template <typename T>
         std::shared_ptr<T> get_resource(const std::string& name) const
         {
@@ -72,6 +64,14 @@ namespace engine::ogl
 
 
     private:
+        template<typename T>
+        void emplace(const std::string& name, std::shared_ptr<T> resource)
+        {
+            if (!cached(name)) {
+                m_resources.emplace(name, resource);
+            }
+        }
+
         gpu_resources m_resources;
     };
 } // namespace engine::ogl
