@@ -13,6 +13,21 @@
 #include <scene/ogl_renderer/interfaces/texture.hpp>
 #include <scene/ogl_renderer/interfaces/vertex_buffer.hpp>
 
+
+namespace engine
+{
+    class material;
+    class geometry;
+    class shader_program;
+    class mesh;
+    class mesh_data;
+}
+
+namespace engine::interfaces
+{
+    class texture;
+}
+
 namespace engine::ogl
 {
     class gpu_cache
@@ -47,6 +62,14 @@ namespace engine::ogl
 
             return nullptr;
         }
+
+        void cache_material(const engine::material&);
+        void cache_shader(const engine::shader_program&);
+        void cache_texture(const engine::interfaces::texture&);
+        void cache_geometry(const engine::geometry&);
+        void cache_mesh(const engine::mesh&);
+        void cache_mesh_data(const engine::mesh_data&);
+
 
     private:
         gpu_resources m_resources;

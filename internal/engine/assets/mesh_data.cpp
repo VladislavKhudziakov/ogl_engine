@@ -27,7 +27,7 @@ void engine::mesh_data::append_mesh(std::shared_ptr<mesh> mesh)
 }
 
 
-const std::vector<std::shared_ptr<engine::mesh>>& engine::mesh_data::get_meshes()
+const std::vector<std::shared_ptr<engine::mesh>>& engine::mesh_data::get_meshes() const
 {
     return m_meshes;
 }

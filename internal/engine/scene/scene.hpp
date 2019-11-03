@@ -34,6 +34,5 @@ namespace engine
         camera m_camera;
         perspective m_perspective;
         std::shared_ptr<interfaces::scene_renderer> m_renderer;
-
     };
 } // namespace engine

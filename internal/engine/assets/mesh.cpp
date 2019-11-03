@@ -13,7 +13,7 @@ engine::mesh::mesh(std::string name, std::shared_ptr<geometry> geometry, std::sh
 }
 
 
-std::shared_ptr<engine::geometry> engine::mesh::get_geometry()
+std::shared_ptr<engine::geometry> engine::mesh::get_geometry() const
 {
     return m_geometry;
 }
@@ -40,4 +40,10 @@ const std::string& engine::mesh::get_name() const
 std::shared_ptr<engine::material> engine::mesh::get_material() const
 {
     return m_material;
+}
+
+
+bool engine::mesh::has_material() const
+{
+    return m_material != nullptr;
 }

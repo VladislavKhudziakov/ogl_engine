@@ -12,6 +12,8 @@ namespace engine
 
 namespace engine::interfaces
 {
+    class texture_visitor;
+
     class texture
     {
     public:
@@ -21,5 +23,6 @@ namespace engine::interfaces
         virtual int32_t get_levels() const = 0;
         virtual const texture_parameters& get_parameters() const = 0;
         virtual void set_parameters(const texture_parameters&) = 0;
+        virtual void visit(const texture_visitor&) const = 0;
     };
 } // namespace engine::interfaces

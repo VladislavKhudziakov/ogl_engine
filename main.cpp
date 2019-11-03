@@ -7,7 +7,7 @@
 #include <assets/image_importer.hpp>
 
 // TODO: git submodule
-// TODO: asset texture interface (visior or get_type?)
+// TODO: asset texture interface (visitor or get_type?)
 
 int main()
 {
@@ -16,9 +16,9 @@ int main()
 
     app.get_assets_manager()->import<engine::shader_program>(engine::shader_importer(
         "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default_shader"))
-        .import<engine::interfaces::texture>(engine::image_importer(engine::image_importer::import_parameters{
+        .import(engine::image_importer(engine::image_importer::import_parameters{
             "../internal/resources/teapot/default.png", "default_texture"}))
-        .import<engine::mesh_data>(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
+        .import(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"));
 
     auto material = std::make_shared<engine::material>(app.get_assets_manager()->get<engine::shader_program>("default_shader"));
     material->set_texture("u_texture", app.get_assets_manager()->get<engine::interfaces::texture>("default_texture"));

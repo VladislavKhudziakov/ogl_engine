@@ -26,7 +26,7 @@ namespace engine
         const unsigned char* get_data() const;
         int32_t get_levels() const override;
         const texture_parameters& get_parameters() const override;
-
+        void visit(const interfaces::texture_visitor& visitor) const override;
     private:
         std::string m_name;
         int32_t m_width;

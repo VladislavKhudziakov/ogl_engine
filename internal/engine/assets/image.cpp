@@ -2,7 +2,8 @@
 // Created by movleaxedx on 17.10.19.
 //
 
-#include <image.hpp>
+#include <assets/interfaces/texture_visitor.hpp>
+#include <assets/image.hpp>
 
 #include <stdexcept>
 
@@ -81,4 +82,10 @@ const engine::texture_parameters& engine::image::get_parameters() const
 void engine::image::set_parameters(const engine::texture_parameters& parameters)
 {
     m_parameters = parameters;
+}
+
+
+void engine::image::visit(const engine::interfaces::texture_visitor& visitor) const
+{
+    visitor.accept(*this);
 }

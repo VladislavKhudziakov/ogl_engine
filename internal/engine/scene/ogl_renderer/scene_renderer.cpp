@@ -7,10 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <scene/ogl_renderer/scene_renderer.hpp>
-#include <scene/ogl_renderer/vertex_buffer.hpp>
-#include <scene/ogl_renderer/texture_2d.hpp>
+
 #include <common/for_each.hpp>
-#include <assets/image.hpp>
 
 
 engine::ogl::scene_renderer::scene_renderer(scene* scene)
@@ -69,26 +67,27 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
     auto mesh_data = instance.get_mesh();
 
     if (object->has_component<material_component>()) {
-        auto material = object->get_component<material_component>();
-
-        cache_material(material->get_material());
-        bind_material(material->get_material());
+        auto c_material = object->get_component<material_component>();
+        m_cache.cache_material(*c_material->get_material());
+        bind_material(c_material->get_material());
 
         const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
-            material->get_material()->get_shader()->get_name());
+            c_material->get_material()->get_shader()->get_name());
 
         gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
             "u_mvp", m_world_matrix * object->get_transformation_matrix()));
 
         for (const auto& mesh : mesh_data->get_meshes()) {
-            cache_geometry(mesh->get_geometry());
-            draw_geometry(mesh->get_geometry());
+            const auto& geometry = mesh->get_geometry();
+            m_cache.cache_geometry(*geometry);
+            draw_geometry(geometry);
         }
 
-        release_material(material->get_material());
+        release_material(c_material->get_material());
     } else {
+        m_cache.cache_mesh_data(*mesh_data);
+
         for (const auto& mesh : mesh_data->get_meshes()) {
-            cache_material(mesh->get_material());
             bind_material(mesh->get_material());
 
             const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
@@ -119,36 +118,6 @@ void engine::ogl::scene_renderer::accept(engine::transformation& transformation,
 void engine::ogl::scene_renderer::set_scene(scene* scene)
 {
     m_scene = scene;
-}
-
-
-void engine::ogl::scene_renderer::cache_material(const std::shared_ptr<material>& material)
-{
-    const auto& textures = material->get_textures();
-    const auto& shaders = material->get_shader();
-
-    for (auto&& [shader_name, texture] : textures) {
-        if (!m_cache.cached(texture->get_name())) {
-            //todo replace on visitors / get_type ?
-            auto casted_texture = std::dynamic_pointer_cast<engine::image>(texture);
-            if (casted_texture != nullptr) {
-                m_cache.emplace(casted_texture->get_name(), ogl::texture2d::from_image(*casted_texture));
-            }
-        }
-    }
-
-    if (!m_cache.cached(shaders->get_name())) {
-        m_cache.emplace(shaders->get_name(), ogl::shader_program::from_program(*shaders));
-        shaders->clear();
-    }
-}
-
-
-void engine::ogl::scene_renderer::cache_geometry(const std::shared_ptr<geometry>& geometry)
-{
-    if (!m_cache.cached(geometry->get_name())) {
-        m_cache.emplace(geometry->get_name(), ogl::vertex_buffer::from_geometry(*geometry));
-    }
 }
 
 

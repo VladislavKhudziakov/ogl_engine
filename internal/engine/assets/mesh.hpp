@@ -21,10 +21,11 @@ namespace engine
         ~mesh() = default;
 
         explicit mesh(std::string, std::shared_ptr<geometry>, std::shared_ptr<material> material = nullptr);
-        std::shared_ptr<geometry> get_geometry();
+        std::shared_ptr<geometry> get_geometry() const;
         void set_geometry(std::shared_ptr<geometry>);
         void attach_material(std::shared_ptr<material>);
         std::shared_ptr<material> get_material() const;
+        bool has_material() const;
 
         const std::string& get_name() const;
 

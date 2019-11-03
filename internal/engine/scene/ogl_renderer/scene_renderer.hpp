@@ -29,10 +29,8 @@ namespace engine::ogl
         void process_nodes(std::shared_ptr<scene_object>);
 
     private:
-        void cache_material(const std::shared_ptr<material>&);
         void bind_material(const std::shared_ptr<material>&);
         void release_material(const std::shared_ptr<material>&);
-        void cache_geometry(const std::shared_ptr<geometry>&);
         void draw_geometry(const std::shared_ptr<geometry>&);
 
         //TODO: replace on weak_ptr
