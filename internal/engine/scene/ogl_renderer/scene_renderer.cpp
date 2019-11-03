@@ -77,6 +77,12 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
         gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
             "u_mvp", m_world_matrix * object->get_transformation_matrix()));
 
+        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
+            "u_mv", m_world_matrix));
+
+        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
+            "u_it_model", glm::inverse(glm::transpose(object->get_transformation_matrix()))));
+
         for (const auto& mesh : mesh_data->get_meshes()) {
             const auto& geometry = mesh->get_geometry();
             m_cache.cache_geometry(*geometry);

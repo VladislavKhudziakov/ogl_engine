@@ -38,7 +38,7 @@ int main()
     object_2->set_component(mesh_instance_component);
     object_2->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
-    transformation_component->rotation = {45, 45, 45};
+    transformation_component->rotation = {15, 30, 45};
     object_2->set_component(transformation_component);
 
     auto object_3 = std::make_shared<engine::scene_object>("test_3");
