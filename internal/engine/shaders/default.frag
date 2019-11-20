@@ -10,6 +10,7 @@ in vec3 var_normal;
 in vec2 var_uv;
 in vec3 var_vertex;
 
+uniform vec3 u_light_sources;
 
 uniform sampler2D u_texture;
 
@@ -17,6 +18,6 @@ void main()
 {
     vec4 texture_color = texture(u_texture, var_uv);
     vec3 light_vector;
-    float n_dot_l = dot(normalize(light_position - var_vertex), normalize(var_normal));
+    float n_dot_l = dot(normalize(u_light_sources - var_vertex), normalize(var_normal));
     FragColor = vec4(texture_color.rgb * n_dot_l, texture_color.a);
 }

@@ -61,3 +61,15 @@ std::shared_ptr<engine::scene_object> engine::scene::get_root()
 {
     return m_root;
 }
+
+
+void engine::scene::add_light_source(const engine::light_source& ls)
+{
+    m_light_sources.emplace_back(ls.get_position(), ls.get_color());
+}
+
+
+const std::vector<engine::light_source>& engine::scene::get_light_sources() const
+{
+    return m_light_sources;
+}

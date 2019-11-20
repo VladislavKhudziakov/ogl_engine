@@ -113,6 +113,25 @@ engine::ogl::set_int_uniform::set_int_uniform(const std::string& name, uint32_t 
 
 void engine::ogl::set_int_uniform::execute(uint64_t program) const
 {
-    auto int_uniform = glGetUniformLocation(program, m_name.c_str());
+    auto int_uniform = glGetUniformLocation(program, m_name.data());
     glUniform1i(int_uniform, m_uniform);
+}
+
+
+engine::ogl::set_float_uniform_array::set_float_uniform_array(
+    const std::string& name,
+    const std::vector<engine::light_source>& light_sources)
+    : m_name(name),
+    m_light_sources_ref(light_sources)
+{
+}
+
+
+void engine::ogl::set_float_uniform_array::execute(uint64_t program) const
+{
+    auto int_uniform = glGetUniformLocation(program, m_name.data());
+
+    if (int_uniform >= 0) {
+        glUniform3fv(int_uniform, m_light_sources_ref.size(), glm::value_ptr(m_light_sources_ref.front().get_position()));
+    }
 }

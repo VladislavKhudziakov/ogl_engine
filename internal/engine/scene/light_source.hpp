@@ -9,10 +9,18 @@
 
 namespace engine
 {
-    struct light_source
+    class light_source
     {
-        glm::vec3 position;
-        glm::vec3 color;
+    public:
+        light_source(const glm::vec3&, const glm::vec3&);
+        ~light_source() = default;
+        void set_position(const glm::vec3&);
+        void set_color(const glm::vec3&);
+        const glm::vec3& get_position() const;
+        const glm::vec3& get_color() const;
+    private:
+        glm::vec3 m_position;
+        glm::vec3 m_color;
     };
 }
 

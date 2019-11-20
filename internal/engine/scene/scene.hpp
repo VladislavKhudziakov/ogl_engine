@@ -10,7 +10,7 @@
 #include <scene/camera.hpp>
 #include <scene/perspective.hpp>
 #include <scene/interfaces/scene_renderer.hpp>
-
+#include <scene/light_source.hpp>
 
 namespace engine
 {
@@ -28,11 +28,14 @@ namespace engine
         void set_perspective(const perspective&);
         const camera& get_camera() const;
         const perspective& get_perspective() const;
+        void add_light_source(const engine::light_source&);
+        const std::vector<engine::light_source>& get_light_sources() const;
 
     private:
         std::shared_ptr<engine::scene_object> m_root;
         camera m_camera;
         perspective m_perspective;
         std::shared_ptr<interfaces::scene_renderer> m_renderer;
+        std::vector<engine::light_source> m_light_sources;
     };
 } // namespace engine

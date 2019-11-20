@@ -8,6 +8,8 @@
 
 #include <string>
 #include <memory>
+#include <scene/light_source.hpp>
+#include <vector>
 
 
 namespace engine
@@ -81,5 +83,15 @@ namespace engine::ogl
     private:
         std::string m_name;
         int32_t m_uniform;
+    };
+
+    struct set_float_uniform_array : shader_program::uniform_command
+    {
+        set_float_uniform_array(const std::string&, const std::vector<engine::light_source>&);
+        void execute(uint64_t) const override;
+        ~set_float_uniform_array() override = default;
+    private:
+        std::string m_name;
+        const std::vector<engine::light_source>& m_light_sources_ref;
     };
 } // namespace engine
