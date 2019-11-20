@@ -2,6 +2,9 @@
 // Created by movleaxedx on 8.10.19.
 //
 
+
+//todo uniforms / defines introspection
+
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
@@ -132,6 +135,16 @@ void engine::ogl::set_float_uniform_array::execute(uint64_t program) const
     auto int_uniform = glGetUniformLocation(program, m_name.data());
 
     if (int_uniform >= 0) {
-        glUniform3fv(int_uniform, m_light_sources_ref.size(), glm::value_ptr(m_light_sources_ref.front().get_position()));
+        std::vector<glm::vec3> light_positions;
+        light_positions.reserve(m_light_sources_ref.size());
+
+        //todo remove
+        for (const auto& light_source : m_light_sources_ref) {
+            light_positions.emplace_back(light_source.get_position());
+        }
+
+        auto s = light_positions.size();
+
+        glUniform3fv(int_uniform, light_positions.size(), glm::value_ptr(light_positions.front()));
     }
 }

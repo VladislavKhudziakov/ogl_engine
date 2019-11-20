@@ -54,7 +54,8 @@ int main()
 
 
     mesh_scene->set_root(object_1);
-    mesh_scene->add_light_source({{10, 20, 30}, {1, 1, 1}});
+    mesh_scene->add_light_source({{10, -20, 30}, {1, 1, 1}});
+    mesh_scene->add_light_source({{-30, 30, -30}, {1, 1, 1}});
     app.set_scene(std::move(mesh_scene));
     app.exec();
 
