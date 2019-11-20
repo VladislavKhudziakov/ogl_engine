@@ -42,3 +42,15 @@ const engine::material::material_textures& engine::material::get_textures() cons
 {
     return m_textures;
 }
+
+
+void engine::material::set_rendering_config(const engine::material_config& config)
+{
+    m_config = config;
+}
+
+
+const engine::material_config& engine::material::get_config() const
+{
+    return m_config;
+}

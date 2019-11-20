@@ -58,7 +58,42 @@ void engine::ogl::scene_renderer::process_nodes(std::shared_ptr<scene_object> ob
 
 void engine::ogl::scene_renderer::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
 {
-    //todo material semantic
+    //todo remake
+    auto material = component.get_material();
+
+    if (material) {
+        const auto& config = material->get_config();
+        switch (config.culling) {
+        case material_config::culling_type::none:
+            glDisable(GL_CULL_FACE);
+            break;
+        case material_config::culling_type::front:
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_FRONT);
+            break;
+        case material_config::culling_type::back:
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+            break;
+        }
+
+        switch (config.blending) {
+        case material_config::blend_mode::none:
+            glDisable(GL_BLEND);
+            break;
+        case material_config::blend_mode::alpha:
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            break;
+        case material_config::blend_mode::add:
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
+            break;
+        case material_config::blend_mode::multiply:
+            glBlendFunc(GL_DST_COLOR, GL_ZERO);
+            break;
+        }
+    }
 }
 
 
