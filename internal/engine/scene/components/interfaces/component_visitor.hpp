@@ -5,25 +5,18 @@
 
 #pragma once
 
-#include <memory>
-
-namespace engine
-{
-    class material_component;
-    class mesh_instance;
-    class transformation;
-
-    class scene_object;
-}
+#include <scene/components/interfaces/transformation_visitor.hpp>
+#include <scene/components/interfaces/mesh_instance_visitor.hpp>
+#include <scene/components/interfaces/material_component_visitor.hpp>
 
 namespace engine::interfaces
 {
-    class component_visitor
+    class component_visitor : public transformation_visitor, public mesh_instance_visitor, public material_component_visitor
     {
     public:
-        virtual ~component_visitor() = default;
-        virtual void accept(material_component&, std::shared_ptr<scene_object>&) = 0;
-        virtual void accept(mesh_instance&, std::shared_ptr<scene_object>&) = 0;
-        virtual void accept(transformation&, std::shared_ptr<scene_object>&) = 0;
+        using material_component_visitor::accept;
+        using transformation_visitor::accept;
+        using mesh_instance_visitor::accept;
+        ~component_visitor() override = default;
     };
 }
