@@ -17,8 +17,11 @@ namespace engine
             none, alpha, add, multiply
         };
 
-        culling_type culling;
-        blend_mode blending;
+        culling_type culling = culling_type::back;
+        blend_mode blending = blend_mode::none;
+
+        bool write_color = true;
+        bool enable_depth_test = true;
     };
 }
 

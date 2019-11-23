@@ -21,7 +21,7 @@ int main()
 
     auto material = std::make_shared<engine::material>(app.get_assets_manager()->get<engine::shader_program>("default_shader"));
     material->set_texture("u_texture", app.get_assets_manager()->get<engine::interfaces::texture>("default_texture"));
-    material->set_rendering_config({engine::material_config::culling_type::back, engine::material_config::blend_mode::multiply});
+    material->set_rendering_config({engine::material_config::culling_type::back, engine::material_config::blend_mode::alpha});
 
     app.get_assets_manager()->add(material, "test_mat");
 

@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <scene/ogl_renderer/scene_renderer.hpp>
+#include <scene/ogl_renderer/material_config_resolver.hpp>
 
 #include <common/for_each.hpp>
 
@@ -29,10 +30,10 @@ void engine::ogl::scene_renderer::draw_scene()
     m_view_matrix = glm::lookAt(camera.get_position(), camera.get_direction(), glm::vec3(0, 1, 0));
     m_world_matrix = m_projection_matrix * m_view_matrix;
 
-    glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glClearColor(0.0f, 177.0f / 255.0f, 64.0f / 255.0f, 1.0f);
 
     process_nodes(m_scene->get_root());
 }
@@ -61,39 +62,8 @@ void engine::ogl::scene_renderer::accept(engine::material_component& component, 
     //todo remake
     auto material = component.get_material();
 
-    if (material) {
-        const auto& config = material->get_config();
-        switch (config.culling) {
-        case material_config::culling_type::none:
-            glDisable(GL_CULL_FACE);
-            break;
-        case material_config::culling_type::front:
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_FRONT);
-            break;
-        case material_config::culling_type::back:
-            glEnable(GL_CULL_FACE);
-            glCullFace(GL_BACK);
-            break;
-        }
-
-        switch (config.blending) {
-        case material_config::blend_mode::none:
-            glDisable(GL_BLEND);
-            break;
-        case material_config::blend_mode::alpha:
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            break;
-        case material_config::blend_mode::add:
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_ONE, GL_ONE);
-            break;
-        case material_config::blend_mode::multiply:
-            glBlendFunc(GL_DST_COLOR, GL_ZERO);
-            break;
-        }
-    }
+    material_config_resolver resolver(material->get_config());
+    resolver.set_config();
 }
 
 
@@ -188,6 +158,7 @@ void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>&
         curr_slot++;
     }
 }
+
 
 void engine::ogl::scene_renderer::release_material(const std::shared_ptr<material>& material)
 {
