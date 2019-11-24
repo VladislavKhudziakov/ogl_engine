@@ -12,19 +12,22 @@
 #include <material.hpp>
 #include <shader_program.hpp>
 #include <glm/glm.hpp>
-#include <components/transformation.hpp>
+#include <scene/components/transformation.hpp>
+#include <scene/scene.hpp>
 #include <scene/components/mesh_instance.hpp>
 #include <scene/components/material_component.hpp>
 
 namespace engine
 {
+    class scene;
+
     class scene_object : public std::enable_shared_from_this<scene_object>
     {
         using components = std::tuple<std::shared_ptr<transformation>, std::shared_ptr<material_component>, std::shared_ptr<mesh_instance>>;
 
     public:
-        explicit scene_object(const std::string&);
-        virtual ~scene_object() = default;
+        explicit scene_object(scene&, const std::string&);
+        virtual ~scene_object();
 
         std::string get_name() const;
         scene_object& add_child(std::shared_ptr<scene_object>);
@@ -59,14 +62,15 @@ namespace engine
         void set_component(std::shared_ptr<T> component)
         {
             std::get<std::shared_ptr<T>>(m_components) = component;
+            m_scene.acquire_gpu_resource(component);
         }
-
 
     protected:
         std::string m_name;
         std::weak_ptr<scene_object> m_parent;
         std::vector<std::shared_ptr<scene_object>> m_children;
-        glm::mat4 m_transformation_matrix;
+        glm::mat4 m_transformation_matrix {1};
         components m_components;
+        scene& m_scene;
     };
 } // namespace engine

@@ -5,8 +5,8 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include <scene/scene_object.hpp>
 #include <scene/camera.hpp>
 #include <scene/perspective.hpp>
 #include <scene/interfaces/scene_renderer.hpp>
@@ -14,6 +14,8 @@
 
 namespace engine
 {
+    class scene_object;
+
     class scene
     {
     public:
@@ -30,6 +32,18 @@ namespace engine
         const perspective& get_perspective() const;
         void add_light_source(const engine::light_source&);
         const std::vector<engine::light_source>& get_light_sources() const;
+
+        template <typename T>
+        void acquire_gpu_resource(const std::shared_ptr<T>& resource)
+        {
+              m_renderer->acquire_gpu_resource(resource);
+        }
+
+        template <typename T>
+        void release_gpu_resource(const std::shared_ptr<T>& resource)
+        {
+            m_renderer->release_gpu_resource(resource);
+        }
 
     private:
         std::shared_ptr<engine::scene_object> m_root;

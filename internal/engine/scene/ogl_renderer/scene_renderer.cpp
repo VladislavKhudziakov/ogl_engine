@@ -6,10 +6,38 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <scene/scene_object.hpp>
 #include <scene/ogl_renderer/scene_renderer.hpp>
 #include <scene/ogl_renderer/material_config_resolver.hpp>
 
 #include <common/for_each.hpp>
+
+namespace engine::ogl
+{
+    class gpu_cache_resolver : public engine::interfaces::material_component_visitor, public engine::interfaces::mesh_instance_visitor
+    {
+    public:
+        explicit gpu_cache_resolver(engine::ogl::scene_renderer& renderer)
+            : m_renderer(renderer)
+        {
+        }
+
+        ~gpu_cache_resolver() override = default;
+
+        void accept(engine::material_component& component, std::shared_ptr<engine::scene_object>& ptr) override
+        {
+            m_renderer.m_cache.cache_material(*component.get_material());
+        }
+
+        void accept(engine::mesh_instance& instance, std::shared_ptr<engine::scene_object>& ptr) override
+        {
+            m_renderer.m_cache.cache_mesh_data(*instance.get_mesh());
+        }
+
+    private:
+        engine::ogl::scene_renderer& m_renderer;
+    };
+}
 
 
 engine::ogl::scene_renderer::scene_renderer(scene* scene)
@@ -59,7 +87,6 @@ void engine::ogl::scene_renderer::process_nodes(std::shared_ptr<scene_object> ob
 
 void engine::ogl::scene_renderer::accept(engine::material_component& component, std::shared_ptr<scene_object>& object)
 {
-    //todo remake
     auto material = component.get_material();
 
     material_config_resolver resolver(material->get_config());
@@ -171,4 +198,14 @@ void engine::ogl::scene_renderer::release_material(const std::shared_ptr<materia
         auto gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->unbind();
     }
+}
+
+
+void engine::ogl::scene_renderer::acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr)
+{
+}
+
+
+void engine::ogl::scene_renderer::release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr)
+{
 }

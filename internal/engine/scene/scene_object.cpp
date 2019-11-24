@@ -1,12 +1,17 @@
 //
 // Created by Vladislav Khudiakov on 10/11/19.
 //
+
 #include <algorithm>
+
+#include <common/for_each.hpp>
+#include <scene/scene.hpp>
 #include <scene_object.hpp>
 
 
-engine::scene_object::scene_object(const std::string& name)
+engine::scene_object::scene_object(scene& scene, const std::string& name)
     : m_name(name)
+    , m_scene(scene)
 {
     set_component<transformation>(std::make_shared<transformation>());
 }
@@ -79,4 +84,14 @@ void engine::scene_object::set_transformation_matrix(glm::mat4 matrix)
 glm::mat4 engine::scene_object::get_transformation_matrix() const
 {
     return m_transformation_matrix;
+}
+
+
+engine::scene_object::~scene_object()
+{
+    for_each(m_components, [&](auto&& component) {
+        if (component != nullptr) {
+            m_scene.release_gpu_resource(component);
+        }
+    });
 }

@@ -3,6 +3,7 @@
 //
 
 
+#include <scene/scene_object.hpp>
 #include <scene/scene.hpp>
 #include <iostream>
 

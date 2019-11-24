@@ -1,6 +1,8 @@
 #include <application/application.hpp>
 #include <scene/scene.hpp>
 #include <scene/ogl_renderer/scene_renderer.hpp>
+#include <scene/scene_object.hpp>
+#include <scene/scene_factory.hpp>
 #include <material.hpp>
 #include <mesh_importer.hpp>
 #include <assets/shader_importer.hpp>
@@ -26,7 +28,9 @@ int main()
     app.get_assets_manager()->add(material, "test_mat");
 
     auto mesh_scene = std::make_unique<engine::scene>(std::make_shared<engine::ogl::scene_renderer>());
-    auto object_1 = std::make_shared<engine::scene_object>("test_1");
+    engine::scene_factory scene_factory(*mesh_scene);
+
+    auto object_1 = scene_factory.make_scene_object("test_1");
 
     auto transformation_component = std::make_shared<engine::transformation>();
     transformation_component->scale = {0.1, 0.1, 0.1};
@@ -35,14 +39,25 @@ int main()
     auto mesh_instance_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager()->get<engine::mesh_data>("teapot"));
     auto material_component = std::make_shared<engine::material_component>(app.get_assets_manager()->get<engine::material>("test_mat"));
 
-    auto object_2 = std::make_shared<engine::scene_object>("test_2");
+    //todo make scene::create_scene_object
+    //// make factory/factory method to create objects
+    //// send reference on scene to scene objects
+    //// remove material component
+    //// when use set component create gpu resource
+    //// make reference counter in gpu cache
+    //// when counter == 0 release resource
+    //// make smth like scene::acquire_gpu_resource
+    //// think over components rendering
+
+
+    auto object_2 = scene_factory.make_scene_object("test_1");
     object_2->set_component(mesh_instance_component);
     object_2->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
     transformation_component->rotation = {15, 30, 45};
     object_2->set_component(transformation_component);
 
-    auto object_3 = std::make_shared<engine::scene_object>("test_3");
+    auto object_3 = scene_factory.make_scene_object("test_1");
     object_3->set_component(mesh_instance_component);
     object_3->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
@@ -52,7 +67,6 @@ int main()
 
     object_1->add_child(object_2);
     object_2->add_child(object_3);
-
 
     mesh_scene->set_root(object_1);
     mesh_scene->add_light_source({{10, -20, 30}, {1, 1, 1}});

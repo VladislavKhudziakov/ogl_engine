@@ -10,12 +10,13 @@
 #include <scene/ogl_renderer/gpu_cache.hpp>
 #include <scene/components/interfaces/component_visitor.hpp>
 
-
 namespace engine::ogl
 {
     class scene_renderer : public engine::interfaces::scene_renderer, public engine::interfaces::component_visitor
     {
     public:
+        friend class gpu_cache_resolver;
+
         explicit scene_renderer(scene*);
         scene_renderer() = default;
         ~scene_renderer() override = default;
@@ -26,9 +27,12 @@ namespace engine::ogl
         void accept(mesh_instance& instance, std::shared_ptr<scene_object>& ptr) override;
         void accept(transformation& transformation, std::shared_ptr<scene_object>& ptr) override;
 
-        void process_nodes(std::shared_ptr<scene_object>);
-
     private:
+    public:
+        void acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
+        void release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
+    private:
+        void process_nodes(std::shared_ptr<scene_object>);
         void bind_material(const std::shared_ptr<material>&);
         void release_material(const std::shared_ptr<material>&);
         void draw_geometry(const std::shared_ptr<geometry>&);
