@@ -15,7 +15,6 @@
 #include <scene/components/transformation.hpp>
 #include <scene/scene.hpp>
 #include <scene/components/mesh_instance.hpp>
-#include <scene/components/material_component.hpp>
 
 namespace engine
 {
@@ -23,7 +22,7 @@ namespace engine
 
     class scene_object : public std::enable_shared_from_this<scene_object>
     {
-        using components = std::tuple<std::shared_ptr<transformation>, std::shared_ptr<material_component>, std::shared_ptr<mesh_instance>>;
+        using components = std::tuple<std::shared_ptr<transformation>, std::shared_ptr<mesh_instance>>;
 
     public:
         explicit scene_object(scene&, const std::string&);

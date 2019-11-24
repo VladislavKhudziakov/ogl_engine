@@ -23,7 +23,6 @@ namespace engine::ogl
         void set_scene(scene*) override;
         void draw_scene() override;
 
-        void accept(material_component& component, std::shared_ptr<scene_object>& ptr) override;
         void accept(mesh_instance& instance, std::shared_ptr<scene_object>& ptr) override;
         void accept(transformation& transformation, std::shared_ptr<scene_object>& ptr) override;
 

@@ -36,8 +36,13 @@ int main()
     transformation_component->scale = {0.1, 0.1, 0.1};
     object_1->set_component(transformation_component);
 
+    const auto& meshes_list = app.get_assets_manager()->get<engine::mesh_data>("teapot")->get_meshes();
+
+    for (auto&& mesh : meshes_list) {
+        mesh->attach_material(app.get_assets_manager()->get<engine::material>("test_mat"));
+    }
+
     auto mesh_instance_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager()->get<engine::mesh_data>("teapot"));
-    auto material_component = std::make_shared<engine::material_component>(app.get_assets_manager()->get<engine::material>("test_mat"));
 
     //todo make scene::create_scene_object
     //// make factory/factory method to create objects
@@ -52,14 +57,12 @@ int main()
 
     auto object_2 = scene_factory.make_scene_object("test_1");
     object_2->set_component(mesh_instance_component);
-    object_2->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
     transformation_component->rotation = {15, 30, 45};
     object_2->set_component(transformation_component);
 
     auto object_3 = scene_factory.make_scene_object("test_1");
     object_3->set_component(mesh_instance_component);
-    object_3->set_component(material_component);
     transformation_component = std::make_shared<engine::transformation>();
     transformation_component->translation = {0, 60, 0};
     transformation_component->scale = {0.5, 0.5, 0.5};
