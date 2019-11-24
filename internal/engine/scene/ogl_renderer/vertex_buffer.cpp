@@ -40,7 +40,7 @@ engine::ogl::vertex_buffer::vertex_buffer(const std::vector<engine::vertex>& ver
 }
 
 
-std::shared_ptr<engine::ogl::vertex_buffer> engine::ogl::vertex_buffer::from_geometry(const engine::geometry& geometry)
+std::unique_ptr<engine::ogl::vertex_buffer> engine::ogl::vertex_buffer::from_geometry(const engine::geometry& geometry)
 {
     std::vector<uint32_t> indices;
 
@@ -53,7 +53,7 @@ std::shared_ptr<engine::ogl::vertex_buffer> engine::ogl::vertex_buffer::from_geo
         }
     }
 
-    return std::make_shared<vertex_buffer>(geometry.get_vertices(), indices);
+    return std::make_unique<vertex_buffer>(geometry.get_vertices(), indices);
 }
 
 

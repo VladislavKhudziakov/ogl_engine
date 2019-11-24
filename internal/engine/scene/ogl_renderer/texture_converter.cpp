@@ -14,7 +14,11 @@ void engine::ogl::texture_converter::accept(const engine::image& image) const
 }
 
 
-std::shared_ptr<engine::ogl::interfaces::texture> engine::ogl::texture_converter::get_texture() const
+std::unique_ptr<engine::ogl::interfaces::texture> engine::ogl::texture_converter::get_texture() const
 {
-    return m_texture;
+    if (m_texture) {
+        return std::move(m_texture);
+    }
+
+    throw std::runtime_error("ERROR: converted image does not exist");
 }

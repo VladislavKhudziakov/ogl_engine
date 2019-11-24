@@ -63,9 +63,9 @@ engine::ogl::shader_program::shader_program(
 }
 
 
-std::shared_ptr<engine::ogl::shader_program> engine::ogl::shader_program::from_program(const engine::shader_program& program)
+std::unique_ptr<engine::ogl::shader_program> engine::ogl::shader_program::from_program(const engine::shader_program& program)
 {
-    return std::make_shared<shader_program>(program.get_vertex_shader(), program.get_fragment_shader());
+    return std::make_unique<shader_program>(program.get_vertex_shader(), program.get_fragment_shader());
 }
 
 

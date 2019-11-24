@@ -24,13 +24,13 @@ engine::ogl::texture2d::texture2d(const image_data& img_data)
 }
 
 
-std::shared_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const engine::image& img)
+std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const engine::image& img)
 {
     auto [width, height] = img.get_size();
 
     image_data data { width, height, img.get_format(), img.get_data()};
 
-    return std::make_shared<texture2d>(data);
+    return std::make_unique<texture2d>(data);
 }
 
 

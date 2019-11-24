@@ -31,7 +31,7 @@ namespace engine::ogl
             virtual void execute(uint64_t) const = 0;
         };
 
-        static std::shared_ptr<shader_program> from_program(const engine::shader_program&);
+        static std::unique_ptr<shader_program> from_program(const engine::shader_program&);
         shader_program(const std::string&, const std::string&);
         ~shader_program();
 

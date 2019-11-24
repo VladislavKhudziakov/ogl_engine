@@ -148,7 +148,7 @@ void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>&
     int curr_slot = 0;
     auto textures = material->get_textures();
     for (auto [shader_uniform, texture] : textures) {
-        auto gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->bind(curr_slot);
         gpu_program->apply_uniform_command(set_int_uniform(shader_uniform, curr_slot));
         curr_slot++;
@@ -164,7 +164,7 @@ void engine::ogl::scene_renderer::release_material(const std::shared_ptr<materia
 
     auto textures = material->get_textures();
     for (auto&& [shader_uniform, texture] : textures) {
-        auto gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->unbind();
     }
 }
@@ -172,6 +172,7 @@ void engine::ogl::scene_renderer::release_material(const std::shared_ptr<materia
 
 void engine::ogl::scene_renderer::acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr)
 {
+
 }
 
 

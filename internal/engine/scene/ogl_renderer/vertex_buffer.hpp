@@ -25,7 +25,7 @@ namespace engine::ogl
     {
         friend class scene_renderer;
     public:
-        static std::shared_ptr<vertex_buffer> from_geometry(const engine::geometry&);
+        static std::unique_ptr<vertex_buffer> from_geometry(const engine::geometry&);
         vertex_buffer(const std::vector<engine::vertex>&, const std::vector<uint32_t>&);
         ~vertex_buffer() override;
         void bind() override;

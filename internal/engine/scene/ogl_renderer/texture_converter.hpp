@@ -22,10 +22,10 @@ namespace engine::ogl
         ~texture_converter() override = default;
 
         void accept(const image& image) const override;
-        std::shared_ptr<interfaces::texture> get_texture() const;
+        std::unique_ptr<interfaces::texture> get_texture() const;
 
     private:
-        mutable std::shared_ptr<interfaces::texture> m_texture;
+        mutable std::unique_ptr<interfaces::texture> m_texture;
     };
 }
 

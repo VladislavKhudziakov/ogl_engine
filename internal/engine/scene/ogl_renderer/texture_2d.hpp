@@ -32,7 +32,7 @@ namespace engine::ogl
             const unsigned char* data;
         };
 
-        static std::shared_ptr<texture2d> from_image(const engine::image&);
+        static std::unique_ptr<texture2d> from_image(const engine::image&);
         explicit texture2d(const image_data&);
         void bind(int) override;
         void unbind() override;
