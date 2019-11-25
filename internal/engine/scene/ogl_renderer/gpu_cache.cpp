@@ -14,6 +14,8 @@
 #include <texture_converter.hpp>
 
 
+//todo replace on templates?
+
 void engine::ogl::gpu_cache::acquire_geometry(const engine::geometry& geometry)
 {
     if (auto it = m_res.find(geometry.get_name()); it != m_res.end()) {
