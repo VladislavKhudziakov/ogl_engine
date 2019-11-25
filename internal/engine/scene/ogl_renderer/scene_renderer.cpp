@@ -26,7 +26,7 @@ namespace engine::ogl
 
         void accept(engine::mesh_instance& instance, std::shared_ptr<engine::scene_object>& ptr) override
         {
-            m_renderer.m_cache.cache_mesh_data(*instance.get_mesh());
+            m_renderer.m_cache.acquire_mesh_data(*instance.get_mesh());
         }
 
     private:
@@ -83,13 +83,14 @@ void engine::ogl::scene_renderer::process_nodes(std::shared_ptr<scene_object> ob
 void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::shared_ptr<scene_object>& object)
 {
     auto mesh_data = instance.get_mesh();
-    m_cache.cache_mesh_data(*mesh_data);
+//    m_cache.cache_mesh_data(*mesh_data);
 
     for (const auto& mesh : mesh_data->get_meshes()) {
-        m_cache.cache_material(*mesh->get_material());
+//        m_cache.cache_material(*mesh->get_material());
         bind_material(mesh->get_material());
 
-        const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
+//        const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
+        const auto& gpu_program = m_cache.get_res<ogl::shader_program>(
             mesh->get_material()->get_shader()->get_name());
 
         gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
@@ -133,7 +134,8 @@ void engine::ogl::scene_renderer::set_scene(scene* scene)
 
 void engine::ogl::scene_renderer::draw_geometry(const std::shared_ptr<geometry>& geometry)
 {
-    const auto& buffer = m_cache.get_resource<ogl::interfaces::vertex_buffer>(geometry->get_name());
+//    const auto& buffer = m_cache.get_resource<ogl::interfaces::vertex_buffer>(geometry->get_name());
+    const auto& buffer = m_cache.get_res<ogl::interfaces::vertex_buffer>(geometry->get_name());
     buffer->bind();
     buffer->draw();
     buffer->unbind();
@@ -142,13 +144,16 @@ void engine::ogl::scene_renderer::draw_geometry(const std::shared_ptr<geometry>&
 
 void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>& material)
 {
-    const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(material->get_shader()->get_name());
+//    const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(material->get_shader()->get_name());
+    auto name = material->get_shader()->get_name();
+    const auto& gpu_program = m_cache.get_res<ogl::shader_program>(name);
     gpu_program->bind();
 
     int curr_slot = 0;
     auto textures = material->get_textures();
     for (auto [shader_uniform, texture] : textures) {
-        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+//        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+        const auto& gpu_texture = m_cache.get_res<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->bind(curr_slot);
         gpu_program->apply_uniform_command(set_int_uniform(shader_uniform, curr_slot));
         curr_slot++;
@@ -158,24 +163,31 @@ void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>&
 
 void engine::ogl::scene_renderer::release_material(const std::shared_ptr<material>& material)
 {
-    const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
+//    const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
+    const auto& gpu_program = m_cache.get_res<ogl::shader_program>(
         material->get_shader()->get_name());
     gpu_program->unbind();
 
     auto textures = material->get_textures();
     for (auto&& [shader_uniform, texture] : textures) {
-        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+//        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
+        const auto& gpu_texture = m_cache.get_res<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->unbind();
     }
 }
 
 
-void engine::ogl::scene_renderer::acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr)
+void engine::ogl::scene_renderer::acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& component)
 {
-
+    if (auto mesh_instance = std::dynamic_pointer_cast<engine::mesh_instance>(component); mesh_instance != nullptr) {
+        m_cache.acquire_mesh_data(*mesh_instance->get_mesh());
+    }
 }
 
 
-void engine::ogl::scene_renderer::release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr)
+void engine::ogl::scene_renderer::release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& component)
 {
+    if (auto mesh_instance = std::dynamic_pointer_cast<engine::mesh_instance>(component); mesh_instance != nullptr) {
+        m_cache.release_mesh_data(*mesh_instance->get_mesh());
+    }
 }

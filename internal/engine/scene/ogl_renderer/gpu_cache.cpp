@@ -14,66 +14,134 @@
 #include <texture_converter.hpp>
 
 
-bool engine::ogl::gpu_cache::cached(const std::string& name) const
+void engine::ogl::gpu_cache::acquire_geometry(const engine::geometry& geometry)
 {
-    return m_resources.find(name) != m_resources.end();
-}
-
-
-void engine::ogl::gpu_cache::cache_material(const engine::material& material)
-{
-    const auto& textures = material.get_textures();
-    cache_shader(*material.get_shader());
-
-    for (auto&& [shader_name, texture] : textures) {
-        cache_texture(*texture);
+    if (auto it = m_res.find(geometry.get_name()); it != m_res.end()) {
+        auto&& [name, res_ref] = *it;
+        ++res_ref.refs_counter;
+    } else {
+        m_res.emplace(geometry.get_name(), ogl::vertex_buffer::from_geometry(geometry));
     }
 }
 
 
-void engine::ogl::gpu_cache::cache_texture(const engine::interfaces::texture& texture)
+void engine::ogl::gpu_cache::release_geometry(const engine::geometry& geometry)
 {
-    if (!cached(texture.get_name())) {
+    auto it = m_res.find(geometry.get_name());
+    assert(it != m_res.end() && "ERROR: resource already released");
+
+    auto&& [name, res_ref] = *it;
+    if (--res_ref.refs_counter <= 0) {
+        m_res.erase(it);
+    }
+}
+
+
+void engine::ogl::gpu_cache::acquire_shader(const engine::shader_program& program)
+{
+    if (auto it = m_res.find(program.get_name()); it != m_res.end()) {
+        auto&& [name, res_ref] = *it;
+        ++res_ref.refs_counter;
+    } else {
+        m_res.emplace(program.get_name(), ogl::shader_program::from_program(program));
+    }
+}
+
+
+void engine::ogl::gpu_cache::release_shader(const engine::shader_program& program)
+{
+    auto it = m_res.find(program.get_name());
+    assert(it != m_res.end() && "ERROR: resource already released");
+
+    auto&& [name, res_ref] = *it;
+    if (--res_ref.refs_counter <= 0) {
+        m_res.erase(it);
+    }
+}
+
+
+void engine::ogl::gpu_cache::acquire_texture(const engine::interfaces::texture& texture)
+{
+    if (auto it = m_res.find(texture.get_name()); it != m_res.end()) {
+        auto&& [name, res_ref] = *it;
+        ++res_ref.refs_counter;
+    } else {
         texture_converter converter;
         texture.visit(converter);
-        emplace(texture.get_name(), converter.get_texture());
+        m_res.emplace(texture.get_name(), converter.get_texture());
     }
 }
 
 
-void engine::ogl::gpu_cache::cache_geometry(const engine::geometry& geometry)
+void engine::ogl::gpu_cache::release_texture(const engine::interfaces::texture& texture)
 {
-    if (!cached(geometry.get_name())) {
-        emplace(geometry.get_name(), ogl::vertex_buffer::from_geometry(geometry));
+    auto it = m_res.find(texture.get_name());
+    assert(it != m_res.end() && "ERROR: resource already released");
+
+    auto&& [name, res_ref] = *it;
+    if (--res_ref.refs_counter <= 0) {
+        m_res.erase(it);
     }
 }
 
 
-void engine::ogl::gpu_cache::cache_shader(const engine::shader_program& program)
+void engine::ogl::gpu_cache::acquire_material(const engine::material& material)
 {
-    if (!cached(program.get_name())) {
-        emplace(program.get_name(), ogl::shader_program::from_program(program));
-        return;
+    const auto& textures = material.get_textures();
+    acquire_shader(*material.get_shader());
+
+    for (auto&& [shader_name, texture] : textures) {
+        acquire_texture(*texture);
     }
 }
 
 
-void engine::ogl::gpu_cache::cache_mesh(const engine::mesh& a_mesh)
+void engine::ogl::gpu_cache::release_material(const engine::material& material)
 {
-    cache_geometry(*a_mesh.get_geometry());
+    const auto& textures = material.get_textures();
+    release_shader(*material.get_shader());
 
-    if (a_mesh.has_material()) {
-        cache_material(*a_mesh.get_material());
+    for (auto&& [shader_name, texture] : textures) {
+        release_texture(*texture);
     }
 }
 
 
-void engine::ogl::gpu_cache::cache_mesh_data(const engine::mesh_data& a_mesh_data)
+void engine::ogl::gpu_cache::acquire_mesh(const engine::mesh& mesh)
 {
-    const auto& meshes = a_mesh_data.get_meshes();
+    acquire_geometry(*mesh.get_geometry());
 
-    for (auto& mesh : meshes)
-    {
-        cache_mesh(*mesh);
+    if (mesh.has_material()) {
+        acquire_material(*mesh.get_material());
+    }
+}
+
+
+void engine::ogl::gpu_cache::release_mesh(const engine::mesh& mesh)
+{
+    release_geometry(*mesh.get_geometry());
+
+    if (mesh.has_material()) {
+        release_material(*mesh.get_material());
+    }
+}
+
+
+void engine::ogl::gpu_cache::acquire_mesh_data(const engine::mesh_data& mesh_data)
+{
+    const auto& meshes = mesh_data.get_meshes();
+
+    for (auto& mesh : meshes) {
+        acquire_mesh(*mesh);
+    }
+}
+
+
+void engine::ogl::gpu_cache::release_mesh_data(const engine::mesh_data& mesh_data)
+{
+    const auto& meshes = mesh_data.get_meshes();
+
+    for (auto& mesh : meshes) {
+        release_mesh(*mesh);
     }
 }

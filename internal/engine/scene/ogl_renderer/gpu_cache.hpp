@@ -42,7 +42,8 @@ namespace engine::ogl
 
         struct resource_ref
         {
-            resource_ref()
+            explicit resource_ref(gpu_resources res)
+                : resource(std::move(res))
             {
                 ++refs_counter;
             }
@@ -56,35 +57,34 @@ namespace engine::ogl
         gpu_cache() = default;
         ~gpu_cache() = default;
 
-        bool cached(const std::string& name) const;
-
-        template<typename T>
-        const std::unique_ptr<T>& get_resource(const std::string& name) const
+        template <typename T>
+        const std::unique_ptr<T>& get_res(std::string name) const
         {
-            if (cached(name)) {
-                return std::get<std::unique_ptr<T>>(m_resources.at(name));
+            const auto it = m_res.find(name);
+
+            if (it == m_res.end()) {
+                throw std::runtime_error("ERROR: resource with name " + name + " does not exist");
             }
 
-            throw std::runtime_error("ERROR: resourse with name " + name + "does not exist");
+            auto&& [res_name, ref] = *it;
+
+            return std::get<std::unique_ptr<T>>(ref.resource);
         }
 
-        void cache_material(const engine::material&);
-        void cache_shader(const engine::shader_program&);
-        void cache_texture(const engine::interfaces::texture&);
-        void cache_geometry(const engine::geometry&);
-        void cache_mesh(const engine::mesh&);
-        void cache_mesh_data(const engine::mesh_data&);
-
+        void acquire_geometry(const engine::geometry&);
+        void release_geometry(const engine::geometry&);
+        void acquire_shader(const engine::shader_program&);
+        void release_shader(const engine::shader_program&);
+        void acquire_texture(const engine::interfaces::texture&);
+        void release_texture(const engine::interfaces::texture&);
+        void acquire_material(const engine::material&);
+        void release_material(const engine::material&);
+        void acquire_mesh(const engine::mesh&);
+        void release_mesh(const engine::mesh&);
+        void acquire_mesh_data(const engine::mesh_data&);
+        void release_mesh_data(const engine::mesh_data&);
 
     private:
-        template<typename T>
-        void emplace(const std::string& name, std::unique_ptr<T> resource)
-        {
-            if (!cached(name)) {
-                m_resources.emplace(name, std::move(resource));
-            }
-        }
-
         gpu_resources_map m_resources;
         std::map<std::string, resource_ref> m_res;
     };

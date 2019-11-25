@@ -44,16 +44,6 @@ int main()
 
     auto mesh_instance_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager()->get<engine::mesh_data>("teapot"));
 
-    //todo make scene::create_scene_object
-    //// make factory/factory method to create objects
-    //// send reference on scene to scene objects
-    //// remove material component
-    //// when use set component create gpu resource
-    //// make reference counter in gpu cache
-    //// when counter == 0 release resource
-    //// make smth like scene::acquire_gpu_resource
-    //// think over components rendering
-
 
     auto object_2 = scene_factory.make_scene_object("test_1");
     object_2->set_component(mesh_instance_component);
