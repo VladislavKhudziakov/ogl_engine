@@ -23,6 +23,7 @@ namespace engine::ogl
 
         void accept(const image& image) const override;
         std::unique_ptr<interfaces::texture> get_texture() const;
+        void accept(const environment_texture& texture) const override;
 
     private:
         mutable std::unique_ptr<interfaces::texture> m_texture;

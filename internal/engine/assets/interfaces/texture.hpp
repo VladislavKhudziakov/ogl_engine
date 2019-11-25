@@ -5,6 +5,11 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
+#include <cinttypes>
+
+
 namespace engine
 {
     struct texture_parameters;

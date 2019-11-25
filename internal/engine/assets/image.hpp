@@ -27,17 +27,14 @@ namespace engine
         int32_t get_levels() const override;
         const texture_parameters& get_parameters() const override;
         void visit(const interfaces::texture_visitor& visitor) const override;
-    private:
-        std::string m_name;
-        int32_t m_width;
-        int32_t m_height;
-        image_format m_format;
-
-    public:
         void set_parameters(const texture_parameters& parameters) override;
 
     private:
         unsigned char* p_data;
         texture_parameters m_parameters;
+        std::string m_name;
+        int32_t m_width;
+        int32_t m_height;
+        image_format m_format;
     };
 } // namespace engine

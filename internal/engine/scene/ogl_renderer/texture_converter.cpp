@@ -22,3 +22,9 @@ std::unique_ptr<engine::ogl::interfaces::texture> engine::ogl::texture_converter
 
     throw std::runtime_error("ERROR: converted image does not exist");
 }
+
+
+void engine::ogl::texture_converter::accept(const engine::environment_texture& texture) const
+{
+
+}
