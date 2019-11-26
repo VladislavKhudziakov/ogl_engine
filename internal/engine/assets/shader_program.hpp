@@ -17,7 +17,7 @@ namespace engine
 
         ~shader_program() = default;
 
-        const std::string& get_name() const;
+        const std::string get_name() const;
         const std::string& get_vertex_shader() const;
         const std::string& get_fragment_shader() const;
         void clear();

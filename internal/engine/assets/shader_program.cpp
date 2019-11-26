@@ -22,7 +22,7 @@ engine::shader_program::shader_program(const std::string& name, std::string&& vs
 }
 
 
-const std::string& engine::shader_program::get_name() const
+const std::string engine::shader_program::get_name() const
 {
     return m_name;
 }

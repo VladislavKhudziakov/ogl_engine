@@ -26,6 +26,8 @@ namespace engine
             , std::shared_ptr<interfaces::texture>
             , std::shared_ptr<shader_program>>>;
 
+        assets_manager();
+        ~assets_manager() = default;
 
         template<typename T>
         engine::assets_manager& import(const interfaces::importer<T>& importer)
