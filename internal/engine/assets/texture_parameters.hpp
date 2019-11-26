@@ -11,7 +11,7 @@ namespace engine
     struct texture_parameters
     {
         //todo add more parameters
-        bool mips;
+        bool mips = true;
     };
 }
 

@@ -6,6 +6,7 @@
 #include <scene/ogl_renderer/interfaces/texture.hpp>
 #include <scene/ogl_renderer/texture_2d.hpp>
 #include <scene/ogl_renderer/texture_converter.hpp>
+#include <scene/ogl_renderer/cubemap.hpp>
 
 
 void engine::ogl::texture_converter::accept(const engine::image& image) const
@@ -26,5 +27,5 @@ std::unique_ptr<engine::ogl::interfaces::texture> engine::ogl::texture_converter
 
 void engine::ogl::texture_converter::accept(const engine::environment_texture& texture) const
 {
-
+    m_texture = cubemap::from_env_texture(texture);
 }

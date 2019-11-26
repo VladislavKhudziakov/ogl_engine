@@ -148,3 +148,17 @@ void engine::ogl::set_float_uniform_array::execute(uint64_t program) const
         glUniform3fv(int_uniform, light_positions.size(), glm::value_ptr(light_positions.front()));
     }
 }
+
+
+engine::ogl::set_vec3_uniform::set_vec3_uniform(const std::string& name, glm::vec3 uniform)
+    : m_name(name)
+    , m_uniform(uniform)
+{
+}
+
+
+void engine::ogl::set_vec3_uniform::execute(uint64_t program) const
+{
+    auto matrix_uniform = glGetUniformLocation(program, m_name.c_str());
+    glUniformMatrix4fv(matrix_uniform, 1, GL_FALSE, glm::value_ptr(m_uniform));
+}

@@ -35,7 +35,7 @@ namespace engine::ogl
         void unbind() override;
 
     private:
-        uint32_t m_name;
+        uint32_t m_name = 0;
         int32_t m_curr_slot = -1;
     };
 }

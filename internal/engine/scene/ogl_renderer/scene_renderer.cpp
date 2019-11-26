@@ -102,6 +102,9 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
         gpu_program->apply_uniform_command(engine::ogl::set_float_uniform_array(
             "u_light_sources", m_scene->get_light_sources()));
 
+        gpu_program->apply_uniform_command(engine::ogl::set_vec3_uniform(
+            "u_cam_pos", m_scene->get_camera().get_position()));
+
         material_config_resolver resolver(mesh->get_material()->get_config());
         resolver.set_config();
 

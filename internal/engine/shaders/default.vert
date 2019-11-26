@@ -9,10 +9,12 @@ layout(location = 2) in vec3 a_normal;
 uniform mat4 u_mvp;
 uniform mat4 u_mv;
 uniform mat4 u_it_model;
+uniform vec3 u_cam_pos;
 
 out vec2 var_uv;
 out vec3 var_normal;
 out vec3 var_vertex;
+out vec3 var_cam_pos;
 
 void main()
 {
@@ -20,4 +22,5 @@ void main()
     var_uv = a_uv;
     var_normal = vec3(u_it_model * vec4(a_normal, 1.0));
     var_vertex = a_vertex;
+    var_cam_pos = u_cam_pos;
 }

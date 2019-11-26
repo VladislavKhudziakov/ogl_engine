@@ -80,6 +80,9 @@ void engine::environment_texture::set_face(const std::string& path, engine::envi
             throw std::runtime_error("ERROR: images size is different");
         }
 
+        m_width = width;
+        m_height = height;
+
         if (channels_count < 3) {
             throw std::runtime_error("ERROR: invalid image format");
         }

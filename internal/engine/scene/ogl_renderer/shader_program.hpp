@@ -94,4 +94,14 @@ namespace engine::ogl
         std::string m_name;
         const std::vector<engine::light_source>& m_light_sources_ref;
     };
+
+    struct set_vec3_uniform : shader_program::uniform_command
+    {
+        set_vec3_uniform(const std::string&, glm::vec3);
+        void execute(uint64_t) const override;
+        ~set_vec3_uniform() override = default;
+    private:
+        std::string m_name;
+        glm::vec3 m_uniform;
+    };
 } // namespace engine
