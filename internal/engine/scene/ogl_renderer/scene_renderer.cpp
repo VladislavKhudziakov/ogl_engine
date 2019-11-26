@@ -55,6 +55,7 @@ void engine::ogl::scene_renderer::draw_scene()
 
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glDepthFunc(GL_LEQUAL);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glClearColor(0.0f, 177.0f / 255.0f, 64.0f / 255.0f, 1.0f);
 
@@ -117,6 +118,7 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
         draw_geometry(mesh->get_geometry());
 
         release_material(mesh->get_material());
+        glDepthFunc(GL_LESS);
     }
 }
 

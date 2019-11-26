@@ -11,7 +11,8 @@ uniform mat4 u_proj;
 
 void main()
 {
+    mat4 view = mat4(mat3(u_view));
     var_uv = a_vertex;
-    vec4 pos = u_mvp * vec4(a_vertex, 1.0);
-    gl_Position = pos;
+    vec4 pos = u_proj * view * vec4(a_vertex, 1.0);
+    gl_Position = pos.xyww;
 }

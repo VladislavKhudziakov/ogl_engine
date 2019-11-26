@@ -42,6 +42,7 @@ int main()
     auto env_shader = app.get_assets_manager()->get<engine::shader_program>("__env_shader__");
     auto env_material = std::make_shared<engine::material>(env_shader);
     env_material->set_texture("u_env", app.get_assets_manager()->get<engine::interfaces::texture>("default_env_texture"));
+    env_material->set_rendering_config({engine::material_config::culling_type::front, engine::material_config::blend_mode::none});
     app.get_assets_manager()->add(env_material, "env_material");
 
     auto mesh_scene = std::make_unique<engine::scene>(std::make_shared<engine::ogl::scene_renderer>());
