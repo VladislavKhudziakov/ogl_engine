@@ -21,7 +21,7 @@ namespace engine::ogl
         texture_converter() = default;
         ~texture_converter() override = default;
 
-        void accept(const image& image) const override;
+        void accept(const image_2d_texture& image) const override;
         std::unique_ptr<interfaces::texture> get_texture() const;
         void accept(const environment_texture& texture) const override;
 

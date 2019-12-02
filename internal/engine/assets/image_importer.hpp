@@ -6,7 +6,7 @@
 #pragma once
 
 #include <interfaces/importer.hpp>
-#include <image.hpp>
+#include <image_2d_texture.hpp>
 
 namespace engine
 {

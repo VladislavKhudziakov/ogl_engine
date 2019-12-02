@@ -8,7 +8,7 @@
 
 engine::environment_texture::environment_texture(
     const std::string& name,
-    std::vector<image2D> images,
+    std::vector<image> images,
     const texture_parameters& parameters)
     : m_images(std::move(images))
     , m_name(name)
@@ -53,13 +53,13 @@ void engine::environment_texture::visit(const engine::interfaces::texture_visito
 }
 
 
-void engine::environment_texture::set_face(image2D image, engine::environment_texture::FACE face)
+void engine::environment_texture::set_face(image image, engine::environment_texture::FACE face)
 {
     m_images.at(static_cast<int64_t>(face)) = std::move(image);
 }
 
 
-const engine::image2D& engine::environment_texture::get_face(engine::environment_texture::FACE face) const
+const engine::image& engine::environment_texture::get_face(engine::environment_texture::FACE face) const
 {
     return m_images.at(static_cast<int64_t>(face));
 }

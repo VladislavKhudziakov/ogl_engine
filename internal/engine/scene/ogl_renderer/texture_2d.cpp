@@ -1,6 +1,6 @@
 
 #include <glad/glad.h>
-#include <assets/image.hpp>
+#include <assets/image_2d_texture.hpp>
 #include <scene/ogl_renderer/texture_2d.hpp>
 
 engine::ogl::texture2d::texture2d(const image_data& img_data)
@@ -24,11 +24,11 @@ engine::ogl::texture2d::texture2d(const image_data& img_data)
 }
 
 
-std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const engine::image& img)
+std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const engine::image_2d_texture& img)
 {
     auto [width, height] = img.get_size();
 
-    image_data data { width, height, img.get_format(), img.get_data()};
+    image_data data { width, height, img.get_format(), img.get_image().raw_data()};
 
     return std::make_unique<texture2d>(data);
 }

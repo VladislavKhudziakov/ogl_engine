@@ -23,7 +23,7 @@ std::shared_ptr<engine::interfaces::texture> engine::env_texture_importer::impor
     int32_t last_width = -1;
     int32_t last_height = -1;
 
-    std::vector<image2D> images{};
+    std::vector<image> images{};
     images.reserve(6);
 
     for (const auto& path : m_image_paths) {
@@ -34,7 +34,7 @@ std::shared_ptr<engine::interfaces::texture> engine::env_texture_importer::impor
         auto data = stbi_load(path.c_str(), &width, &height, &channels_count,0);
 
         if (channels_count < 3 || channels_count > 4) {
-            throw std::runtime_error("ERROR: invalid image format");
+            throw std::runtime_error("ERROR: invalid image_2d_texture format");
         }
 
         if (last_channels_count > 0 && channels_count != last_channels_count) {

@@ -17,7 +17,7 @@
 
 namespace engine
 {
-    class image;
+    class image_2d_texture;
 }
 
 namespace engine::ogl
@@ -32,7 +32,7 @@ namespace engine::ogl
             const unsigned char* data;
         };
 
-        static std::unique_ptr<texture2d> from_image(const engine::image&);
+        static std::unique_ptr<texture2d> from_image(const engine::image_2d_texture&);
         explicit texture2d(const image_data&);
         texture2d(const texture2d&) = delete;
         texture2d(texture2d&&) = default;

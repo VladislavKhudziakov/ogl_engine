@@ -9,7 +9,7 @@
 #include <scene/ogl_renderer/cubemap.hpp>
 
 
-void engine::ogl::texture_converter::accept(const engine::image& image) const
+void engine::ogl::texture_converter::accept(const engine::image_2d_texture& image) const
 {
     m_texture = texture2d::from_image(image);
 }
@@ -21,7 +21,7 @@ std::unique_ptr<engine::ogl::interfaces::texture> engine::ogl::texture_converter
         return std::move(m_texture);
     }
 
-    throw std::runtime_error("ERROR: converted image does not exist");
+    throw std::runtime_error("ERROR: converted image_2d_texture does not exist");
 }
 
 
