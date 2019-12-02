@@ -18,7 +18,7 @@ std::unique_ptr<engine::ogl::cubemap> engine::ogl::cubemap::from_env_texture(con
     std::array<unsigned char*, 6> images_data {};
 
     for (size_t i = 0; i < images_data.size(); ++i) {
-        images_data.at(i) = env_tex.get_face(static_cast<environment_texture::FACE>(i));
+        images_data.at(i) = env_tex.get_face(static_cast<environment_texture::FACE>(i)).raw_data();
     }
 
     cubemap_data data { width, height, env_tex.get_format(), images_data };

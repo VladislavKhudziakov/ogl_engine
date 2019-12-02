@@ -10,7 +10,6 @@ namespace engine
 {
     enum class image_format
     {
-        undefined,
         rgb = 3,
         rgba = 4
     };
