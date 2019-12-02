@@ -19,7 +19,12 @@ namespace engine::ogl
 
         explicit scene_renderer(scene*);
         scene_renderer() = default;
+        scene_renderer(const scene_renderer&) = delete;
+        scene_renderer(scene_renderer&&) = default;
+        const scene_renderer& operator=(const scene_renderer&) = delete;
+        scene_renderer& operator=(scene_renderer&&) = default;
         ~scene_renderer() override = default;
+
         void set_scene(scene*) override;
         void draw_scene() override;
 

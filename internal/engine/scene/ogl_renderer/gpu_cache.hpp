@@ -55,6 +55,10 @@ namespace engine::ogl
         };
 
         gpu_cache() = default;
+        gpu_cache(const gpu_cache&) = delete;
+        gpu_cache(gpu_cache&&) = default;
+        const gpu_cache& operator=(const gpu_cache&) = delete;
+        gpu_cache& operator=(gpu_cache&&) = default;
         ~gpu_cache() = default;
 
         template <typename T>

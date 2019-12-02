@@ -83,7 +83,7 @@ int main()
     auto object_3 = scene_factory.make_scene_object("test_1");
     object_3->set_component(mesh_instance_component);
     transformation_component = std::make_shared<engine::transformation>();
-    transformation_component->translation = {0, 60, 0};
+    transformation_component->translation = {0, 60, -70};
     transformation_component->scale = {0.5, 0.5, 0.5};
     object_3->set_component(transformation_component);
 

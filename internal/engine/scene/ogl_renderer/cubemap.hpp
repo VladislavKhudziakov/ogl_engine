@@ -30,6 +30,10 @@ namespace engine::ogl
 
         static std::unique_ptr<cubemap> from_env_texture(const environment_texture&);
         explicit cubemap(const cubemap_data&);
+        cubemap(const cubemap&) = delete;
+        cubemap(cubemap&&) = default;
+        const cubemap& operator=(const cubemap&) = delete;
+        cubemap& operator=(cubemap&&) = default;
         ~cubemap() override;
         void bind(int i) override;
         void unbind() override;

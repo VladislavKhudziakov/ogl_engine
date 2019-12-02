@@ -27,7 +27,12 @@ namespace engine::ogl
     public:
         static std::unique_ptr<vertex_buffer> from_geometry(const engine::geometry&);
         vertex_buffer(const std::vector<engine::vertex>&, const std::vector<uint32_t>&);
+        vertex_buffer(const vertex_buffer&) = delete;
+        vertex_buffer(vertex_buffer&&) = default;
+        const vertex_buffer& operator=(const vertex_buffer&) = delete;
+        vertex_buffer& operator=(vertex_buffer&&) = default;
         ~vertex_buffer() override;
+
         void bind() override;
         void unbind() override;
         void draw() override;

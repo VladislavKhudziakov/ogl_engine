@@ -118,7 +118,6 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
         draw_geometry(mesh->get_geometry());
 
         release_material(mesh->get_material());
-        glDepthFunc(GL_LESS);
     }
 }
 

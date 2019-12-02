@@ -34,6 +34,10 @@ namespace engine::ogl
         static std::unique_ptr<shader_program> from_program(const engine::shader_program&);
         shader_program(const std::string&, const std::string&);
         ~shader_program();
+        shader_program(const shader_program&) = delete;
+        shader_program(shader_program&&) = default;
+        const shader_program& operator=(const shader_program&) = delete;
+        shader_program& operator=(shader_program&&) = default;
 
         void bind();
         void unbind();

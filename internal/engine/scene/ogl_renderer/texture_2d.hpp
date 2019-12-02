@@ -34,9 +34,14 @@ namespace engine::ogl
 
         static std::unique_ptr<texture2d> from_image(const engine::image&);
         explicit texture2d(const image_data&);
+        texture2d(const texture2d&) = delete;
+        texture2d(texture2d&&) = default;
+        const texture2d& operator=(const texture2d&) = delete;
+        texture2d& operator=(texture2d&&) = default;
+        ~texture2d() override;
+
         void bind(int) override;
         void unbind() override;
-        ~texture2d() override;
 
     private:
         uint32_t m_name;
