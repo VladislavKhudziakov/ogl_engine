@@ -10,6 +10,7 @@
 #include <assets/env_texture_importer.hpp>
 
 // TODO: git submodule
+// TODO: add input events system, add behavior component
 
 int main()
 {

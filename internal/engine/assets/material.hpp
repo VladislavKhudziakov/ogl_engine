@@ -13,7 +13,6 @@
 
 namespace engine
 {
-    //TODO: add material settings(blendind, culling ...)
     class material
     {
     public:

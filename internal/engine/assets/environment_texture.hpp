@@ -16,7 +16,6 @@
 
 namespace engine
 {
-    //todo make base class
     class environment_texture : public interfaces::texture
     {
     public:
