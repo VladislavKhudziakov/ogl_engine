@@ -52,13 +52,13 @@ namespace engine::ogl
     class mipmapped : public interfaces::texture
     {
     public:
-        explicit mipmapped(std::shared_ptr<interfaces::texture>);
+        explicit mipmapped(std::unique_ptr<interfaces::texture>);
         ~mipmapped() override = default;
         void bind(int) override;
         void unbind() override;
 
     private:
-        std::shared_ptr<interfaces::texture> m_wrappee;
+        std::unique_ptr<interfaces::texture> m_wrappee;
     };
 } // namespace engine::ogl
 

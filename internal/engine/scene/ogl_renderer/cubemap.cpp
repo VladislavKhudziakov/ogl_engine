@@ -4,9 +4,9 @@
 
 #include <array>
 #include <stdexcept>
-#include <cassert>
 #include <glad/glad.h>
 
+#include <scene/ogl_renderer/gl_helpers.hpp>
 #include <assets/environment_texture.hpp>
 #include <scene/ogl_renderer/cubemap.hpp>
 
@@ -28,8 +28,8 @@ std::unique_ptr<engine::ogl::cubemap> engine::ogl::cubemap::from_env_texture(con
 
 engine::ogl::cubemap::cubemap(const cubemap_data& data)
 {
-    glGenTextures(1, &m_name);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, m_name);
+    GL_SAFE_CALL(glGenTextures, 1, &m_name)
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, m_name)
 
     uint32_t curr_format = GL_RGB;
 
@@ -56,12 +56,14 @@ engine::ogl::cubemap::cubemap(const cubemap_data& data)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 
 engine::ogl::cubemap::~cubemap()
 {
-    glDeleteTextures(1, &m_name);
+    GL_SAFE_CALL(glDeleteTextures, 1, &m_name);
 }
 
 
@@ -76,9 +78,8 @@ void engine::ogl::cubemap::bind(int slot)
     if (m_curr_slot >= GL_MAX_TEXTURE_UNITS) {
         throw std::logic_error("ERROR: TEXTURES LIMIT EXCEEDED");
     }
-
-    glActiveTexture(m_curr_slot);
-    glBindTexture(GL_TEXTURE_2D, m_name);
+    GL_SAFE_CALL(glActiveTexture, m_curr_slot);
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, m_name);
 }
 
 
@@ -88,8 +89,8 @@ void engine::ogl::cubemap::unbind()
         throw std::logic_error("ERROR: TEXTURE ALREADY UNBOUNDED");
     }
 
-    glActiveTexture(m_curr_slot);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    GL_SAFE_CALL(glActiveTexture, m_curr_slot);
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_CUBE_MAP, 0);
 
     m_curr_slot = -1;
 }

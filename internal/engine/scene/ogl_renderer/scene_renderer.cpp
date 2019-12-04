@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <scene/scene_object.hpp>
+#include <scene/ogl_renderer/gl_helpers.hpp>
 #include <scene/ogl_renderer/scene_renderer.hpp>
 #include <scene/ogl_renderer/material_config_resolver.hpp>
 
@@ -53,11 +54,11 @@ void engine::ogl::scene_renderer::draw_scene()
     m_view_matrix = glm::lookAt(camera.get_position(), camera.get_direction(), glm::vec3(0, 1, 0));
     m_world_matrix = m_projection_matrix * m_view_matrix;
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glDepthFunc(GL_LEQUAL);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    glClearColor(0.0f, 177.0f / 255.0f, 64.0f / 255.0f, 1.0f);
+    GL_SAFE_CALL(glClear, GL_COLOR_BUFFER_BIT);
+    GL_SAFE_CALL(glClear, GL_DEPTH_BUFFER_BIT);
+    GL_SAFE_CALL(glDepthFunc, GL_LEQUAL);
+    GL_SAFE_CALL(glColorMask, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    GL_SAFE_CALL(glClearColor, 0.0f, 177.0f / 255.0f, 64.0f / 255.0f, 1.0f);
 
     process_nodes(m_scene->get_root());
 }
@@ -90,7 +91,7 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
 
         const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
             mesh->get_material()->get_shader()->get_name());
-
+        assert(glGetError() == GL_NO_ERROR);
         gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
             "u_mvp", m_world_matrix * object->get_transformation_matrix()));
 

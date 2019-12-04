@@ -1,13 +1,15 @@
-
-#include <glad/glad.h>
 #include <assets/image_2d_texture.hpp>
 #include <scene/ogl_renderer/texture_2d.hpp>
+#include <scene/ogl_renderer/gl_helpers.hpp>
+
+#include <glad/glad.h>
+#include <cassert>
 
 engine::ogl::texture2d::texture2d(const image_data& img_data)
     : m_name(0)
 {
-    glGenTextures(1, &m_name);
-    glBindTexture(GL_TEXTURE_2D, m_name);
+    GL_SAFE_CALL(glGenTextures, 1, &m_name);
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_2D, m_name);
 
     if (img_data.data == nullptr) {
         throw std::logic_error("ERROR: CANNOT LOAD IMAGE");
@@ -21,6 +23,8 @@ engine::ogl::texture2d::texture2d(const image_data& img_data)
 
     glTexImage2D(GL_TEXTURE_2D, 0, image_type, img_data.width, img_data.height, 0, image_type, GL_UNSIGNED_BYTE, img_data.data);
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 
@@ -28,7 +32,7 @@ std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const
 {
     auto [width, height] = img.get_size();
 
-    image_data data { width, height, img.get_format(), img.get_image().raw_data()};
+    image_data data {width, height, img.get_format(), img.get_image().raw_data()};
 
     return std::make_unique<texture2d>(data);
 }
@@ -36,7 +40,7 @@ std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const
 
 engine::ogl::texture2d::~texture2d()
 {
-    glDeleteTextures(1, &m_name);
+    GL_SAFE_CALL(glDeleteTextures, 1, &m_name);
 }
 
 
@@ -52,8 +56,8 @@ void engine::ogl::texture2d::bind(int slot)
         throw std::logic_error("ERROR: TEXTURES LIMIT EXCEEDED");
     }
 
-    glActiveTexture(m_curr_slot);
-    glBindTexture(GL_TEXTURE_2D, m_name);
+    GL_SAFE_CALL(glActiveTexture, m_curr_slot);
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_2D, m_name);
 }
 
 
@@ -63,17 +67,17 @@ void engine::ogl::texture2d::unbind()
         throw std::logic_error("ERROR: TEXTURE ALREADY UNBOUNDED");
     }
 
-    glActiveTexture(m_curr_slot);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    GL_SAFE_CALL(glActiveTexture, m_curr_slot);
+    GL_SAFE_CALL(glBindTexture, GL_TEXTURE_2D, 0);
 
     m_curr_slot = -1;
 }
 
 
-engine::ogl::mipmapped::mipmapped(std::shared_ptr<interfaces::texture> next)
+engine::ogl::mipmapped::mipmapped(std::unique_ptr<interfaces::texture> next)
     : m_wrappee(std::move(next))
 {
-    glGenerateMipmap(GL_TEXTURE_2D);
+    GL_SAFE_CALL(glGenerateMipmap, GL_TEXTURE_2D);
 }
 
 

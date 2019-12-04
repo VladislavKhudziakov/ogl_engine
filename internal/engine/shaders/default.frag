@@ -33,5 +33,5 @@ void main()
         final_color += env_color.rgb * n_dot_l;
     }
 
-    FragColor = vec4(final_color, texture_color.a);
+    FragColor = vec4(final_color * texture_color.rgb, texture_color.a);
 }

@@ -9,8 +9,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stdexcept>
 
+#include <common/defines.hpp>
+#include <scene/ogl_renderer/gl_helpers.hpp>
 #include <assets/shader_program.hpp>
 #include <scene/ogl_renderer/shader_program.hpp>
+#include <iostream>
 
 engine::ogl::shader_program::shader::shader(const std::string& sources, shader_type type)
     : m_name(glCreateShader(type == shader_type::vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER))
@@ -34,7 +37,7 @@ engine::ogl::shader_program::shader::shader(const std::string& sources, shader_t
 
 engine::ogl::shader_program::shader::~shader()
 {
-    glDeleteShader(m_name);
+    GL_SAFE_CALL(glDeleteShader, m_name);
 }
 
 
@@ -71,19 +74,19 @@ std::unique_ptr<engine::ogl::shader_program> engine::ogl::shader_program::from_p
 
 engine::ogl::shader_program::~shader_program()
 {
-    glDeleteProgram(m_name);
+    GL_SAFE_CALL(glDeleteProgram, m_name);
 }
 
 
 void engine::ogl::shader_program::bind()
 {
-    glUseProgram(m_name);
+    GL_SAFE_CALL(glUseProgram, m_name);
 }
 
 
 void engine::ogl::shader_program::unbind()
 {
-    glUseProgram(0);
+    GL_SAFE_CALL(glUseProgram, 0);
 }
 
 
@@ -103,7 +106,16 @@ engine::ogl::set_mat4_uniform::set_mat4_uniform(const std::string& name, const g
 void engine::ogl::set_mat4_uniform::execute(uint64_t program) const
 {
     auto matrix_uniform = glGetUniformLocation(program, name.c_str());
-    glUniformMatrix4fv(matrix_uniform, 1, GL_FALSE, glm::value_ptr(matrix));
+    if (matrix_uniform >= 0) {
+        GL_SAFE_CALL(glUniformMatrix4fv, matrix_uniform, 1, GL_FALSE, glm::value_ptr(matrix));
+        return;
+    }
+
+    assert(glGetError() == GL_NO_ERROR);
+
+#ifdef __ENGINE_GL_UNIFORMS_DEBUG__
+    std::cerr << "OPENGL ERROR::TRIED TO SET NOT DEFINED MATRIX 4 UNIFORM: " + name << std::endl;
+#endif
 }
 
 
@@ -117,7 +129,16 @@ engine::ogl::set_int_uniform::set_int_uniform(const std::string& name, uint32_t 
 void engine::ogl::set_int_uniform::execute(uint64_t program) const
 {
     auto int_uniform = glGetUniformLocation(program, m_name.data());
-    glUniform1i(int_uniform, m_uniform);
+    if (int_uniform >= 0) {
+        GL_SAFE_CALL(glUniform1i, int_uniform, m_uniform);
+        return;
+    }
+
+    assert(glGetError() == GL_NO_ERROR);
+
+#ifdef __ENGINE_GL_UNIFORMS_DEBUG__
+    std::cerr << "OPENGL ERROR::TRIED TO SET NOT DEFINED INT UNIFORM: " + m_name << std::endl;
+#endif
 }
 
 
@@ -143,10 +164,15 @@ void engine::ogl::set_float_uniform_array::execute(uint64_t program) const
             light_positions.emplace_back(light_source.get_position());
         }
 
-        auto s = light_positions.size();
-
-        glUniform3fv(int_uniform, light_positions.size(), glm::value_ptr(light_positions.front()));
+        GL_SAFE_CALL(glUniform3fv, int_uniform, light_positions.size(), glm::value_ptr(light_positions.front()));
+        return;
     }
+
+    assert(glGetError() == GL_NO_ERROR);
+
+#ifdef __ENGINE_GL_UNIFORMS_DEBUG__
+    std::cerr << "OPENGL ERROR::TRIED TO SET NOT DEFINED FLOAT ARRAY UNIFORM: " + m_name << std::endl;
+#endif
 }
 
 
@@ -159,6 +185,16 @@ engine::ogl::set_vec3_uniform::set_vec3_uniform(const std::string& name, glm::ve
 
 void engine::ogl::set_vec3_uniform::execute(uint64_t program) const
 {
-    auto matrix_uniform = glGetUniformLocation(program, m_name.c_str());
-    glUniformMatrix4fv(matrix_uniform, 1, GL_FALSE, glm::value_ptr(m_uniform));
+    auto vector_uniform = glGetUniformLocation(program, m_name.c_str());
+
+    if (vector_uniform >= 0) {
+        GL_SAFE_CALL(glUniform3fv, vector_uniform, 1, glm::value_ptr(m_uniform));
+        return;
+    }
+
+    assert(glGetError() == GL_NO_ERROR);
+
+#ifdef __ENGINE_GL_UNIFORMS_DEBUG__
+    std::cerr << "OPENGL ERROR::TRIED TO SET NOT DEFINED  VEC3 UNIFORM: " + m_name << std::endl;
+#endif
 }

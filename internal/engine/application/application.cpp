@@ -2,11 +2,13 @@
 // Created by movleaxedx on 10.10.19.
 //
 
-//ogl libs
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-//std libs
+#include <sstream>
+#include <common/defines.hpp>
+#include <iostream>
 #include <cassert>
 #include <string>
 
@@ -61,6 +63,25 @@ void engine::application::init_window(int32_t width, int32_t height, const std::
 void engine::application::exec()
 {
     assert(p_window != nullptr && "CANNOT EXECUTE APP WHILE WINDOW IS NOT INITIALIZED");
+
+#ifdef __ENGINE__GL_DEBUG__
+    auto message_callback = [](GLenum source,
+                               GLenum type,
+                               GLuint id,
+                               GLenum severity,
+                               GLsizei length,
+                               const GLchar* message,
+                               const void* userParam) {
+        std::stringstream ss{};
+        ss << "OPENGL DEBUG ERROR: ";
+        ss << message;
+        std::cerr << ss.str() << std::endl;
+    };
+
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(message_callback, nullptr);
+#endif // __ENGINE__GL_DEBUG__
 
     while (!glfwWindowShouldClose(p_window)) {
         process_input();

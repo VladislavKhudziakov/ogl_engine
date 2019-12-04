@@ -4,6 +4,7 @@
 
 #include <glad/glad.h>
 
+#include <scene/ogl_renderer/gl_helpers.hpp>
 #include <scene/ogl_renderer/vertex_buffer.hpp>
 #include <assets/geometry.hpp>
 
@@ -14,9 +15,9 @@ engine::ogl::vertex_buffer::vertex_buffer(const std::vector<engine::vertex>& ver
 {
     uint32_t vbo;
 
-    glGenVertexArrays(1, &m_vao);
-    glGenBuffers(1, &m_ebo);
-    glGenBuffers(1, &vbo);
+    GL_SAFE_CALL(glGenVertexArrays, 1, &m_vao);
+    GL_SAFE_CALL(glGenBuffers, 1, &m_ebo);
+    GL_SAFE_CALL(glGenBuffers, 1, &vbo);
 
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
@@ -34,9 +35,9 @@ engine::ogl::vertex_buffer::vertex_buffer(const std::vector<engine::vertex>& ver
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(engine::vertex), reinterpret_cast<void*>(sizeof(engine::vertex::position) + sizeof(engine::vertex::uv)));
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDeleteBuffers(1, &vbo);
+    GL_SAFE_CALL(glBindVertexArray, 0);
+    GL_SAFE_CALL(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, 0);
+    GL_SAFE_CALL(glDeleteBuffers, 1, &vbo);
 }
 
 
@@ -59,22 +60,22 @@ std::unique_ptr<engine::ogl::vertex_buffer> engine::ogl::vertex_buffer::from_geo
 
 engine::ogl::vertex_buffer::~vertex_buffer()
 {
-    glDeleteVertexArrays(1, &m_vao);
-    glDeleteBuffers(1, &m_ebo);
+    GL_SAFE_CALL(glDeleteVertexArrays, 1, &m_vao);
+    GL_SAFE_CALL(glDeleteBuffers, 1, &m_ebo);
 }
 
 
 void engine::ogl::vertex_buffer::bind()
 {
-    glBindVertexArray(m_vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    GL_SAFE_CALL(glBindVertexArray, m_vao);
+    GL_SAFE_CALL(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 }
 
 
 void engine::ogl::vertex_buffer::unbind()
 {
-    glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    GL_SAFE_CALL(glBindVertexArray, 0);
+    GL_SAFE_CALL(glBindBuffer, GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 
@@ -99,6 +100,8 @@ engine::ogl::float_buffer::float_buffer(int32_t slot, std::vector<float>& values
 
     m_wrappee->unbind();
     glDeleteBuffers(1, &vbo);
+
+    assert(glGetError() == GL_NO_ERROR);
 }
 
 
