@@ -1,9 +1,11 @@
 cmake-build-debug
+build
 !internal/
 internal/libs/*
 !internal/libs/libs.md
 
 .idea/
+.vscode
 !venv/
 venv/*
 !venv/venv.md

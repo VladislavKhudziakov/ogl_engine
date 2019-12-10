@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 project(OGL_3d_engine)
 
 set (CMAKE_CXX_STANDARD 17)
@@ -31,10 +31,11 @@ include_directories(${PROJECT_SOURCE_DIR}/internal/libs/stb)
 link_directories(${STB_LIBRARY_DIRS})
 add_definitions(${STB_DEFINITIONS})
 
-#find_package(Boost REQUIRED COMPONENTS signals2)
+find_package(Boost REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
+include_directories(${Boost_INCLUDE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/assets)
