@@ -51,7 +51,6 @@ const engine::perspective& engine::scene::get_perspective() const
 }
 
 
-
 void engine::scene::set_root(std::shared_ptr<scene_object> root)
 {
     m_root = std::move(root);

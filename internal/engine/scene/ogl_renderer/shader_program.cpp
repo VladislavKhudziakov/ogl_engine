@@ -145,8 +145,8 @@ void engine::ogl::set_int_uniform::execute(uint64_t program) const
 engine::ogl::set_float_uniform_array::set_float_uniform_array(
     const std::string& name,
     const std::vector<engine::light_source>& light_sources)
-    : m_name(name),
-    m_light_sources_ref(light_sources)
+    : m_name(name)
+    , m_light_sources_ref(light_sources)
 {
 }
 

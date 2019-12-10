@@ -15,10 +15,10 @@ namespace engine
         explicit material_config_resolver(const material_config&);
         ~material_config_resolver() = default;
         void set_config();
+
     private:
         const material_config& m_config_ref;
         void set_blending();
         void set_culling();
     };
-}
-
+} // namespace engine

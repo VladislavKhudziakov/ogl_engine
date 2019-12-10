@@ -21,7 +21,12 @@ namespace engine
     public:
         enum class FACE
         {
-            RIGHT, LEFT, TOP, BOTTOM, BACK, FRONT
+            RIGHT,
+            LEFT,
+            TOP,
+            BOTTOM,
+            BACK,
+            FRONT
         };
 
         environment_texture(const std::string&, std::vector<image>, const texture_parameters&);
@@ -42,4 +47,4 @@ namespace engine
         texture_parameters m_parameters;
     };
 
-}
+} // namespace engine

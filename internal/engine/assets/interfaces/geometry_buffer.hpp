@@ -16,5 +16,4 @@ namespace engine::interfaces
         virtual void unbind() = 0;
         virtual void draw() const = 0;
     };
-}
-
+} // namespace engine::interfaces

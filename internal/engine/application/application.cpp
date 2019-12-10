@@ -19,6 +19,7 @@
 engine::application::application()
     : p_window(nullptr)
     , m_assets_manager(std::make_shared<assets_manager>())
+    , m_manager()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -38,10 +39,10 @@ engine::application& engine::application::get()
 }
 
 
-void engine::application::init_window(int32_t width, int32_t height, const std::string& name)
+void engine::application::init_window(int32_t width, int32_t height, std::string name)
 {
-    p_window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
-
+    p_window = glfwCreateWindow(width, height, name.data(), nullptr, nullptr);
+    std::cout << name;
     if (p_window == nullptr) {
         throw std::logic_error("Failed to create window");
     }
@@ -57,6 +58,8 @@ void engine::application::init_window(int32_t width, int32_t height, const std::
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         throw std::logic_error("Failed to initialize GLAD");
     }
+
+    m_manager.set_window(p_window);
 }
 
 
@@ -75,7 +78,8 @@ void engine::application::exec()
         std::stringstream ss{};
         ss << "OPENGL DEBUG ERROR: ";
         ss << message;
-        std::cerr << ss.str() << std::endl;
+
+        throw std::runtime_error(ss.str());
     };
 
 

@@ -15,5 +15,4 @@ namespace engine::ogl::interfaces
         virtual void bind(int) = 0;
         virtual void unbind() = 0;
     };
-}
-
+} // namespace engine::ogl::interfaces

@@ -20,5 +20,4 @@ namespace engine
         float x;
         float y;
     };
-}
-
+} // namespace engine

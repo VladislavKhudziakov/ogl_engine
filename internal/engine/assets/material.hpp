@@ -30,6 +30,7 @@ namespace engine
         const material_config& get_config() const;
 
         const material_textures& get_textures() const;
+
     private:
         std::string m_name;
         std::map<std::string, std::shared_ptr<interfaces::texture>> m_textures;

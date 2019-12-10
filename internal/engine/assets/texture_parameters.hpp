@@ -13,5 +13,4 @@ namespace engine
         //todo add more parameters
         bool mips = true;
     };
-}
-
+} // namespace engine

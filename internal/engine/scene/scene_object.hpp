@@ -68,7 +68,7 @@ namespace engine
         std::string m_name;
         std::weak_ptr<scene_object> m_parent;
         std::vector<std::shared_ptr<scene_object>> m_children;
-        glm::mat4 m_transformation_matrix {1};
+        glm::mat4 m_transformation_matrix{1};
         components m_components;
         scene& m_scene;
     };

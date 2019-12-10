@@ -8,7 +8,7 @@
 #include <scene/ogl_renderer/material_config_resolver.hpp>
 
 engine::material_config_resolver::material_config_resolver(const engine::material_config& cfg)
- : m_config_ref(cfg)
+    : m_config_ref(cfg)
 {
 }
 

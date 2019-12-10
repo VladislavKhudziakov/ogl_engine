@@ -28,5 +28,4 @@ namespace engine::ogl
     private:
         mutable std::unique_ptr<interfaces::texture> m_texture;
     };
-}
-
+} // namespace engine::ogl

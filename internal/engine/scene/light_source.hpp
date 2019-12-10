@@ -18,9 +18,9 @@ namespace engine
         void set_color(const glm::vec3&);
         const glm::vec3& get_position() const;
         const glm::vec3& get_color() const;
+
     private:
         glm::vec3 m_position;
         glm::vec3 m_color;
     };
-}
-
+} // namespace engine

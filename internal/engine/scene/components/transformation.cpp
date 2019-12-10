@@ -7,9 +7,10 @@
 #include <interfaces/component_visitor.hpp>
 
 
-
 engine::transformation::transformation(glm::vec3 translation, glm::vec3 scale, glm::vec3 rotation)
-    : translation(translation), scale(scale), rotation(rotation)
+    : translation(translation)
+    , scale(scale)
+    , rotation(rotation)
 {
 }
 

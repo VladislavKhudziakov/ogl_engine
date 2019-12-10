@@ -15,5 +15,4 @@ namespace engine::ogl::interfaces
         virtual void unbind() = 0;
         virtual void draw() = 0;
     };
-}
-
+} // namespace engine::ogl::interfaces

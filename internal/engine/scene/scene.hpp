@@ -33,13 +33,13 @@ namespace engine
         void add_light_source(const engine::light_source&);
         const std::vector<engine::light_source>& get_light_sources() const;
 
-        template <typename T>
+        template<typename T>
         void acquire_gpu_resource(const std::shared_ptr<T>& resource)
         {
-              m_renderer->acquire_gpu_resource(resource);
+            m_renderer->acquire_gpu_resource(resource);
         }
 
-        template <typename T>
+        template<typename T>
         void release_gpu_resource(const std::shared_ptr<T>& resource)
         {
             m_renderer->release_gpu_resource(resource);

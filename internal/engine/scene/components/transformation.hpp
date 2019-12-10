@@ -20,9 +20,8 @@ namespace engine
         glm::mat4 calculate() const;
         void visit(interfaces::component_visitor& visitor, std::shared_ptr<scene_object>& ptr) override;
 
-        glm::vec3 translation {0, 0, 0};
-        glm::vec3 scale {1, 1, 1};
-        glm::vec3 rotation {0, 0, 0};
+        glm::vec3 translation{0, 0, 0};
+        glm::vec3 scale{1, 1, 1};
+        glm::vec3 rotation{0, 0, 0};
     };
-}
-
+} // namespace engine

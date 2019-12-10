@@ -28,4 +28,4 @@ namespace engine
         std::array<std::string, 6> m_image_paths;
         texture_parameters m_parameters;
     };
-}
+} // namespace engine

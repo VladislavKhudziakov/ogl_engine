@@ -13,7 +13,7 @@ namespace engine
     class bind_context
     {
     public:
-        template <typename ...Args>
+        template<typename... Args>
         explicit bind_context(T& target, Args... args)
             : m_context_target(target)
         {

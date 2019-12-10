@@ -35,6 +35,7 @@ namespace engine::ogl
     public:
         void acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
         void release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
+
     private:
         void process_nodes(std::shared_ptr<scene_object>);
         void bind_material(const std::shared_ptr<material>&);

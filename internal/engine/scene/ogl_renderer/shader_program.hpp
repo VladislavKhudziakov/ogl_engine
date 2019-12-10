@@ -94,6 +94,7 @@ namespace engine::ogl
         set_float_uniform_array(const std::string&, const std::vector<engine::light_source>&);
         void execute(uint64_t) const override;
         ~set_float_uniform_array() override = default;
+
     private:
         std::string m_name;
         const std::vector<engine::light_source>& m_light_sources_ref;
@@ -104,8 +105,9 @@ namespace engine::ogl
         set_vec3_uniform(const std::string&, glm::vec3);
         void execute(uint64_t) const override;
         ~set_vec3_uniform() override = default;
+
     private:
         std::string m_name;
         glm::vec3 m_uniform;
     };
-} // namespace engine
+} // namespace engine::ogl

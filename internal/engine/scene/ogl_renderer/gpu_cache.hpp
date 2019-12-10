@@ -61,7 +61,7 @@ namespace engine::ogl
         gpu_cache& operator=(gpu_cache&&) = default;
         ~gpu_cache() = default;
 
-        template <typename T>
+        template<typename T>
         const std::unique_ptr<T>& get_resource(const std::string& name) const
         {
             const auto it = m_res.find(name);

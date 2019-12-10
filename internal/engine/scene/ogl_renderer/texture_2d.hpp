@@ -25,7 +25,8 @@ namespace engine::ogl
     class texture2d : public ogl::interfaces::texture
     {
     public:
-        struct image_data {
+        struct image_data
+        {
             int32_t width;
             int32_t height;
             image_format format;
@@ -61,4 +62,3 @@ namespace engine::ogl
         std::unique_ptr<interfaces::texture> m_wrappee;
     };
 } // namespace engine::ogl
-

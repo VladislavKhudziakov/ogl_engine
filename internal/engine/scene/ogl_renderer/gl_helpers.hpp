@@ -9,6 +9,5 @@
 #include <glad/glad.h>
 
 #define GL_SAFE_CALL(GL_FUNCTION, ...) \
-GL_FUNCTION(__VA_ARGS__); \
-assert(glGetError() == GL_NO_ERROR); \
-
+    GL_FUNCTION(__VA_ARGS__);          \
+    assert(glGetError() == GL_NO_ERROR);

@@ -32,7 +32,7 @@ std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const
 {
     auto [width, height] = img.get_size();
 
-    image_data data {width, height, img.get_format(), img.get_image().raw_data()};
+    image_data data{width, height, img.get_format(), img.get_image().raw_data()};
 
     return std::make_unique<texture2d>(data);
 }

@@ -17,10 +17,11 @@ namespace engine
     public:
         mesh_data() = default;
         ~mesh_data() = default;
-        
+
         const std::vector<std::shared_ptr<mesh>>& get_meshes() const;
         void append_mesh(std::shared_ptr<mesh>);
         std::shared_ptr<mesh> get_mesh(const std::string&) const;
+
     private:
         std::vector<std::shared_ptr<mesh>> m_meshes;
     };

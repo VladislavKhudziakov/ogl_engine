@@ -21,7 +21,8 @@ namespace engine::ogl
     class cubemap : public interfaces::texture
     {
     public:
-        struct cubemap_data {
+        struct cubemap_data
+        {
             int32_t width;
             int32_t height;
             image_format format;
@@ -42,5 +43,4 @@ namespace engine::ogl
         uint32_t m_name = 0;
         int32_t m_curr_slot = -1;
     };
-}
-
+} // namespace engine::ogl

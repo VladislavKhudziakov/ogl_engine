@@ -22,5 +22,4 @@ namespace engine
     private:
         scene& m_scene_ref;
     };
-}
-
+} // namespace engine

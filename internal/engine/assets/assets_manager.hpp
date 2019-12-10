@@ -20,11 +20,7 @@ namespace engine
     class assets_manager
     {
     public:
-        using assets = std::map<std::string, std::variant<
-            std::shared_ptr<mesh_data>
-            , std::shared_ptr<material>
-            , std::shared_ptr<interfaces::texture>
-            , std::shared_ptr<shader_program>>>;
+        using assets = std::map<std::string, std::variant<std::shared_ptr<mesh_data>, std::shared_ptr<material>, std::shared_ptr<interfaces::texture>, std::shared_ptr<shader_program>>>;
 
         assets_manager();
         ~assets_manager() = default;
@@ -41,7 +37,7 @@ namespace engine
             return *this;
         }
 
-        
+
         template<typename T>
         engine::assets_manager& add(std::shared_ptr<T> instance, const std::string& name)
         {

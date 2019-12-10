@@ -24,6 +24,7 @@ namespace engine::ogl
     class vertex_buffer : public ogl::interfaces::vertex_buffer
     {
         friend class scene_renderer;
+
     public:
         static std::unique_ptr<vertex_buffer> from_geometry(const engine::geometry&);
         vertex_buffer(const std::vector<engine::vertex>&, const std::vector<uint32_t>&);
@@ -44,7 +45,7 @@ namespace engine::ogl
     };
 
 
-    class float_buffer : public  ogl::interfaces::vertex_buffer
+    class float_buffer : public ogl::interfaces::vertex_buffer
     {
     public:
         float_buffer(int32_t, std::vector<float>&, std::shared_ptr<ogl::interfaces::vertex_buffer>);
@@ -56,5 +57,4 @@ namespace engine::ogl
     private:
         std::shared_ptr<interfaces::vertex_buffer> m_wrappee;
     };
-}
-
+} // namespace engine::ogl

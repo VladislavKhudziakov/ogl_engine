@@ -9,7 +9,7 @@ namespace engine
 {
     class image_2d_texture;
     class environment_texture;
-}
+} // namespace engine
 
 namespace engine::interfaces
 {
@@ -22,5 +22,4 @@ namespace engine::interfaces
         virtual void accept(const image_2d_texture&) const = 0;
         virtual void accept(const environment_texture&) const = 0;
     };
-}
-
+} // namespace engine::interfaces

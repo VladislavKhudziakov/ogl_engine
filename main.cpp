@@ -12,33 +12,46 @@
 // TODO: git submodule
 // TODO: add input events system, add behavior component
 
+void f(std::string arg)
+{
+    auto arg2 = arg;
+}
+
 int main()
 {
     auto& app = engine::application::get();
     app.init_window(800, 600, "test");
 
     app.get_assets_manager()->import(engine::shader_importer(
-        "../internal/engine/shaders/default.vert", "../internal/engine/shaders/default.frag", "default_shader"))
+                                         "./internal/engine/shaders/default.vert",
+                                         "./internal/engine/shaders/default.frag",
+                                         "default_shader"))
         .import(engine::shader_importer(
-            "../internal/engine/shaders/environment.vert", "../internal/engine/shaders/environment.frag", "__env_shader__"))
+            "./internal/engine/shaders/environment.vert",
+            "./internal/engine/shaders/environment.frag",
+            "__env_shader__"))
         .import(engine::image_importer(engine::image_importer::import_parameters{
-            "../internal/resources/teapot/default.png", "default_texture"}))
-        .import(engine::mesh_importer("../internal/resources/teapot/utah-teapot.obj", "teapot"))
-        .import(engine::mesh_importer("../internal/resources/skybox.obj", "__default_cube__"))
-        .import(engine::env_texture_importer("default_env_texture", {
-            "../internal/resources/skybox/right.jpg",
-            "../internal/resources/skybox/left.jpg",
-            "../internal/resources/skybox/top.jpg",
-            "../internal/resources/skybox/bottom.jpg",
-            "../internal/resources/skybox/front.jpg",
-            "../internal/resources/skybox/back.jpg",
-        }));
+            "./internal/resources/teapot/default.png",
+            "default_texture"}))
+        .import(engine::mesh_importer("./internal/resources/teapot/utah-teapot.obj", "teapot"))
+        .import(engine::mesh_importer("./internal/resources/skybox.obj", "__default_cube__"))
+        .import(engine::env_texture_importer(
+            "default_env_texture",
+            {
+                "./internal/resources/skybox/right.jpg",
+                "./internal/resources/skybox/left.jpg",
+                "./internal/resources/skybox/top.jpg",
+                "./internal/resources/skybox/bottom.jpg",
+                "./internal/resources/skybox/front.jpg",
+                "./internal/resources/skybox/back.jpg",
+            }));
 
     auto material = std::make_shared<engine::material>(app.get_assets_manager()->get<engine::shader_program>("default_shader"));
     material->set_texture("u_texture", app.get_assets_manager()->get<engine::interfaces::texture>("default_texture"));
     material->set_rendering_config({engine::material_config::culling_type::none, engine::material_config::blend_mode::alpha});
     material->set_texture("u_env", app.get_assets_manager()->get<engine::interfaces::texture>("default_env_texture"));
     app.get_assets_manager()->add(material, "test_mat");
+
 
     auto env_shader = app.get_assets_manager()->get<engine::shader_program>("__env_shader__");
     auto env_material = std::make_shared<engine::material>(env_shader);

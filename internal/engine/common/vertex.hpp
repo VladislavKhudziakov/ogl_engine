@@ -28,5 +28,4 @@ namespace engine
     {
         std::vector<uint32_t> indices;
     };
-}
-
+} // namespace engine

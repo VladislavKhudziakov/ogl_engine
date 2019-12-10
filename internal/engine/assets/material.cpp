@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include <material.hpp>
+#include <assets/material.hpp>
 #include <common/bind_context.hpp>
 
 
