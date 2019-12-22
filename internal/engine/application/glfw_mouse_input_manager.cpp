@@ -13,7 +13,6 @@ engine::glfw_mouse_input_manager::glfw_mouse_input_manager(GLFWwindow* window)
         mouse_manager.on_cursor_position_changed(x, y);
     });
 
-
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
         auto* app = reinterpret_cast<engine::application*>(glfwGetWindowUserPointer(window));
         auto& mouse_manager = app->get_mouse_manager();

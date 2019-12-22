@@ -11,7 +11,7 @@
 
 // TODO: git submodule
 // TODO: add input events system, add behavior component
-
+// TODO: concurrency
 int main()
 {
     auto& app = engine::application::get();

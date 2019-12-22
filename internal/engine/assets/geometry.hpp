@@ -13,7 +13,6 @@
 #include <interfaces/geometry_buffer.hpp>
 
 
-//TODO: exception in destructor
 namespace engine
 {
     class geometry
