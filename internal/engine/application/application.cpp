@@ -6,7 +6,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <sstream>
 #include <common/defines.hpp>
 #include <iostream>
 #include <cassert>
@@ -34,13 +33,6 @@ engine::application::application()
 }
 
 
-engine::application::~application()
-{
-    //    glfwDestroyWindow(p_window);
-    //    glfwTerminate();
-}
-
-
 engine::application& engine::application::get()
 {
     static application app;
@@ -52,7 +44,6 @@ void engine::application::init_window(int32_t width, int32_t height, std::string
 {
     p_window.reset(glfwCreateWindow(width, height, name.data(), nullptr, nullptr));
 
-    std::cout << name;
     if (p_window == nullptr) {
         throw std::logic_error("Failed to create window");
     }
@@ -60,9 +51,7 @@ void engine::application::init_window(int32_t width, int32_t height, std::string
     glfwMakeContextCurrent(p_window.get());
     glfwSetWindowUserPointer(p_window.get(), this);
     m_keyboard_manager.emplace(p_window.get());
-    m_keyboard_manager->subscribe_event_handler([](const key_event&) {
-        std::cout << "called!!\n";
-    });
+    m_mouse_manager.emplace(p_window.get());
 
     glfwSetFramebufferSizeCallback(p_window.get(), [](GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
@@ -118,7 +107,26 @@ std::shared_ptr<engine::assets_manager> engine::application::get_assets_manager(
     return m_assets_manager;
 }
 
-const engine::glfw_keyboard_input_manager& engine::application::get_keyboard_manager()
+
+const engine::glfw_keyboard_input_manager& engine::application::get_keyboard_manager() const
 {
     return *m_keyboard_manager;
+}
+
+
+const engine::glfw_mouse_input_manager& engine::application::get_mouse_manager() const
+{
+    return *m_mouse_manager;
+}
+
+
+engine::glfw_keyboard_input_manager& engine::application::get_keyboard_manager()
+{
+    return *m_keyboard_manager;
+}
+
+
+engine::glfw_mouse_input_manager& engine::application::get_mouse_manager()
+{
+    return *m_mouse_manager;
 }

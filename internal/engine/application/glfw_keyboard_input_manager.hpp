@@ -8,7 +8,6 @@
 #include <application/keyboard_input_manager.hpp>
 
 #include <memory>
-
 #include <GLFW/glfw3.h>
 
 namespace engine
@@ -19,7 +18,6 @@ namespace engine
         glfw_keyboard_input_manager() = default;
         explicit glfw_keyboard_input_manager(GLFWwindow*);
         ~glfw_keyboard_input_manager() override = default;
-    private:
     };
 }
 

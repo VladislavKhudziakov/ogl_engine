@@ -9,6 +9,7 @@
 #include <GLFW/glfw3.h>
 #include <assets/assets_manager.hpp>
 #include <application/glfw_keyboard_input_manager.hpp>
+#include <application/glfw_mouse_input_manager.hpp>
 
 //TODO: add input events system
 namespace engine
@@ -18,14 +19,16 @@ namespace engine
     class application
     {
     public:
-        ~application();
+        ~application() = default;
         void init_window(int32_t, int32_t, std::string);
         static application& get();
         void exec();
         void set_scene(std::unique_ptr<scene>);
         std::shared_ptr<assets_manager> get_assets_manager();
-        const glfw_keyboard_input_manager& get_keyboard_manager();
-
+        const glfw_keyboard_input_manager& get_keyboard_manager() const;
+        const glfw_mouse_input_manager& get_mouse_manager() const;
+        glfw_keyboard_input_manager& get_keyboard_manager();
+        glfw_mouse_input_manager& get_mouse_manager();
     private:
         application();
         //m_scene should be destroyed before p_window
@@ -33,5 +36,6 @@ namespace engine
         std::unique_ptr<scene> m_scene;
         std::shared_ptr<assets_manager> m_assets_manager;
         std::optional<glfw_keyboard_input_manager> m_keyboard_manager;
+        std::optional<glfw_mouse_input_manager> m_mouse_manager;
     };
 } // namespace engine

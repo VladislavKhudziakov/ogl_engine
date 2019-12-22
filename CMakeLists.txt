@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 project(OGL_3d_engine)
 
+# TODO THINK OVER DEPENDENCIES PROBLEM
+# TODO MAKE CMAKE LISTS
+
 set (CMAKE_CXX_STANDARD 17)
 
 #glfw
