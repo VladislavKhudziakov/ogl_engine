@@ -46,10 +46,11 @@ namespace engine
         }
 
     private:
+        //m_root should be destroyed before n_renderer
+        std::shared_ptr<interfaces::scene_renderer> m_renderer;
         std::shared_ptr<engine::scene_object> m_root;
         camera m_camera;
         perspective m_perspective;
-        std::shared_ptr<interfaces::scene_renderer> m_renderer;
         std::vector<engine::light_source> m_light_sources;
     };
 } // namespace engine

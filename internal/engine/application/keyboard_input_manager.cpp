@@ -9,7 +9,7 @@
 using namespace engine;
 
 keyboard_input_manager::connection_t keyboard_input_manager::subscribe_event_handler(
-    const std::function<void(key_event&)>& handler)
+    const std::function<void(const key_event&)>& handler)
 {
     return m_key_event_signal.connect(handler);
 }

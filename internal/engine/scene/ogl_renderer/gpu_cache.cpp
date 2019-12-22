@@ -32,7 +32,7 @@ void engine::ogl::gpu_cache::release_geometry(const engine::geometry& geometry)
     auto it = m_res.find(geometry.get_name());
     assert(it != m_res.end() && "ERROR: resource already released");
 
-    auto&& [name, res_ref] = *it;
+    auto& [name, res_ref] = *it;
     if (--res_ref.refs_counter <= 0) {
         m_res.erase(it);
     }
@@ -42,7 +42,7 @@ void engine::ogl::gpu_cache::release_geometry(const engine::geometry& geometry)
 void engine::ogl::gpu_cache::acquire_shader(const engine::shader_program& program)
 {
     if (auto it = m_res.find(program.get_name()); it != m_res.end()) {
-        auto&& [name, res_ref] = *it;
+        auto& [name, res_ref] = *it;
         ++res_ref.refs_counter;
     } else {
         m_res.emplace(program.get_name(), ogl::shader_program::from_program(program));
@@ -55,7 +55,7 @@ void engine::ogl::gpu_cache::release_shader(const engine::shader_program& progra
     auto it = m_res.find(program.get_name());
     assert(it != m_res.end() && "ERROR: resource already released");
 
-    auto&& [name, res_ref] = *it;
+    auto& [name, res_ref] = *it;
     if (--res_ref.refs_counter <= 0) {
         m_res.erase(it);
     }
@@ -65,7 +65,7 @@ void engine::ogl::gpu_cache::release_shader(const engine::shader_program& progra
 void engine::ogl::gpu_cache::acquire_texture(const engine::interfaces::texture& texture)
 {
     if (auto it = m_res.find(texture.get_name()); it != m_res.end()) {
-        auto&& [name, res_ref] = *it;
+        auto& [name, res_ref] = *it;
         ++res_ref.refs_counter;
     } else {
         texture_converter converter;
@@ -80,7 +80,7 @@ void engine::ogl::gpu_cache::release_texture(const engine::interfaces::texture& 
     auto it = m_res.find(texture.get_name());
     assert(it != m_res.end() && "ERROR: resource already released");
 
-    auto&& [name, res_ref] = *it;
+    auto& [name, res_ref] = *it;
     if (--res_ref.refs_counter <= 0) {
         m_res.erase(it);
     }
@@ -92,7 +92,7 @@ void engine::ogl::gpu_cache::acquire_material(const engine::material& material)
     const auto& textures = material.get_textures();
     acquire_shader(*material.get_shader());
 
-    for (auto&& [shader_name, texture] : textures) {
+    for (auto& [shader_name, texture] : textures) {
         acquire_texture(*texture);
     }
 }
@@ -103,7 +103,7 @@ void engine::ogl::gpu_cache::release_material(const engine::material& material)
     const auto& textures = material.get_textures();
     release_shader(*material.get_shader());
 
-    for (auto&& [shader_name, texture] : textures) {
+    for (auto& [shader_name, texture] : textures) {
         release_texture(*texture);
     }
 }

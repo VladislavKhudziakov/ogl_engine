@@ -30,9 +30,9 @@ namespace engine
             PRESS, RELEASE, HOLD
         };
 
-        connection_t subscribe_event_handler(const std::function<void(key_event&)>&);
+        connection_t subscribe_event_handler(const std::function<void(const key_event&)>&);
 
     protected:
-        boost::signals2::signal<void(key_event&)> m_key_event_signal;
+        boost::signals2::signal<void(const key_event&)> m_key_event_signal;
     };
 } // namespace engine::application

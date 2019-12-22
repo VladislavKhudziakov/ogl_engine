@@ -40,7 +40,7 @@ std::unique_ptr<engine::ogl::texture2d> engine::ogl::texture2d::from_image(const
 
 engine::ogl::texture2d::~texture2d()
 {
-    GL_SAFE_CALL(glDeleteTextures, 1, &m_name);
+    glDeleteTextures(1, &m_name);
 }
 
 

@@ -17,9 +17,11 @@
 
 
 engine::application::application()
-    : p_window(nullptr)
+    : p_window(nullptr, [&](GLFWwindow* window) {
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    })
     , m_assets_manager(std::make_shared<assets_manager>())
-    , m_manager()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -32,6 +34,13 @@ engine::application::application()
 }
 
 
+engine::application::~application()
+{
+    //    glfwDestroyWindow(p_window);
+    //    glfwTerminate();
+}
+
+
 engine::application& engine::application::get()
 {
     static application app;
@@ -41,16 +50,21 @@ engine::application& engine::application::get()
 
 void engine::application::init_window(int32_t width, int32_t height, std::string name)
 {
-    p_window = glfwCreateWindow(width, height, name.data(), nullptr, nullptr);
+    p_window.reset(glfwCreateWindow(width, height, name.data(), nullptr, nullptr));
+
     std::cout << name;
     if (p_window == nullptr) {
         throw std::logic_error("Failed to create window");
     }
 
-    glfwMakeContextCurrent(p_window);
+    glfwMakeContextCurrent(p_window.get());
+    glfwSetWindowUserPointer(p_window.get(), this);
+    m_keyboard_manager.emplace(p_window.get());
+    m_keyboard_manager->subscribe_event_handler([](const key_event&) {
+        std::cout << "called!!\n";
+    });
 
-    glfwSetFramebufferSizeCallback(p_window, [](GLFWwindow* window, int width, int height) {
-        auto& app = engine::application::get();
+    glfwSetFramebufferSizeCallback(p_window.get(), [](GLFWwindow* window, int width, int height) {
         glViewport(0, 0, width, height);
         //TODO: framebuffer size changed signal, boost.signal2?
     });
@@ -58,8 +72,6 @@ void engine::application::init_window(int32_t width, int32_t height, std::string
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         throw std::logic_error("Failed to initialize GLAD");
     }
-
-    m_manager.set_window(p_window);
 }
 
 
@@ -87,20 +99,11 @@ void engine::application::exec()
     glDebugMessageCallback(message_callback, nullptr);
 #endif // __ENGINE__GL_DEBUG__
 
-    while (!glfwWindowShouldClose(p_window)) {
-        process_input();
+    while (!glfwWindowShouldClose(p_window.get())) {
         m_scene->draw();
-        glfwSwapBuffers(p_window);
+        glfwSwapBuffers(p_window.get());
         glfwPollEvents();
     }
-
-    glfwTerminate();
-}
-
-
-void engine::application::process_input()
-{
-    //TODO: add input events boost.signal2???
 }
 
 
@@ -113,4 +116,9 @@ void engine::application::set_scene(std::unique_ptr<scene> scene)
 std::shared_ptr<engine::assets_manager> engine::application::get_assets_manager()
 {
     return m_assets_manager;
+}
+
+const engine::glfw_keyboard_input_manager& engine::application::get_keyboard_manager()
+{
+    return *m_keyboard_manager;
 }

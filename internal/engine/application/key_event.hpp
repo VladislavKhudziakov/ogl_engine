@@ -7,7 +7,7 @@
 
 #include <application/keyboard_input_manager.hpp>
 
-namespace engine::application
+namespace engine
 {
     struct key_event
     {
