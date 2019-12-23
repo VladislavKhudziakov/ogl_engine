@@ -3,14 +3,14 @@
 //
 
 #include <glfw_keyboard_input_manager.hpp>
-#include <application/application.hpp>
+#include <application/ogl_application.hpp>
 #include <key_event.hpp>
 
 engine::glfw_keyboard_input_manager::glfw_keyboard_input_manager(GLFWwindow* window)
 {
     glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mode) {
-        auto* app = reinterpret_cast<application*>(glfwGetWindowUserPointer(window));
-        auto& curr_manager = app->get_keyboard_manager();
+        auto* app = reinterpret_cast<ogl_application*>(glfwGetWindowUserPointer(window));
+        auto& curr_manager = static_cast<glfw_keyboard_input_manager&>(app->get_keyboard_manager());
         KEYBOARD_EVENT curr_event;
         KEY_CODE key_code{ KEY_CODE(key) };
 

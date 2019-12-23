@@ -3,19 +3,20 @@
 //
 
 #include <glfw_mouse_input_manager.hpp>
-#include <application/application.hpp>
+#include <application/ogl_application.hpp>
 
 engine::glfw_mouse_input_manager::glfw_mouse_input_manager(GLFWwindow* window)
 {
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y){
-        auto* app = reinterpret_cast<engine::application*>(glfwGetWindowUserPointer(window));
-        auto& mouse_manager = app->get_mouse_manager();
+        auto* app = reinterpret_cast<engine::ogl_application*>(glfwGetWindowUserPointer(window));
+        auto& mouse_manager = static_cast<glfw_mouse_input_manager&>(app->get_mouse_manager());
+
         mouse_manager.on_cursor_position_changed(x, y);
     });
 
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
-        auto* app = reinterpret_cast<engine::application*>(glfwGetWindowUserPointer(window));
-        auto& mouse_manager = app->get_mouse_manager();
+        auto* app = reinterpret_cast<engine::ogl_application*>(glfwGetWindowUserPointer(window));
+        auto& mouse_manager = static_cast<glfw_mouse_input_manager&>(app->get_mouse_manager());
 
         MOUSE_EVENT curr_event;
         MOUSE_BUTTON curr_button {MOUSE_BUTTON(button)};
