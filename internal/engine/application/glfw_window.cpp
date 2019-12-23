@@ -3,7 +3,7 @@
 //
 
 #include <glfw_window.hpp>
-#include <ogl_application.hpp>
+#include <ogl_engine.hpp>
 
 engine::glfw_window::glfw_window(const std::string& name, uint32_t w, uint32_t h)
     : base_window(name, w, h)
@@ -26,7 +26,7 @@ engine::glfw_window::glfw_window(const std::string& name, uint32_t w, uint32_t h
     glfwMakeContextCurrent(m_window.get());
 
     glfwSetFramebufferSizeCallback(m_window.get(), [](GLFWwindow* window, int width, int height) {
-        auto engine = reinterpret_cast<ogl_application*>(glfwGetWindowUserPointer(window));
+        auto engine = reinterpret_cast<ogl_engine*>(glfwGetWindowUserPointer(window));
         const auto& curr_window = static_cast<glfw_window&>(engine->get_window());
         curr_window.on_window_size_changed(width, height);
     });

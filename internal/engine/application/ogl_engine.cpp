@@ -14,12 +14,12 @@
 #include <glfw_window.hpp>
 #include <scene/scene.hpp>
 #include <scene/ogl_renderer/scene_renderer.hpp>
-#include <application/ogl_application.hpp>
+#include <application/ogl_engine.hpp>
 #include <application/glfw_keyboard_input_manager.hpp>
 #include <application/glfw_mouse_input_manager.hpp>
 
 
-engine::ogl_application::ogl_application()
+engine::ogl_engine::ogl_engine()
     : engine_impl{std::make_unique<ogl::scene_renderer>()}
 {
     glfwInit();
@@ -33,7 +33,7 @@ engine::ogl_application::ogl_application()
 }
 
 
-void engine::ogl_application::init_window(int32_t width, int32_t height, std::string name)
+void engine::ogl_engine::init_window(int32_t width, int32_t height, std::string name)
 {
     m_window = std::make_unique<glfw_window>(name, width, height);
 
@@ -54,7 +54,7 @@ void engine::ogl_application::init_window(int32_t width, int32_t height, std::st
 }
 
 
-void engine::ogl_application::exec()
+void engine::ogl_engine::exec()
 {
     if (!m_window) {
         throw std::runtime_error("ERROR: CANNOT EXECUTE APP WHILE WINDOW IS NOT INITIALIZED");

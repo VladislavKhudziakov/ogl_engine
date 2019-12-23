@@ -1,6 +1,4 @@
-#include <application/ogl_application.hpp>
-#include <scene/scene.hpp>
-#include <scene/ogl_renderer/scene_renderer.hpp>
+#include <application/engine.hpp>
 #include <scene/scene_object.hpp>
 #include <scene/scene_factory.hpp>
 #include <material.hpp>
@@ -13,10 +11,12 @@
 // TODO: add input events system, add behavior component
 // TODO: concurrency
 // TODO: ogl raii, uniforms buffers data, uniforms buffers, post processing, light, bones, animations
+// TODO: factories
+// TODO: ability release assets resources
 
 int main()
 {
-    engine::ogl_application app;
+    engine::rendering_engine app;
 
     app.get_assets_manager().import(engine::shader_importer(
                                          "../internal/engine/shaders/default.vert",
@@ -57,7 +57,6 @@ int main()
     env_material->set_rendering_config({engine::material_config::culling_type::front, engine::material_config::blend_mode::none});
     app.get_assets_manager().add(env_material, "env_material");
 
-//    auto mesh_scene = std::make_unique<engine::scene>(std::make_shared<engine::ogl::scene_renderer>());
     engine::scene_factory scene_factory(app.get_scene());
 
     auto env_object = scene_factory.make_scene_object("environment");
@@ -106,7 +105,6 @@ int main()
     app.get_scene().set_root(env_object);
     app.get_scene().add_light_source({{10, -20, 30}, {1, 1, 1}});
     app.get_scene().add_light_source({{-30, 30, -30}, {1, 1, 1}});
-//    app.set_scene(std::move(mesh_scene));
     app.exec();
 
     return 0;

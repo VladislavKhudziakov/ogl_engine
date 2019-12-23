@@ -35,4 +35,4 @@ namespace engine
     protected:
         boost::signals2::signal<void(const key_event&)> m_key_event_signal;
     };
-} // namespace engine::ogl_application
+} // namespace engine::ogl_engine

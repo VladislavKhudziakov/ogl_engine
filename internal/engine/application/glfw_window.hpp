@@ -12,7 +12,7 @@ namespace engine
 {
     class glfw_window : public base_window
     {
-        friend class ogl_application;
+        friend class ogl_engine;
 
     public:
         glfw_window(const std::string&, uint32_t, uint32_t);
