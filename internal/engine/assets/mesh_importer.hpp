@@ -14,8 +14,6 @@ class aiNode;
 
 namespace engine
 {
-    class geometry_builder;
-
     class mesh_importer : public interfaces::importer<mesh_data>
     {
     public:

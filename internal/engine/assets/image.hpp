@@ -6,6 +6,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <common/image_format.hpp>
 
 namespace engine
@@ -14,11 +15,11 @@ namespace engine
     {
     public:
         image(uint8_t*, int32_t, int32_t, image_format, const std::function<void(uint8_t*)>&);
-        ~image();
+        ~image() = default;
         image(const image&) = delete;
         image& operator=(const image&) = delete;
-        image(image&&) noexcept;
-        image& operator=(image&&) noexcept;
+        image(image&&) = default;
+        image& operator=(image&&) = default;
 
         uint8_t* raw_data() const;
         bool compare_size(const image&);
@@ -28,11 +29,10 @@ namespace engine
         image_format get_format() const;
 
     private:
-        uint8_t* p_data;
+        std::unique_ptr<uint8_t, std::function<void(uint8_t*)>> p_data;
         int32_t m_width{};
         int32_t m_height{};
         image_format m_format;
-        std::function<void(uint8_t*)> m_deallocator;
     };
 }
 

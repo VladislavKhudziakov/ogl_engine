@@ -5,8 +5,6 @@
 #include <string>
 
 #include <assets/material.hpp>
-#include <common/bind_context.hpp>
-
 
 engine::material::material(std::shared_ptr<engine::shader_program> shader)
     : m_shader(std::move(shader))

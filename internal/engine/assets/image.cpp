@@ -9,45 +9,18 @@ engine::image::image(
     int32_t w,
     int32_t h,
     engine::image_format format,
-    const std::function<void(uint8_t*)>& deallocator)
-    : p_data(data)
+    const std::function<void(uint8_t*)>& deleter)
+    : p_data(data, deleter)
     , m_width(w)
     , m_height(h)
     , m_format(format)
-    , m_deallocator(deallocator)
 {
-}
-
-
-engine::image::image(engine::image&& other) noexcept
-{
-    p_data = other.p_data;
-    other.p_data = nullptr;
-    m_width = other.m_width;
-    m_height = other.m_height;
-    m_format = other.m_format;
-    m_deallocator = other.m_deallocator;
-}
-
-
-engine::image& engine::image::operator=(engine::image&& other) noexcept
-{
-    *this = std::move(other);
-    return *this;
-}
-
-
-engine::image::~image()
-{
-    if (p_data) {
-        m_deallocator(p_data);
-    }
 }
 
 
 uint8_t* engine::image::raw_data() const
 {
-    return p_data;
+    return p_data.get();
 }
 
 

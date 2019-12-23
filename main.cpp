@@ -13,6 +13,8 @@
 // TODO: ogl raii, uniforms buffers data, uniforms buffers, post processing, light, bones, animations
 // TODO: factories
 // TODO: ability release assets resources
+// TODO: shader importer
+// TODO: agile shaders
 
 int main()
 {
@@ -44,7 +46,7 @@ int main()
 
     app.init_window(800, 600, "test");
 
-    auto material = std::make_shared<engine::material>(app.get_assets_manager().get<engine::shader_program>("default_shader"));
+    auto material = engine::assets_manager::make_material(app.get_assets_manager().get<engine::shader_program>("default_shader"));
     material->set_texture("u_texture", app.get_assets_manager().get<engine::interfaces::texture>("default_texture"));
     material->set_rendering_config({engine::material_config::culling_type::none, engine::material_config::blend_mode::alpha});
     material->set_texture("u_env", app.get_assets_manager().get<engine::interfaces::texture>("default_env_texture"));
@@ -52,7 +54,7 @@ int main()
 
 
     auto env_shader = app.get_assets_manager().get<engine::shader_program>("__env_shader__");
-    auto env_material = std::make_shared<engine::material>(env_shader);
+    auto env_material = engine::assets_manager::make_material(env_shader);
     env_material->set_texture("u_env", app.get_assets_manager().get<engine::interfaces::texture>("default_env_texture"));
     env_material->set_rendering_config({engine::material_config::culling_type::front, engine::material_config::blend_mode::none});
     app.get_assets_manager().add(env_material, "env_material");
