@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <interfaces/importer.hpp>
-#include <shader_program.hpp>
+#include <assets/interfaces/importer.hpp>
+#include <assets/shader_program.hpp>
+#include <assets/types.hpp>
 
 
 namespace engine
@@ -14,16 +15,17 @@ namespace engine
     class shader_importer : public interfaces::importer<shader_program>
     {
     public:
-        shader_importer(const std::string&, const std::string&, const std::string&);
+        using shader_data = std::pair<shader_program::shader_type, std::string>;
 
-        std::shared_ptr<shader_program> import() const override;
+        shader_importer(const std::string&, const std::initializer_list<shader_data>&);
+
+        assets::shader_program_t import() const override;
         std::string get_name() const override;
         ~shader_importer() override = default;
 
     private:
         std::string load_file(const std::string&) const;
-        std::string m_vshader_path;
-        std::string m_fshader_path;
+        std::vector<shader_data> m_data;
         std::string m_program_name;
     };
 } // namespace engine

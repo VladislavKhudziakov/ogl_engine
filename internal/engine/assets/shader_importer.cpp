@@ -3,24 +3,29 @@
 //
 
 #include <fstream>
-#include <shader_importer.hpp>
+#include <assets/shader_importer.hpp>
+#include <assets/assets_manager.hpp>
 
 engine::shader_importer::shader_importer(
-    const std::string& vshader_path,
-    const std::string& fshader_path,
-    const std::string& name)
-    : m_vshader_path(vshader_path)
-    , m_fshader_path(fshader_path)
-    , m_program_name(name)
+    const std::string& name,
+    const std::initializer_list<shader_data>& data)
+    : m_data{data}
+    , m_program_name{name}
 {
 }
 
 
 std::shared_ptr<engine::shader_program> engine::shader_importer::import() const
 {
-    auto vshader_source = load_file(m_vshader_path);
-    auto fshader_source = load_file((m_fshader_path));
-    return std::make_shared<shader_program>(m_program_name, vshader_source, fshader_source);
+    std::vector<shader_program::shader> shaders;
+    for (const auto& [type, path] : m_data) {
+        shaders.emplace_back();
+        shaders.back().type = type;
+        shaders.back().source = load_file(path);
+    }
+
+
+    return assets_manager::make_shader_program(m_program_name, shaders);
 }
 
 

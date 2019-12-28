@@ -20,13 +20,13 @@ int main()
     engine::rendering_engine app;
 
     app.get_assets_manager().import(engine::shader_importer(
-                                         "../internal/engine/shaders/default.vert",
-                                         "../internal/engine/shaders/default.frag",
-                                         "default_shader"))
+                                        "default_shader",
+                                        {{engine::shader_program::shader_type::vertex, "../internal/engine/shaders/default.vert"},
+                                         {engine::shader_program::shader_type::fragment, "../internal/engine/shaders/default.frag"}}))
         .import(engine::shader_importer(
-            "../internal/engine/shaders/environment.vert",
-            "../internal/engine/shaders/environment.frag",
-            "__env_shader__"))
+            "__env_shader__",
+            {{engine::shader_program::shader_type::vertex, "../internal/engine/shaders/environment.vert"},
+             {engine::shader_program::shader_type::fragment, "../internal/engine/shaders/environment.frag"}}))
         .import(engine::image_importer(engine::image_importer::import_parameters{
             "../internal/resources/teapot/default.png",
             "default_texture"}))

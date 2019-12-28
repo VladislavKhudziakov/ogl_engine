@@ -68,7 +68,20 @@ engine::ogl::shader_program::shader_program(
 
 std::unique_ptr<engine::ogl::shader_program> engine::ogl::shader_program::from_program(const engine::shader_program& program)
 {
-    return std::make_unique<shader_program>(program.get_vertex_shader(), program.get_fragment_shader());
+    std::string vs_source;
+    std::string fs_source;
+
+    for(const auto& [type, source] : program.get_shaders()) {
+        if (type == engine::shader_program::shader_type::vertex) {
+            vs_source = source;
+        }
+
+        if (type == engine::shader_program::shader_type::fragment) {
+            fs_source = source;
+        }
+    }
+
+    return std::make_unique<shader_program>(vs_source, fs_source);
 }
 
 

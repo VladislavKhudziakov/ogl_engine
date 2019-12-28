@@ -6,24 +6,40 @@
 
 #include <glm/glm.hpp>
 #include <string>
+#include <vector>
 
 namespace engine
 {
     class shader_program
     {
     public:
-        shader_program(const std::string&, std::string&, std::string&);
-        shader_program(const std::string&, std::string&&, std::string&&);
+        enum class shader_type
+        {
+            vertex,
+            fragment,
+            geometry,
+            tessellation
+        };
 
+        struct shader
+        {
+            shader_type type;
+            std::string source;
+        };
+
+        shader_program(const std::string&, std::vector<shader>&&);
+        shader_program(const std::string&, std::vector<shader>&);
         ~shader_program() = default;
 
         const std::string get_name() const;
-        const std::string& get_vertex_shader() const;
-        const std::string& get_fragment_shader() const;
+        const std::vector<shader>& get_shaders() const;
+        std::vector<shader>& get_shaders();
+
         void clear();
 
     private:
         std::string m_name;
+        std::vector<shader> m_shaders;
         std::string m_vertex_shader;
         std::string m_fragment_shader;
     };

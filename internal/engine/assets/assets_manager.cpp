@@ -96,3 +96,13 @@ engine::assets::geometry_t engine::assets_manager::make_geometry(
 {
     return std::make_unique<geometry>(name, std::move(vertices), std::move(faces));
 }
+engine::assets::shader_program_t engine::assets_manager::make_shader_program(
+    const std::string& name, std::vector<shader_program::shader>& shaders)
+{
+    return std::make_shared<shader_program>(name, std::move(shaders));
+}
+engine::assets::shader_program_t engine::assets_manager::make_shader_program(
+    const std::string& name, std::vector<shader_program::shader>&& shaders)
+{
+    return std::make_shared<shader_program>(name, std::move(shaders));
+}

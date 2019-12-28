@@ -18,6 +18,7 @@
 #include <variant>
 #include <vector>
 #include <map>
+#include "shader_program.hpp"
 
 namespace engine
 {
@@ -47,6 +48,9 @@ namespace engine
         static assets::geometry_t make_geometry(const std::string&, std::vector<vertex>&&, std::vector<face>&&);
         static assets::geometry_t make_geometry(const std::string&, std::vector<vertex>&, std::vector<face>&);
 
+        static assets::shader_program_t make_shader_program(const std::string&, std::vector<shader_program::shader>&);
+        static assets::shader_program_t make_shader_program(const std::string&, std::vector<shader_program::shader>&&);
+        
         template<typename... Args>
         static std::shared_ptr<material> make_material(Args&&... args)
         {
