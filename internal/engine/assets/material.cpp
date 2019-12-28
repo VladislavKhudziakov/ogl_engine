@@ -5,6 +5,8 @@
 #include <string>
 
 #include <assets/material.hpp>
+#include <assets/shader_program.hpp>
+
 
 engine::material::material(std::shared_ptr<engine::shader_program> shader)
     : m_shader(std::move(shader))
@@ -18,25 +20,25 @@ std::shared_ptr<engine::interfaces::texture> engine::material::get_texture(const
 }
 
 
-void engine::material::set_texture(const std::string& name, std::shared_ptr<interfaces::texture> texture)
+void engine::material::set_texture(const std::string& name, const assets::texture_t& texture)
 {
     m_textures.emplace(name, texture);
 }
 
 
-std::shared_ptr<engine::shader_program> engine::material::get_shader() const
+const engine::assets::shader_program_t& engine::material::get_shader() const
 {
     return m_shader;
 }
 
 
-void engine::material::set_shader(std::shared_ptr<engine::shader_program> shader)
+void engine::material::set_shader(const assets::shader_program_t& shader)
 {
-    m_shader = std::move(shader);
+    m_shader = shader;
 }
 
 
-const engine::material::material_textures& engine::material::get_textures() const
+const engine::material::material_textures_t& engine::material::get_textures() const
 {
     return m_textures;
 }

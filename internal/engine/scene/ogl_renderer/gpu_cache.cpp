@@ -3,7 +3,8 @@
 //
 
 #include <assets/mesh.hpp>
-#include <assets/mesh_data.hpp>
+#include <assets/mesh_bucket.hpp>
+#include <assets/shader_program.hpp>
 #include <assets/material.hpp>
 #include <assets/geometry.hpp>
 #include <assets/interfaces/texture.hpp>
@@ -129,7 +130,7 @@ void engine::ogl::gpu_cache::release_mesh(const engine::mesh& mesh)
 }
 
 
-void engine::ogl::gpu_cache::acquire_mesh_data(const engine::mesh_data& mesh_data)
+void engine::ogl::gpu_cache::acquire_mesh_data(const engine::mesh_bucket& mesh_data)
 {
     const auto& meshes = mesh_data.get_meshes();
 
@@ -139,7 +140,7 @@ void engine::ogl::gpu_cache::acquire_mesh_data(const engine::mesh_data& mesh_dat
 }
 
 
-void engine::ogl::gpu_cache::release_mesh_data(const engine::mesh_data& mesh_data)
+void engine::ogl::gpu_cache::release_mesh_data(const engine::mesh_bucket& mesh_data)
 {
     const auto& meshes = mesh_data.get_meshes();
 

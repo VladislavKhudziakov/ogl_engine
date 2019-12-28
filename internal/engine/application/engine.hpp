@@ -25,7 +25,7 @@ namespace engine
         rendering_engine();
         ~rendering_engine();
 
-        void init_window(int32_t, int32_t, std::string);
+        void init_window(int32_t, int32_t, const std::string&);
         void exec();
         const keyboard_input_manager& get_keyboard_manager() const;
         const mouse_input_manager& get_mouse_manager() const;

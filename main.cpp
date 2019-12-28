@@ -12,7 +12,6 @@
 // TODO: concurrency
 // TODO: ogl raii, uniforms buffers data, uniforms buffers, post processing, light, bones, animations
 // TODO: factories
-// TODO: ability release assets resources
 // TODO: shader importer
 // TODO: agile shaders
 
@@ -63,14 +62,14 @@ int main()
 
     auto env_object = scene_factory.make_scene_object("environment");
 
-    const auto& cube_meshes = app.get_assets_manager().get<engine::mesh_data>("__default_cube__")->get_meshes();
+    const auto& cube_meshes = app.get_assets_manager().get<engine::mesh_bucket>("__default_cube__")->get_meshes();
 
     for (auto&& mesh : cube_meshes) {
-        auto mat = app.get_assets_manager().get<engine::material>("env_material");
+        const auto& mat = app.get_assets_manager().get<engine::material>("env_material");
         mesh->attach_material(app.get_assets_manager().get<engine::material>("env_material"));
     }
 
-    auto cube_meshes_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager().get<engine::mesh_data>("__default_cube__"));
+    auto cube_meshes_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager().get<engine::mesh_bucket>("__default_cube__"));
     env_object->set_component(cube_meshes_component);
 
     auto object_1 = scene_factory.make_scene_object("test_1");
@@ -79,13 +78,13 @@ int main()
     transformation_component->scale = {0.1, 0.1, 0.1};
     object_1->set_component(transformation_component);
 
-    const auto& meshes_list = app.get_assets_manager().get<engine::mesh_data>("teapot")->get_meshes();
+    const auto& meshes_list = app.get_assets_manager().get<engine::mesh_bucket>("teapot")->get_meshes();
 
     for (auto&& mesh : meshes_list) {
         mesh->attach_material(app.get_assets_manager().get<engine::material>("test_mat"));
     }
 
-    auto mesh_instance_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager().get<engine::mesh_data>("teapot"));
+    auto mesh_instance_component = std::make_shared<engine::mesh_instance>(app.get_assets_manager().get<engine::mesh_bucket>("teapot"));
 
     auto object_2 = scene_factory.make_scene_object("test_1");
     object_2->set_component(mesh_instance_component);

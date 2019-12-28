@@ -2,7 +2,8 @@
 // Created by movleaxedx on 26.11.19.
 //
 
-#include <environment_texture.hpp>
+#include <assets/environment_texture.hpp>
+#include <assets/assets_manager.hpp>
 #include <assets/env_texture_importer.hpp>
 #include <stb/stb_image.h>
 
@@ -17,7 +18,7 @@ engine::env_texture_importer::env_texture_importer(
 }
 
 
-std::shared_ptr<engine::interfaces::texture> engine::env_texture_importer::import() const
+engine::assets::texture_t engine::env_texture_importer::import() const
 {
     int32_t last_channels_count = -1;
     int32_t last_width = -1;
@@ -48,7 +49,7 @@ std::shared_ptr<engine::interfaces::texture> engine::env_texture_importer::impor
         images.emplace_back(data, width, height, static_cast<image_format>(channels_count), stbi_image_free);
     }
 
-    return std::make_shared<environment_texture>(m_name, std::move(images), m_parameters);
+    return assets_manager::make_env_texture(m_name, std::move(images), m_parameters);
 }
 
 

@@ -20,7 +20,7 @@ namespace engine
     class geometry;
     class shader_program;
     class mesh;
-    class mesh_data;
+    class mesh_bucket;
 } // namespace engine
 
 namespace engine::interfaces
@@ -85,8 +85,8 @@ namespace engine::ogl
         void release_material(const engine::material&);
         void acquire_mesh(const engine::mesh&);
         void release_mesh(const engine::mesh&);
-        void acquire_mesh_data(const engine::mesh_data&);
-        void release_mesh_data(const engine::mesh_data&);
+        void acquire_mesh_data(const engine::mesh_bucket&);
+        void release_mesh_data(const engine::mesh_bucket&);
 
     private:
         gpu_resources_map m_resources;

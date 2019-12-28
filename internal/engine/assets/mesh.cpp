@@ -3,31 +3,41 @@
 //
 
 #include <mesh.hpp>
+#include <geometry.hpp>
+#include <material.hpp>
 
 
-engine::mesh::mesh(std::string name, std::shared_ptr<geometry> geometry, std::shared_ptr<material> material)
+engine::mesh::mesh(const std::string& name, assets::geometry_t geometry, const assets::material_t& material)
     : m_geometry(std::move(geometry))
-    , m_name(std::move(name))
-    , m_material(std::move(material))
+    , m_name(name)
+    , m_material(material)
 {
 }
 
 
-std::shared_ptr<engine::geometry> engine::mesh::get_geometry() const
+engine::mesh::~mesh() = default;
+
+
+engine::assets::geometry_t& engine::mesh::get_geometry()
+{
+    return m_geometry;
+}
+
+const engine::assets::geometry_t& engine::mesh::get_geometry() const
 {
     return m_geometry;
 }
 
 
-void engine::mesh::set_geometry(std::shared_ptr<geometry> geometry)
+void engine::mesh::set_geometry(assets::geometry_t geometry)
 {
     m_geometry = std::move(geometry);
 }
 
 
-void engine::mesh::attach_material(std::shared_ptr<material> material)
+void engine::mesh::attach_material(const assets::material_t& material)
 {
-    m_material = std::move(material);
+    m_material = material;
 }
 
 

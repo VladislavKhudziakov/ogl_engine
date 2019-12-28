@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <interfaces/importer.hpp>
-#include <mesh_data.hpp>
+#include <assets/interfaces/importer.hpp>
+#include <assets/mesh_bucket.hpp>
+#include <common/vertex.hpp>
 
 class aiScene;
 class aiMesh;
@@ -14,12 +15,12 @@ class aiNode;
 
 namespace engine
 {
-    class mesh_importer : public interfaces::importer<mesh_data>
+    class mesh_importer : public interfaces::importer<mesh_bucket>
     {
     public:
         mesh_importer(const std::string&, const std::string&);
         ~mesh_importer() override = default;
-        std::shared_ptr<mesh_data> import() const override;
+        std::shared_ptr<mesh_bucket> import() const override;
         std::string get_name() const override;
 
     private:
@@ -29,6 +30,6 @@ namespace engine
         static void validate_file(const aiScene*);
         std::string m_path;
         std::string m_mesh_name;
-        mutable std::shared_ptr<mesh_data> m_mesh_instance;
+        mutable std::shared_ptr<mesh_bucket> m_mesh_instance;
     };
 } // namespace engine

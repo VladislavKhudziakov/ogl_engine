@@ -7,6 +7,7 @@
 
 #include <interfaces/importer.hpp>
 #include <image_2d_texture.hpp>
+#include <types.hpp>
 
 namespace engine
 {
@@ -22,7 +23,7 @@ namespace engine
         explicit image_importer(const import_parameters&);
         ~image_importer() override = default;
 
-        std::shared_ptr<engine::interfaces::texture> import() const override;
+        assets::texture_t import() const override;
         std::string get_name() const override;
 
     private:

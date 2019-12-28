@@ -11,6 +11,9 @@
 #include <scene/ogl_renderer/scene_renderer.hpp>
 #include <scene/ogl_renderer/material_config_resolver.hpp>
 
+#include <assets/mesh.hpp>
+#include <assets/geometry.hpp>
+
 #include <common/for_each.hpp>
 
 namespace engine::ogl
@@ -140,7 +143,7 @@ void engine::ogl::scene_renderer::set_scene(scene* scene)
 }
 
 
-void engine::ogl::scene_renderer::draw_geometry(const std::shared_ptr<geometry>& geometry)
+void engine::ogl::scene_renderer::draw_geometry(const assets::geometry_t& geometry)
 {
     const auto& buffer = m_cache.get_resource<ogl::interfaces::vertex_buffer>(geometry->get_name());
     buffer->bind();
@@ -149,7 +152,7 @@ void engine::ogl::scene_renderer::draw_geometry(const std::shared_ptr<geometry>&
 }
 
 
-void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>& material)
+void engine::ogl::scene_renderer::bind_material(const assets::material_t& material)
 {
     const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(material->get_shader()->get_name());
     auto name = material->get_shader()->get_name();
@@ -166,7 +169,7 @@ void engine::ogl::scene_renderer::bind_material(const std::shared_ptr<material>&
 }
 
 
-void engine::ogl::scene_renderer::release_material(const std::shared_ptr<material>& material)
+void engine::ogl::scene_renderer::release_material(const assets::material_t& material)
 {
     const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
         material->get_shader()->get_name());

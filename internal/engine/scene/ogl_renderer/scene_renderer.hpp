@@ -9,6 +9,7 @@
 #include <scene/interfaces/scene_renderer.hpp>
 #include <scene/ogl_renderer/gpu_cache.hpp>
 #include <scene/components/interfaces/component_visitor.hpp>
+#include <assets/types.hpp>
 
 namespace engine::ogl
 {
@@ -38,9 +39,9 @@ namespace engine::ogl
 
     private:
         void process_nodes(std::shared_ptr<scene_object>);
-        void bind_material(const std::shared_ptr<material>&);
-        void release_material(const std::shared_ptr<material>&);
-        void draw_geometry(const std::shared_ptr<geometry>&);
+        void bind_material(const assets::material_t&);
+        void release_material(const assets::material_t&);
+        void draw_geometry(const assets::geometry_t&);
 
         //TODO: replace on weak_ptr
         engine::scene* m_scene = nullptr;

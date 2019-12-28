@@ -10,6 +10,7 @@
 
 #include <assets/interfaces/importer.hpp>
 #include <assets/interfaces/texture.hpp>
+#include <assets/types.hpp>
 
 namespace engine
 {
@@ -20,7 +21,7 @@ namespace engine
     public:
         env_texture_importer(const std::string&, const std::array<std::string, 6>&, const texture_parameters& = texture_parameters());
         ~env_texture_importer() override = default;
-        std::shared_ptr<interfaces::texture> import() const override;
+        assets::texture_t import() const override;
         std::string get_name() const override;
 
     private:

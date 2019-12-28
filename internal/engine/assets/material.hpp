@@ -8,33 +8,33 @@
 #include <memory>
 
 #include <interfaces/texture.hpp>
-#include <shader_program.hpp>
 #include <common/material_config.hpp>
+#include <assets/types.hpp>
 
 namespace engine
 {
     class material
     {
     public:
-        using material_textures = std::map<std::string, std::shared_ptr<interfaces::texture>>;
+        using material_textures_t = std::map<std::string, assets::texture_t>;
 
-        explicit material(std::shared_ptr<engine::shader_program>);
+        explicit material(assets::shader_program_t);
         material() = default;
         virtual ~material() = default;
 
-        std::shared_ptr<interfaces::texture> get_texture(const std::string&) const;
-        void set_texture(const std::string&, std::shared_ptr<interfaces::texture>);
-        std::shared_ptr<engine::shader_program> get_shader() const;
-        void set_shader(std::shared_ptr<engine::shader_program>);
+        assets::texture_t get_texture(const std::string&) const;
+        void set_texture(const std::string&, const assets::texture_t&);
+        const assets::shader_program_t& get_shader() const;
+        void set_shader(const assets::shader_program_t&);
         void set_rendering_config(const material_config&);
         const material_config& get_config() const;
 
-        const material_textures& get_textures() const;
+        const material_textures_t& get_textures() const;
 
     private:
         std::string m_name;
-        std::map<std::string, std::shared_ptr<interfaces::texture>> m_textures;
-        std::shared_ptr<engine::shader_program> m_shader;
+        material_textures_t m_textures;
+        assets::shader_program_t m_shader;
         material_config m_config;
     };
 } // namespace engine

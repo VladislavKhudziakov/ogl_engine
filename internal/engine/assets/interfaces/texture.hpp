@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <cinttypes>
+#include <memory>
 
 
 namespace engine

@@ -19,7 +19,7 @@ engine::rendering_engine::rendering_engine()
 
 engine::rendering_engine::~rendering_engine() = default;
 
-void engine::rendering_engine::init_window(int32_t w, int32_t h, std::string name)
+void engine::rendering_engine::init_window(int32_t w, int32_t h, const std::string& name)
 {
     p_impl->init_window(w, h, name);
 }

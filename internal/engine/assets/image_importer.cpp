@@ -1,13 +1,14 @@
 //
 // Created by movleaxedx on 15.10.19.
 //
+#include <assets/assets_manager.hpp>
 #include <assets/image_importer.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 
-std::shared_ptr<engine::interfaces::texture> engine::image_importer::import() const
+engine::assets::texture_t engine::image_importer::import() const
 {
     int32_t channels_count;
     int32_t width;
@@ -15,7 +16,7 @@ std::shared_ptr<engine::interfaces::texture> engine::image_importer::import() co
 
     auto data = stbi_load(m_parameters.path.c_str(), &width, &height, &channels_count, 0);
 
-    return std::make_shared<engine::image_2d_texture>(
+    return assets_manager::make_texture2d(
         m_parameters.name,
         engine::image{
             data,

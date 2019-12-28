@@ -9,9 +9,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include <geometry.hpp>
-#include <mesh_importer.hpp>
-
+#include <assets/geometry.hpp>
+#include <assets/mesh_importer.hpp>
+#include <assets/mesh.hpp>
+#include <assets/assets_manager.hpp>
 
 engine::mesh_importer::mesh_importer(const std::string& file_path, const std::string& name)
     : m_path(file_path)
@@ -20,14 +21,14 @@ engine::mesh_importer::mesh_importer(const std::string& file_path, const std::st
 }
 
 
-std::shared_ptr<engine::mesh_data> engine::mesh_importer::import() const
+std::shared_ptr<engine::mesh_bucket> engine::mesh_importer::import() const
 {
     Assimp::Importer importer;
     auto file_data = importer.ReadFile(m_path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
     validate_file(file_data);
 
-    m_mesh_instance = std::make_shared<mesh_data>();
+    m_mesh_instance = assets_manager::make_mesh_bucket();
 
     process_node(file_data, file_data->mRootNode);
 
@@ -93,9 +94,9 @@ void engine::mesh_importer::process_node(const aiScene* scene, const aiNode* nod
         copy_vertices(vertices, curr_mesh);
         copy_faces(faces, curr_mesh);
 
-        auto mesh_geometry = std::make_shared<geometry>(curr_mesh->mName.C_Str(), vertices, faces);
-        auto mesh = std::make_shared<engine::mesh>(curr_mesh->mName.C_Str(), mesh_geometry);
-        m_mesh_instance->append_mesh(mesh);
+        auto mesh_geometry = assets_manager::make_geometry(curr_mesh->mName.C_Str(), vertices, faces);
+        auto mesh = assets_manager::make_mesh(curr_mesh->mName.C_Str(), std::move(mesh_geometry));
+        m_mesh_instance->append_mesh(std::move(mesh));
     }
 
     for (int i = 0; i < node->mNumChildren; ++i) {
