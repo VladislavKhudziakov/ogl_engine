@@ -7,9 +7,9 @@
 #include <map>
 #include <memory>
 
-#include <interfaces/texture.hpp>
-#include <common/material_config.hpp>
+#include <assets/interfaces/texture.hpp>
 #include <assets/types.hpp>
+#include <common/material_config.hpp>
 
 namespace engine
 {
