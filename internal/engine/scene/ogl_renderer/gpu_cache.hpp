@@ -10,6 +10,7 @@
 #include <memory>
 
 //#include <scene/ogl_renderer/shader_program.hpp>
+#include <scene/ogl_renderer/vertices_data.hpp>
 #include <scene/ogl_renderer/shaders/shader_program.hpp>
 #include <scene/ogl_renderer/interfaces/texture.hpp>
 #include <scene/ogl_renderer/interfaces/vertex_buffer.hpp>
@@ -39,7 +40,7 @@ namespace engine::ogl
         using gpu_resource_t = std::variant<
             std::unique_ptr<shader_program>,
             std::unique_ptr<interfaces::texture>,
-            std::unique_ptr<interfaces::vertex_buffer>>;
+            std::unique_ptr<vertices_data>>;
 
 
         struct resource_ref

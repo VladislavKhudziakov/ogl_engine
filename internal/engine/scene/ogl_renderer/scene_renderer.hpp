@@ -32,8 +32,6 @@ namespace engine::ogl
         void accept(mesh_instance& instance, std::shared_ptr<scene_object>& ptr) override;
         void accept(transformation& transformation, std::shared_ptr<scene_object>& ptr) override;
 
-    private:
-    public:
         void acquire_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
         void release_gpu_resource(const std::shared_ptr<engine::interfaces::component>& ptr) override;
 

@@ -26,9 +26,14 @@ namespace engine
         const std::vector<vertex>& get_vertices() const;
         const std::vector<face>& get_faces() const;
 
+        uint32_t get_vertices_count() const;
+
     private:
+        void count_vertices();
+
         std::string m_name;
         std::vector<vertex> m_vertices;
         std::vector<face> m_faces;
+        uint32_t m_vertices_count;
     };
 } // namespace engine

@@ -11,7 +11,6 @@
 
 #include <scene/ogl_renderer/gpu_cache.hpp>
 #include <scene/ogl_renderer/shaders/shader_program.hpp>
-#include <scene/ogl_renderer/vertex_buffer.hpp>
 
 #include <texture_converter.hpp>
 
@@ -24,7 +23,7 @@ void engine::ogl::gpu_cache::acquire_geometry(const engine::geometry& geometry)
         auto&& [name, res_ref] = *it;
         ++res_ref.refs_counter;
     } else {
-        m_res.emplace(geometry.get_name(), ogl::vertex_buffer::from_geometry(geometry));
+        m_res.emplace(geometry.get_name(), ogl::vertices_data::from_geometry(geometry));
     }
 }
 

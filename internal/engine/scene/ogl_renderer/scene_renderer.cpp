@@ -172,10 +172,12 @@ void engine::ogl::scene_renderer::set_scene(scene* scene)
 
 void engine::ogl::scene_renderer::draw_geometry(const assets::geometry_t& geometry)
 {
-    const auto& buffer = m_cache.get_resource<ogl::interfaces::vertex_buffer>(geometry->get_name());
-    buffer->bind();
-    buffer->draw();
-    buffer->unbind();
+    const auto& buffer = m_cache.get_resource<ogl::vertices_data>(geometry->get_name());
+    glBindVertexArray(buffer->get_vertices_buffer());
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->get_indices_buffer());
+    glDrawElements(GL_TRIANGLES, geometry->get_vertices_count(), GL_UNSIGNED_INT, nullptr);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);;
 }
 
 
