@@ -190,8 +190,10 @@ void engine::ogl::scene_renderer::bind_material(const assets::material_t& materi
     int curr_slot = 0;
     auto textures = material->get_textures();
     for (auto [shader_uniform, texture] : textures) {
-        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
-        gpu_texture->bind(curr_slot);
+        const auto& gpu_texture = m_cache.get_resource<ogl::texture_object>(texture->get_name());
+
+        glActiveTexture(GL_TEXTURE0 + curr_slot);
+        glBindTexture(gpu_texture->get_type(), *gpu_texture);
 
         gpu_program->visit(ogl::uniform_visitor([curr_slot](int32_t location) {
             glUniform1i(location, curr_slot);
@@ -207,9 +209,16 @@ void engine::ogl::scene_renderer::release_material(const assets::material_t& mat
     glUseProgram(0);
 
     auto textures = material->get_textures();
+
+    int curr_slot = 0;
+
     for (auto&& [shader_uniform, texture] : textures) {
-        const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
-        gpu_texture->unbind();
+        const auto& gpu_texture = m_cache.get_resource<ogl::texture_object>(texture->get_name());
+
+        glActiveTexture(GL_TEXTURE0 + curr_slot);
+        glBindTexture(gpu_texture->get_type(), 0);
+
+        curr_slot++;
     }
 }
 

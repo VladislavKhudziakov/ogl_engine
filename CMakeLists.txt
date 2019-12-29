@@ -51,6 +51,7 @@ include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/interfaces)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/shaders)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/buffers)
+include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/textures)
 include_directories(${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/interfaces)
 
 
@@ -61,10 +62,12 @@ file(GLOB COMPONENTS ${PROJECT_SOURCE_DIR}/internal/engine/scene/components/*.cp
 file(GLOB OGL ${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/*.cpp)
 file(GLOB OGL_SHADERS ${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/shaders/*.cpp)
 file(GLOB OGL_BUFFERS ${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/buffers/*.cpp)
+file(GLOB OGL_TEXTURES ${PROJECT_SOURCE_DIR}/internal/engine/scene/ogl_renderer/textures/*.cpp)
+
 file(GLOB APPLICATION ${PROJECT_SOURCE_DIR}/internal/engine/application/*.cpp)
 file(GLOB COMMON ${PROJECT_SOURCE_DIR}/internal/engine/common/*.cpp)
 
-add_executable(OGL_3d_engine main.cpp ${ROOT} ${ASSETS} ${SCENE} ${APPLICATION} ${COMMON} ${COMPONENTS} ${OGL} ${OGL_SHADERS} ${OGL_BUFFERS})
+add_executable(OGL_3d_engine main.cpp ${OGL_TEXTURES} ${ROOT} ${ASSETS} ${SCENE} ${APPLICATION} ${COMMON} ${COMPONENTS} ${OGL} ${OGL_SHADERS} ${OGL_BUFFERS})
 target_link_libraries(OGL_3d_engine glfw glad assimp)
 
 
