@@ -10,6 +10,7 @@
 #include <assets/interfaces/texture.hpp>
 
 #include <scene/ogl_renderer/gpu_cache.hpp>
+#include <scene/ogl_renderer/shaders/shader_program.hpp>
 #include <scene/ogl_renderer/vertex_buffer.hpp>
 
 #include <texture_converter.hpp>

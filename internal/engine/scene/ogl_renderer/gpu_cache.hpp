@@ -9,7 +9,8 @@
 #include <variant>
 #include <memory>
 
-#include <scene/ogl_renderer/shader_program.hpp>
+//#include <scene/ogl_renderer/shader_program.hpp>
+#include <scene/ogl_renderer/shaders/shader_program.hpp>
 #include <scene/ogl_renderer/interfaces/texture.hpp>
 #include <scene/ogl_renderer/interfaces/vertex_buffer.hpp>
 
@@ -30,19 +31,20 @@ namespace engine::interfaces
 
 namespace engine::ogl
 {
+//    class shader_program;
+
     class gpu_cache
     {
     public:
-        using gpu_resources = std::variant<
+        using gpu_resource_t = std::variant<
             std::unique_ptr<shader_program>,
             std::unique_ptr<interfaces::texture>,
             std::unique_ptr<interfaces::vertex_buffer>>;
 
-        using gpu_resources_map = std::map<std::string, gpu_resources>;
 
         struct resource_ref
         {
-            explicit resource_ref(gpu_resources res)
+            explicit resource_ref(gpu_resource_t res)
                 : resource(std::move(res))
             {
                 ++refs_counter;
@@ -51,8 +53,10 @@ namespace engine::ogl
             ~resource_ref() = default;
 
             uint64_t refs_counter = 0;
-            engine::ogl::gpu_cache::gpu_resources resource;
+            engine::ogl::gpu_cache::gpu_resource_t resource;
         };
+
+        using gpu_resources_t = std::map<std::string, resource_ref>;
 
         gpu_cache() = default;
         gpu_cache(const gpu_cache&) = delete;
@@ -89,7 +93,6 @@ namespace engine::ogl
         void release_mesh_data(const engine::mesh_bucket&);
 
     private:
-        gpu_resources_map m_resources;
-        std::map<std::string, resource_ref> m_res;
+        gpu_resources_t m_res;
     };
 } // namespace engine::ogl

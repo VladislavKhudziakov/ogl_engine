@@ -5,11 +5,14 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <scene/scene_object.hpp>
 #include <scene/ogl_renderer/gl_helpers.hpp>
 #include <scene/ogl_renderer/scene_renderer.hpp>
 #include <scene/ogl_renderer/material_config_resolver.hpp>
+#include <scene/ogl_renderer/shaders/shader_program.hpp>
+#include <scene/ogl_renderer/shaders/shader_program_visitors.hpp>
 
 #include <assets/mesh.hpp>
 #include <assets/geometry.hpp>
@@ -94,27 +97,51 @@ void engine::ogl::scene_renderer::accept(engine::mesh_instance& instance, std::s
 
         const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
             mesh->get_material()->get_shader()->get_name());
+
         assert(glGetError() == GL_NO_ERROR);
-        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
-            "u_mvp", m_world_matrix * object->get_transformation_matrix()));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
-            "u_mv", m_world_matrix));
+        gpu_program->visit(ogl::uniform_visitor([this, &object](int32_t location) {
+            auto mvp_matrix = m_world_matrix * object->get_transformation_matrix();
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mvp_matrix));
+        },"u_mvp"));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
-            "u_it_model", glm::inverse(glm::transpose(object->get_transformation_matrix()))));
+        gpu_program->visit(ogl::uniform_visitor([this](int32_t location) {
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m_world_matrix));
+        },"u_mv"));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
-            "u_view", m_view_matrix));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_mat4_uniform(
-            "u_proj", m_projection_matrix));
+        gpu_program->visit(ogl::uniform_visitor([&object](int32_t location) {
+            auto transformation_matrix = object->get_transformation_matrix();
+            transformation_matrix = glm::inverse(glm::transpose(transformation_matrix));
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(transformation_matrix));
+        }, "u_it_model"));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_float_uniform_array(
-            "u_light_sources", m_scene->get_light_sources()));
+        gpu_program->visit(ogl::uniform_visitor([this](int32_t location) {
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m_view_matrix));
+        }, "u_view"));
 
-        gpu_program->apply_uniform_command(engine::ogl::set_vec3_uniform(
-            "u_cam_pos", m_scene->get_camera().get_position()));
+
+        gpu_program->visit(ogl::uniform_visitor([this](int32_t location) {
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m_projection_matrix));
+        }, "u_proj"));
+
+        gpu_program->visit(ogl::uniform_visitor([this](int32_t location) {
+
+            const auto& sources = m_scene->get_light_sources();
+            std::vector<glm::vec3> light_positions;
+            light_positions.reserve(sources.size());
+
+            for (const auto& light_source : sources) {
+              light_positions.emplace_back(light_source.get_position());
+            }
+
+            glUniform3fv(location, sources.size(), glm::value_ptr(light_positions.front()));
+        }, "u_light_sources"));
+
+        gpu_program->visit(ogl::uniform_visitor([this](int32_t location) {
+            const auto& camera = m_scene->get_camera();
+            glUniform3fv(location, 1, glm::value_ptr(camera.get_position()));
+        }, "u_cam_pos"));
 
         material_config_resolver resolver(mesh->get_material()->get_config());
         resolver.set_config();
@@ -156,14 +183,18 @@ void engine::ogl::scene_renderer::bind_material(const assets::material_t& materi
 {
     const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(material->get_shader()->get_name());
     auto name = material->get_shader()->get_name();
-    gpu_program->bind();
+    glUseProgram(*gpu_program);
 
     int curr_slot = 0;
     auto textures = material->get_textures();
     for (auto [shader_uniform, texture] : textures) {
         const auto& gpu_texture = m_cache.get_resource<ogl::interfaces::texture>(texture->get_name());
         gpu_texture->bind(curr_slot);
-        gpu_program->apply_uniform_command(set_int_uniform(shader_uniform, curr_slot));
+
+        gpu_program->visit(ogl::uniform_visitor([curr_slot](int32_t location) {
+            glUniform1i(location, curr_slot);
+        }, shader_uniform));
+
         curr_slot++;
     }
 }
@@ -171,9 +202,7 @@ void engine::ogl::scene_renderer::bind_material(const assets::material_t& materi
 
 void engine::ogl::scene_renderer::release_material(const assets::material_t& material)
 {
-    const auto& gpu_program = m_cache.get_resource<ogl::shader_program>(
-        material->get_shader()->get_name());
-    gpu_program->unbind();
+    glUseProgram(0);
 
     auto textures = material->get_textures();
     for (auto&& [shader_uniform, texture] : textures) {

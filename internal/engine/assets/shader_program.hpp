@@ -18,7 +18,9 @@ namespace engine
             vertex,
             fragment,
             geometry,
-            tessellation
+            tessellation_control,
+            tessellation_evaluate,
+            compute
         };
 
         struct shader
@@ -31,7 +33,7 @@ namespace engine
         shader_program(const std::string&, std::vector<shader>&);
         ~shader_program() = default;
 
-        const std::string get_name() const;
+        const std::string& get_name() const;
         const std::vector<shader>& get_shaders() const;
         std::vector<shader>& get_shaders();
 
