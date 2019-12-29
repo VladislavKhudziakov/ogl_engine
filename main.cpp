@@ -8,11 +8,9 @@
 #include <assets/env_texture_importer.hpp>
 
 // TODO: git submodule
-// TODO: add input events system, add behavior component
+// TODO: add behavior component
 // TODO: concurrency
-// TODO: ogl raii, uniforms buffers data, uniforms buffers, post processing, light, bones, animations
-// TODO: factories
-// TODO: shader importer
+// TODO: uniforms buffers data, uniforms buffers, post processing, dynamic light(buffer variables in shaders), bones, animations
 // TODO: agile shaders
 
 int main()
